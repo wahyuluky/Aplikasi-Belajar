@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+<<<<<<<
 # Aplikasi Belajar
 Anggota:
 - Nadra Tan (202210370311124)
