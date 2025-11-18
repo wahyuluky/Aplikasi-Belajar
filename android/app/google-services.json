@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551873773250",
+    "project_id": "aplikasi-belajar-cc0ef",
+    "storage_bucket": "aplikasi-belajar-cc0ef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551873773250:android:1f907709ae6372bb88455b",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-m4KWiPNFJzfV0nSu6O5i3JMp_F7KltI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
