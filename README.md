@@ -10,7 +10,7 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 - B - 202210370311138 - Ernaya Fitri - Anyakmasibelajar
 - B - 202210370311413 - Wahyu Lukytaningtyas - Wahyuluky
 - B - 202210370311462 - Jauza Wijdaniah - Jauza - LSY
-- 
+
 ### Link Figma
 https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
 
