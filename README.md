@@ -19,3 +19,6 @@ https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sha
 
 ### Low Fidelity Prototype
 https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
+
+### Tabel pembagian tugas (backlog) tiap anggota secara bergantian dengan level 
+https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sharing
