@@ -10,3 +10,5 @@ class HomeBinding extends Bindings {
     );
   }
 }
+
+/* home untuk aplikasi
