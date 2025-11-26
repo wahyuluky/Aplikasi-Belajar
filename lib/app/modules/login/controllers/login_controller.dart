@@ -29,4 +29,11 @@ class LoginController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
     );
   }
+  //TODO: Implement LoginController
+
+  final count = 0.obs;
+
+
+
+  void increment() => count.value++;
 }
