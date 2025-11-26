@@ -13,6 +13,8 @@ class HomeView extends StatelessWidget {
     {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
   ];
 
+  const HomeView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
@@ -102,7 +104,7 @@ class HomeView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: const TextField(
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12),
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey, size: 18,),
                             hintText: "Tulis disini",
@@ -174,10 +176,10 @@ class HomeView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomeView(),
+    home: const HomeView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => HomeView()),
+        GetPage(name: '/', page: () => const HomeView()),
       ],
   ));
 }

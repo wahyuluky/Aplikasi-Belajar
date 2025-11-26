@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class PlayMusicView extends StatelessWidget {
   final PlayMusicController c = Get.put(PlayMusicController());
 
+  const PlayMusicView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,13 +15,13 @@ class PlayMusicView extends StatelessWidget {
         child: Column(
           children: [
             _header(),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             _albumImage(),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             _musicDescription(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _progressBar(),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             _playerButtons(),
           ],
         ),
@@ -30,18 +32,18 @@ class PlayMusicView extends StatelessWidget {
   // ---------------- HEADER ----------------
   Widget _header() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [Color(0xFF7DE5A1), Color(0xFF8ED6FF)]),
       ),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => Get.back(),
-            child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            child: const Icon(Icons.arrow_back_ios, color: Colors.white),
           ),
-          Expanded(
+          const Expanded(
             child: Center(
               child: Text(
                 "Play Music",
@@ -49,7 +51,7 @@ class PlayMusicView extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 24),
+          const SizedBox(width: 24),
         ],
       ),
     );
@@ -57,7 +59,7 @@ class PlayMusicView extends StatelessWidget {
 
   // ---------------- IMAGE ALBUM ----------------
   Widget _albumImage() {
-    return CircleAvatar(
+    return const CircleAvatar(
       radius: 90,
       backgroundImage: AssetImage("assets/music1.jpg"),
     );
@@ -65,7 +67,7 @@ class PlayMusicView extends StatelessWidget {
 
   // ---------------- TEXT TITLE & ARTIST ----------------
   Widget _musicDescription() {
-    return Column(
+    return const Column(
       children: [
         Text("Duka", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
         SizedBox(height: 3),
@@ -86,8 +88,8 @@ class PlayMusicView extends StatelessWidget {
           inactiveColor: Colors.grey[300],
           onChanged: (v) => c.changeProgress(v),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -105,16 +107,16 @@ class PlayMusicView extends StatelessWidget {
     return Obx(() => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.skip_previous, color: Colors.grey, size: 35),
+        const Icon(Icons.skip_previous, color: Colors.grey, size: 35),
 
-        SizedBox(width: 35),
+        const SizedBox(width: 35),
 
         GestureDetector(
           onTap: () => c.togglePlay(),
           child: Container(
             width: 55,
             height: 55,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.green,
             ),
@@ -126,9 +128,9 @@ class PlayMusicView extends StatelessWidget {
           ),
         ),
 
-        SizedBox(width: 35),
+        const SizedBox(width: 35),
 
-        Icon(Icons.skip_next, color: Colors.green, size: 32),
+        const Icon(Icons.skip_next, color: Colors.green, size: 32),
       ],
     ));
   }
@@ -137,10 +139,10 @@ class PlayMusicView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: PlayMusicView(),
+    home: const PlayMusicView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => PlayMusicView()),
+        GetPage(name: '/', page: () => const PlayMusicView()),
       ],
   ));
 }

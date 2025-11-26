@@ -5,6 +5,8 @@ import 'package:flutter_application_1/app/modules/choose_friend/controllers/choo
 class ChooseFriendView extends StatelessWidget {
   final ChooseFriendController c = Get.put(ChooseFriendController());
 
+  const ChooseFriendView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,8 +82,8 @@ class ChooseFriendView extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Row(
-              children: const [
+            child: const Row(
+              children: [
                 // SizedBox(width: 12),
                 Icon(Icons.search, color: Colors.grey, size: 18),
                 Expanded(
@@ -177,7 +179,7 @@ Widget _friendList() {
 }
 
 void main() {
-  runApp(GetMaterialApp(
+  runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: ChooseFriendView(),
   ));

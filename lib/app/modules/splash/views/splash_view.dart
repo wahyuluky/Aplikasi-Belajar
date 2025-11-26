@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class SplashView extends StatelessWidget {
   final controller = Get.put(SplashController());
 
+  const SplashView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +45,10 @@ class SplashView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: SplashView(),
+    home: const SplashView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => SplashView()),
+        GetPage(name: '/', page: () => const SplashView()),
       ],
   ));
 }

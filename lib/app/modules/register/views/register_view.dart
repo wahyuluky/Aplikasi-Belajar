@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class RegisterView extends StatelessWidget {
   final controller = Get.put(RegisterController());
 
+  const RegisterView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,10 +168,10 @@ class RegisterView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: RegisterView(),
+    home: const RegisterView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => RegisterView()),
+        GetPage(name: '/', page: () => const RegisterView()),
       ],
   ));
 }

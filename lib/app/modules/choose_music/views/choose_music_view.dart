@@ -5,6 +5,8 @@ import '../controllers/choose_music_controller.dart';
 class ChooseMusicView extends StatelessWidget {
   final c = Get.put(ChooseMusicController());
 
+  const ChooseMusicView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,10 +175,10 @@ class ChooseMusicView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ChooseMusicView(),
+    home: const ChooseMusicView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => ChooseMusicView()),
+        GetPage(name: '/', page: () => const ChooseMusicView()),
       ],
   ));
 }
