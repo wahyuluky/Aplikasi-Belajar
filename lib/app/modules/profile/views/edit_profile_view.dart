@@ -5,7 +5,7 @@ import '../controllers/profile_controller.dart';
 class EditProfileView extends StatelessWidget {
   final controller = Get.find<ProfileController>();
 
-  const EditProfileView({super.key});
+  EditProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class EditProfileView extends StatelessWidget {
                 //       color: Colors.grey),
                 // ),
                 GestureDetector(
-                    onTap: () => Get.to(() => const EditProfileView()),
+                    onTap: () => Get.to(() => EditProfileView()),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(

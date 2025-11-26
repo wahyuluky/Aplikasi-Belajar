@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
 
-  const ProfileView({super.key});
+  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class ProfileView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () => Get.to(() => const EditProfileView()),
+                    onTap: () => Get.to(() => EditProfileView()),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
@@ -218,10 +218,10 @@ class ProfileView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const ProfileView(),
+    home: ProfileView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const ProfileView()),
+        GetPage(name: '/', page: () => ProfileView()),
       ],
   ));
 }

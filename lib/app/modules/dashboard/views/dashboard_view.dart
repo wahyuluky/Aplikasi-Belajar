@@ -5,7 +5,7 @@ import 'package:flutter_application_1/app/modules/dashboard/controllers/dashboar
 class DashboardView extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
 
-  const DashboardView({super.key});
+   DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -353,10 +353,10 @@ Widget _buildStudyFocusCard() {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const DashboardView(),
+    home: DashboardView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const DashboardView()),
+        GetPage(name: '/', page: () => DashboardView()),
       ],
   ));
 }

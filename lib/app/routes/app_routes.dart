@@ -15,7 +15,7 @@ abstract class Routes {
   static const PLAY_MUSIC = _Paths.PLAY_MUSIC;
   static const FOCUS_MODE = _Paths.FOCUS_MODE;
   static const WEEKLY_REPORT = _Paths.WEEKLY_REPORT;
-
+  static const SCHEDULE = _Paths.SCHEDULE;
 }
 
 abstract class _Paths {
@@ -33,4 +33,5 @@ abstract class _Paths {
   static const PLAY_MUSIC = '/play-music';
   static const FOCUS_MODE = '/focus-mode';
   static const WEEKLY_REPORT = '/weekly-report';
+  static const SCHEDULE = '/schedule';
 }

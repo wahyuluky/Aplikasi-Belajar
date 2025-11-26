@@ -17,6 +17,8 @@ class LoginController extends GetxController {
       return;
     }
 
+
+
     isLoading.value = true;
     await Future.delayed(const Duration(seconds: 2)); // simulasi API
 
@@ -28,6 +30,8 @@ class LoginController extends GetxController {
       "Login berhasil!",
       snackPosition: SnackPosition.BOTTOM,
     );
+
+    Get.offAllNamed('/schedule');
   }
   //TODO: Implement LoginController
 

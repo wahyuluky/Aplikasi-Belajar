@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class PlayMusicView extends StatelessWidget {
   final PlayMusicController c = Get.put(PlayMusicController());
 
-  const PlayMusicView({super.key});
+  PlayMusicView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -139,10 +139,10 @@ class PlayMusicView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const PlayMusicView(),
+    home: PlayMusicView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const PlayMusicView()),
+        GetPage(name: '/', page: () => PlayMusicView()),
       ],
   ));
 }

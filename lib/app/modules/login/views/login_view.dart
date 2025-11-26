@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class LoginView extends StatelessWidget {
   final controller = Get.put(LoginController());
 
-  const LoginView({super.key});
+  LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +137,10 @@ class LoginView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const LoginView(),
+    home: LoginView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const LoginView()),
+        GetPage(name: '/', page: () => LoginView()),
       ],
   ));
 }

@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
     {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
   ];
 
-  const HomeView({super.key});
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -176,10 +176,10 @@ class HomeView extends StatelessWidget {
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const HomeView(),
+    home: HomeView(),
     initialRoute: '/',
       getPages: [
-        GetPage(name: '/', page: () => const HomeView()),
+        GetPage(name: '/', page: () => HomeView()),
       ],
   ));
 }

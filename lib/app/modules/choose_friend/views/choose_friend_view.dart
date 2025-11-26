@@ -5,7 +5,7 @@ import 'package:flutter_application_1/app/modules/choose_friend/controllers/choo
 class ChooseFriendView extends StatelessWidget {
   final ChooseFriendController c = Get.put(ChooseFriendController());
 
-  const ChooseFriendView({super.key});
+  ChooseFriendView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +179,7 @@ Widget _friendList() {
 }
 
 void main() {
-  runApp(const GetMaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: ChooseFriendView(),
   ));
