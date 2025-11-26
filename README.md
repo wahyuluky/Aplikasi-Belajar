@@ -21,4 +21,13 @@ https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sha
 https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
 
 ### Tabel pembagian tugas (backlog) tiap anggota secara bergantian dengan level 
-https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sharing
+# MindStudy App - Agile Organization
+
+| Modul / Fitur        | Login        | Register     | Home        | Profile     | Jadwal Kegiatan | Dashboard    | To Do List   | Fokus Belajar | Grup Belajar | Weekly Report |
+|---------------------|-------------|-------------|------------|------------|----------------|-------------|-------------|---------------|-------------|---------------|
+| **Product Owner**    | Wahyu (413) | Nadra (124) | Nabila (129)| Nabila    | Nadra          | Wahyu       | Ernaya (138)| Ernaya        | Jauza (462) | Jauza         |
+| **Scrum Master**     | Ernaya (138)| Nabila (129)| Nadra (124)| Wahyu (413)| Jauza (462)    | Ernaya (138)| Nabila (129)| Jauza         | Nadra       | Wahyu         |
+| **Tim Pengembangan** | Nabila (129)| Nadra (124)| Wahyu      | Nadra (124)| Wahyu          | Nadra       | Wahyu       | Nadra         | Wahyu       | Nabila        |
+|                     | Nadra (124) | Jauza (462)| Ernaya (138)| Jauza (462)| Ernaya (138)   | Nabila      | Nadra       | Nabila        | Ernaya      | Nadra         |
+|                     | Jauza (462) | Ernaya (138)| Jauza      | Ernaya      | Nabila         | Jauza       | Jauza       | Wahyu         | Nabila      | Ernaya        |
+
