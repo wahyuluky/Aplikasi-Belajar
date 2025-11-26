@@ -236,11 +236,6 @@ packages:
       sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "1.2.0"
-=======
-    version: "1.4.1"
->>>>>>> e4697a5b47fa6d87f880c76bd49dbf3a62b87234
   table_calendar:
     dependency: "direct main"
     description:

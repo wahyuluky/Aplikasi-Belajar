@@ -51,9 +51,7 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
-<<<<<<< HEAD
     /// Splash
-=======
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
@@ -79,7 +77,6 @@ class AppPages {
       page: () => const DashboardView(),
       binding: DashboardBinding(),
     ),
->>>>>>> e4697a5b47fa6d87f880c76bd49dbf3a62b87234
     GetPage(
       name: _Paths.SPLASH,
       page: () => const SplashView(),
