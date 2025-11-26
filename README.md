@@ -14,11 +14,14 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 ### Link Figma
 https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
 
-### Worksheet
+### Worksheet (folder github: worksheet)
 https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sharing
 
-### Low Fidelity Prototype
-https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
+### Low Fidelity Prototype (folder github: low fidelity prototype)
+https://drive.google.com/drive/folders/1oq6VCOJVMwGKs4_zOcyd7YMnG1wK0IP9?usp=sharing
+
+### High Fidelity Prototype (folder github: high fidelity prototype)
+https://drive.google.com/drive/folders/1IFJFiAyLAjWYG7tVon9xQUF5NB4pWx2i?usp=sharing
 
 ### Tabel pembagian tugas (backlog) tiap anggota secara bergantian dengan level 
 #### MindStudy App - Agile Organization
