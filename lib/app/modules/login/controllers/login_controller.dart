@@ -1,23 +1,32 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class LoginController extends GetxController {
-  //TODO: Implement LoginController
+  final usernameC = TextEditingController();
+  final passwordC = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  var isLoading = false.obs;
+
+  void login() async {
+    if (usernameC.text.isEmpty || passwordC.text.isEmpty) {
+      Get.snackbar(
+        "Error",
+        "Username dan Password harus diisi",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    isLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2)); // simulasi API
+
+    isLoading.value = false;
+
+    // Login berhasil (dummy)
+    Get.snackbar(
+      "Success",
+      "Login berhasil!",
+      snackPosition: SnackPosition.BOTTOM,
+    );
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
