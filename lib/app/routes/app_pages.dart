@@ -24,5 +24,4 @@ class AppPages {
       binding: LoginBinding(),
     ),
   ];
-}
-/* package 
+} 

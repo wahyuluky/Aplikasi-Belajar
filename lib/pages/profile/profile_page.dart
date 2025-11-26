@@ -16,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // Sementara: hanya ganti gambar ke asset yang sama,
   // kalau mau benar-benar ambil dari galeri bisa ditambah image_picker.
-  ImageProvider _profileImage =
+  final ImageProvider _profileImage =
       const AssetImage('assets/images/profile_jauza.png');
 
   @override

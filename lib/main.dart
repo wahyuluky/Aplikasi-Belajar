@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'pages/profile/profile_page.dart';
+import 'pages/group/group_page.dart';   // pastikan path sesuai project kamu
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); 
   runApp(const MyApp());
 }
 
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const ProfilePage(),
+      title: 'Aplikasi Belajar',
+      home: const GroupPage(),
     );
   }
 }
