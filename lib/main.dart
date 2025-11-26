@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'pages/group/group_page.dart';   // pastikan path sesuai project kamu
+import 'package:get/get.dart';
+import 'app/routes/app_pages.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized(); 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,10 +12,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Aplikasi Belajar',
-      home: const GroupPage(),
+      title: "Aplikasi Belajar",
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
     );
   }
 }
