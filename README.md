@@ -21,7 +21,7 @@ https://drive.google.com/drive/folders/1lLShoxs2C-AQVCpidq77-BBehUiVw7Bd?usp=sha
 https://www.figma.com/design/dSCqasqJAJxWUYEtsZpfvr/Aplikasi-Belajar?node-id=0-1&t=SKNZdE2WFsP5RjJy-1
 
 ### Tabel pembagian tugas (backlog) tiap anggota secara bergantian dengan level 
-# MindStudy App - Agile Organization
+#### MindStudy App - Agile Organization
 
 | Modul / Fitur        | Login        | Register     | Home        | Profile     | Jadwal Kegiatan | Dashboard    | To Do List   | Fokus Belajar | Grup Belajar | Weekly Report |
 |---------------------|-------------|-------------|------------|------------|----------------|-------------|-------------|---------------|-------------|---------------|
