@@ -6,11 +6,19 @@ class HomeView extends StatelessWidget {
   final controller = Get.put(HomeController());
 
   final List<Map<String, dynamic>> menuItems = [
-    {"icon": Icons.bar_chart, "label": "Dashboard"},
-    {"icon": Icons.assignment_outlined, "label": "Tugas"},
-    {"icon": Icons.menu_book_outlined, "label": "Belajar"},
-    {"icon": Icons.calendar_month_outlined, "label": "Jadwal"},
-    {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
+    {"icon": Icons.bar_chart, "label": "Dashboard", "route": "/dashboard"},
+    {"icon": Icons.assignment_outlined, "label": "Tugas", "route": "/tasks"},
+    {"icon": Icons.menu_book_outlined, "label": "Belajar", "route": "/learn"},
+    {
+      "icon": Icons.calendar_month_outlined,
+      "label": "Jadwal",
+      "route": "/schedule"
+    },
+    {
+      "icon": Icons.people_alt_outlined,
+      "label": "Diskusi",
+      "route": "/discussion"
+    },
   ];
 
   HomeView({super.key});
@@ -47,12 +55,10 @@ class HomeView extends StatelessWidget {
               ),
             ],
           ),
-          
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 // ------------------ HEADER ------------------
                 Container(
                   width: double.infinity,
@@ -106,7 +112,11 @@ class HomeView extends StatelessWidget {
                         child: const TextField(
                           style: TextStyle(fontSize: 12),
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey, size: 18,),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                              size: 18,
+                            ),
                             hintText: "Tulis disini",
                             contentPadding: EdgeInsets.all(12),
                             border: InputBorder.none,
@@ -126,47 +136,62 @@ class HomeView extends StatelessWidget {
                   child: GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,           // 3 kolom
-                      crossAxisSpacing: 30.0,        // jarak antar kolom
-                      mainAxisSpacing: 30.0,         // jarak antar baris
-                      // childAspectRatio: 1,  
-                      // shrinkWrap: true,       // bentuk kotak proporsional
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, // 3 kolom
+                      crossAxisSpacing: 30.0, // jarak antar kolom
+                      mainAxisSpacing: 30.0, // jarak antar baris
+                      // childAspectRatio: 1, // Jika ingin kotak proporsional
                     ),
                     itemCount: menuItems.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              menuItems[index]["icon"],
-                              color: Colors.green,
-                              size: 20,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              menuItems[index]["label"],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
+                      // Ambil route dari item menu saat ini
+                      final routeName = menuItems[index]["route"] as String;
+
+                      return InkWell(
+                        // Menggantikan GestureDetector agar ada efek visual saat ditekan (ripple effect)
+                        onTap: () {
+                          // Navigasi ke rute yang sesuai
+                          Navigator.pushNamed(context, routeName);
+                          print(
+                              'Navigasi ke: $routeName'); // Tambahkan print untuk debugging
+                        },
+                        borderRadius: BorderRadius.circular(
+                            12), // Sesuaikan dengan border radius Container
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                menuItems[index]["icon"]
+                                    as IconData, // Perlu casting eksplisit
+                                color: Colors.green,
+                                size: 20,
                               ),
-                            )
-                          ],
+                              const SizedBox(height: 8),
+                              Text(
+                                menuItems[index]["label"]
+                                    as String, // Perlu casting eksplisit
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },
                   ),
                 )
-
-
-              ],// akhir
+              ], // akhir
             ),
           ),
         ));
@@ -178,8 +203,8 @@ void main() {
     debugShowCheckedModeBanner: false,
     home: HomeView(),
     initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => HomeView()),
-      ],
+    getPages: [
+      GetPage(name: '/', page: () => HomeView()),
+    ],
   ));
 }

@@ -31,7 +31,7 @@ class LoginController extends GetxController {
       snackPosition: SnackPosition.BOTTOM,
     );
 
-    // Get.offAllNamed('/schedule');
+    Get.offAllNamed('/home');
   }
   //TODO: Implement LoginController
 
