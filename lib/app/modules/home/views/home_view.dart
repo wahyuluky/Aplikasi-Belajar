@@ -153,8 +153,6 @@ class HomeView extends StatelessWidget {
                         onTap: () {
                           // Navigasi ke rute yang sesuai
                           Navigator.pushNamed(context, routeName);
-                          print(
-                              'Navigasi ke: $routeName'); // Tambahkan print untuk debugging
                         },
                         borderRadius: BorderRadius.circular(
                             12), // Sesuaikan dengan border radius Container
