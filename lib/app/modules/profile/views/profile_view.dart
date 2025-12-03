@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
 
+  ProfileView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

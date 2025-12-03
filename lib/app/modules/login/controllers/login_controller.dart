@@ -18,6 +18,8 @@ class LoginController extends GetxController {
       return;
     }
 
+
+
     isLoading.value = true;
     await Future.delayed(const Duration(seconds: 2)); // simulasi API
 

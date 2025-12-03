@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app/modules/choose_friend/controllers/choo
 class ChooseFriendView extends StatelessWidget {
   final ChooseFriendController c = Get.put(ChooseFriendController());
 
+  ChooseFriendView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

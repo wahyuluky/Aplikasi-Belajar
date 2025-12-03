@@ -59,6 +59,7 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
+    /// Splash
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
@@ -104,6 +105,43 @@ class AppPages {
       page: () => SplashView(),
       binding: SplashBinding(),
     ),
+
+    /// Home
+    GetPage(
+      name: _Paths.HOME,
+      page: () => HomeView(),
+      binding: HomeBinding(),
+    ),
+
+    /// Login
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
+    ),
+
+    /// Register
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => RegisterView(),
+      binding: RegisterBinding(),
+    ),
+
+    /// Profile
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      binding: ProfileBinding(),
+    ),
+
+    /// Dashboard
+    GetPage(
+      name: _Paths.DASHBOARD,
+      page: () => DashboardView(),
+      binding: DashboardBinding(),
+    ),
+
+    /// Choose Friend (hapus jika tidak dipakai)
     GetPage(
       name: _Paths.TUGAS,
       page: () => TugasView(),
@@ -159,11 +197,15 @@ class AppPages {
       page: () => ChooseFriendView(),
       binding: ChooseFriendBinding(),
     ),
+
+    /// Choose Music (Koleksi musik)
     GetPage(
       name: _Paths.CHOOSE_MUSIC,
       page: () => ChooseMusicView(),
       binding: ChooseMusicBinding(),
     ),
+
+    /// Play Music
     GetPage(
       name: _Paths.PLAY_MUSIC,
       page: () => PlayMusicView(),

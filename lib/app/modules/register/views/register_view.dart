@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class RegisterView extends StatelessWidget {
   final controller = Get.put(RegisterController());
 
+  RegisterView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

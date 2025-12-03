@@ -10,12 +10,22 @@ class HomeView extends StatelessWidget {
   final controller = Get.put(HomeController());
 
   final List<Map<String, dynamic>> menuItems = [
-    {"icon": Icons.bar_chart, "label": "Dashboard"},
-    {"icon": Icons.assignment_outlined, "label": "Tugas"},
-    {"icon": Icons.menu_book_outlined, "label": "Belajar"},
-    {"icon": Icons.calendar_month_outlined, "label": "Jadwal"},
-    {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
+    {"icon": Icons.bar_chart, "label": "Dashboard", "route": "/dashboard"},
+    {"icon": Icons.assignment_outlined, "label": "Tugas", "route": "/tasks"},
+    {"icon": Icons.menu_book_outlined, "label": "Belajar", "route": "/learn"},
+    {
+      "icon": Icons.calendar_month_outlined,
+      "label": "Jadwal",
+      "route": "/schedule"
+    },
+    {
+      "icon": Icons.people_alt_outlined,
+      "label": "Diskusi",
+      "route": "/discussion"
+    },
   ];
+
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

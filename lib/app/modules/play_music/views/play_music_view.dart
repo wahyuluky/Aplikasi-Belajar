@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class PlayMusicView extends StatelessWidget {
   final PlayMusicController c = Get.put(PlayMusicController());
 
+  PlayMusicView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +35,11 @@ class PlayMusicView extends StatelessWidget {
           children: [
             SizedBox(height: 25),
             _albumImage(),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             _musicDescription(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _progressBar(),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             _playerButtons(),
           ],
         ),
@@ -54,7 +56,7 @@ class PlayMusicView extends StatelessWidget {
 
   // ---------------- TEXT TITLE & ARTIST ----------------
   Widget _musicDescription() {
-    return Column(
+    return const Column(
       children: [
         Text("Duka", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
         SizedBox(height: 3),
@@ -75,8 +77,8 @@ class PlayMusicView extends StatelessWidget {
           inactiveColor: Colors.grey[300],
           onChanged: (v) => c.changeProgress(v),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -96,7 +98,7 @@ class PlayMusicView extends StatelessWidget {
       children: [
         Icon(Icons.skip_previous, color: Colors.grey, size: 24),
 
-        SizedBox(width: 35),
+        const SizedBox(width: 35),
 
         GestureDetector(
           onTap: () => c.togglePlay(),
@@ -115,7 +117,7 @@ class PlayMusicView extends StatelessWidget {
           ),
         ),
 
-        SizedBox(width: 35),
+        const SizedBox(width: 35),
 
         Icon(Icons.skip_next, color: Colors.green, size: 24),
       ],
