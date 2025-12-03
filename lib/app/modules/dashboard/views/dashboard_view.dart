@@ -139,8 +139,8 @@ Widget _buildStudyFocusCard() {
       ],
     ),
     child: Obx(() {
-      double progress = controller.studyHoursCompleted.value /
-          controller.studyHoursTarget;
+      // double progress = controller.studyHoursCompleted.value /
+      //     controller.studyHoursTarget;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
