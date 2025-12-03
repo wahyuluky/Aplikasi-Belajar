@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
@@ -38,5 +39,7 @@ class RegisterController extends GetxController {
       "Registrasi berhasil!",
       snackPosition: SnackPosition.BOTTOM,
     );
+
+    Get.offAllNamed(Routes.LOGIN);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../controllers/profile_controller.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -9,37 +10,30 @@ class EditProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Edit Profile",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ---------------- HEADER ----------------
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(10, 30, 10, 20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, top: 8), // kanan & bawah
-                    child: GestureDetector(
-                      onTap: () => Get.back(),
-                      child: const Icon(Icons.arrow_back_ios,
-                          color: Colors.white, size: 18),
-                    ),
-                  ),
-                  const SizedBox(width: 50),
-                ],
-              ),
-
-            ),
-
             const SizedBox(height: 20),
 
             // ---------------- PROFILE PICTURE ----------------
@@ -59,15 +53,8 @@ class EditProfileView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // const Text(
-                //   "Edit Foto",
-                //   style: TextStyle(
-                //       fontSize: 13,
-                //       fontWeight: FontWeight.bold,
-                //       color: Colors.grey),
-                // ),
                 GestureDetector(
-                    onTap: () => Get.to(() => EditProfileView()),
+                    onTap: () => _showPhotoOptions(context),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
@@ -163,4 +150,55 @@ class EditProfileView extends StatelessWidget {
       ),
     );
   }
+
+  void _showPhotoOptions(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Pilih Foto",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 15),
+
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text("Pilih dari Galeri"),
+              onTap: () async {
+                Navigator.pop(context);
+                final ImagePicker picker = ImagePicker();
+                final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
+                if (photo != null) {
+                  controller.updatePhoto(photo.path);
+                }
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text("Ambil Foto"),
+              onTap: () async {
+                Navigator.pop(context);
+                final ImagePicker picker = ImagePicker();
+                final XFile? photo = await picker.pickImage(source: ImageSource.camera);
+                if (photo != null) {
+                  controller.updatePhoto(photo.path);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 }

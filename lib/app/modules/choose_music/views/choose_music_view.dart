@@ -8,100 +8,72 @@ class ChooseMusicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
+       backgroundColor: Colors.white,
+       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, size: 18, color: Colors.white,),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Tambah Lagu",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+          // SEARCH BAR
+        // ====== FIXED: Search Bar Menggunakan bottom AppBar ======
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Container(
+              height: 39,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.search, color: Colors.grey, size: 18),
+                  SizedBox(width: 3),
+                  Expanded(
+                    child: TextField(
+                      style: TextStyle(fontSize: 12),
+                      decoration: InputDecoration(
+                        hintText: "Tulis disini",
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(12)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: Column(
           children: [
-            _header(),
             const SizedBox(height: 8),
             _selectedInfo(),
             const Divider(height: 1),
             Expanded(child: _musicList()),
           ],
         ),
-      ),
-    );
+      );
   }
 
-  // ================= HEADER ==================
-  Widget _header() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Column(
-        children: [
-          // TOP BAR
-          SizedBox(
-            height: 28,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () => Get.back(),
-                    child: const Icon(Icons.arrow_back_ios,
-                        color: Colors.white, size: 20),
-                  ),
-                ),
-                const Text(
-                  "Pilih teman",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.group,
-                        color: Colors.white, size: 20),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 15),
-
-          // SEARCH BAR
-          Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.search, color: Colors.grey, size: 18),
-                SizedBox(width: 6),
-                Expanded(
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    decoration: InputDecoration(
-                      hintText: "Tulis disini",
-                      contentPadding: EdgeInsets.only(bottom: 12),
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+ 
 
   // =============== SELECTED INFO =================
   Widget _selectedInfo() {
@@ -113,10 +85,10 @@ class ChooseMusicView extends StatelessWidget {
           children: [
             Text(
               "${c.selectedCount.value} Lagu dipilih",
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(width: 8),
-            const Icon(Icons.play_arrow, size: 22),
+            const SizedBox(width: 30),
+            const Icon(Icons.play_arrow, size: 24),
           ],
         ),
       ),
@@ -144,7 +116,7 @@ class ChooseMusicView extends StatelessWidget {
               ),
               child: ListTile(
                 leading: CircleAvatar(
-                  radius: 22,
+                  radius: 18,
                   backgroundImage: AssetImage(item["image"]!),
                 ),
                 title: Text(
@@ -153,9 +125,10 @@ class ChooseMusicView extends StatelessWidget {
                     fontWeight:
                         isSelected ? FontWeight.w600 : FontWeight.normal,
                     color: isSelected ? Colors.green[800] : Colors.black,
+                    fontSize: 12,
                   ),
                 ),
-                subtitle: Text(item["artist"]!),
+                subtitle: Text(item["artist"]!, style: TextStyle(fontSize: 10),),
 
                 trailing: isSelected
                     ? const Icon(Icons.check_circle, color: Colors.green)
@@ -169,14 +142,9 @@ class ChooseMusicView extends StatelessWidget {
   }
 }
 
-
 void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: ChooseMusicView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => ChooseMusicView()),
-      ],
   ));
 }

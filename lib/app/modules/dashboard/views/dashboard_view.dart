@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/timerfokus/views/timerfokus_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/dashboard/controllers/dashboard_controller.dart';
 
@@ -9,9 +10,29 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Dashboard",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          _buildHeaderGradient(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16),
@@ -24,38 +45,6 @@ class DashboardView extends StatelessWidget {
               ],
             ),
           )
-        ],
-      ),
-    );
-  }
-
-  // ========================================================
-  // HEADER GRADIENT
-  // ========================================================
-  Widget _buildHeaderGradient() {
-    return Container(
-      padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
-          ),
-          const SizedBox(width: 12),
-          // const Text(
-          //   "Dashboard",
-          //   style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-          // ),
-          const Spacer(),
-          Icon(Icons.account_circle, color: Colors.white, size: 25,),
         ],
       ),
     );
@@ -113,13 +102,23 @@ class DashboardView extends StatelessWidget {
               ),
             )),
 
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                "Lihat semua",
-                style: TextStyle(color: Colors.green, fontWeight: FontWeight.w600, fontSize: 12),
+            InkWell(
+              onTap: () {
+                Get.to(() => TimerFokusView());
+              },
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  "Lihat semua",
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ),
-            ),
+            )
+
           ],
         );
       }),
@@ -352,9 +351,5 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: DashboardView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => DashboardView()),
-      ],
   ));
 }

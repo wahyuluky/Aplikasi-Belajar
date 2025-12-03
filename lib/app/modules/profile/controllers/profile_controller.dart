@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
 
     var selectedIndex = 0.obs;
+    var photoPath = "".obs;
     void changeTab(int index) {
       selectedIndex.value = index;
     }
@@ -51,4 +52,9 @@ class ProfileController extends GetxController {
       },
     );
   }
+  void updatePhoto(String path) {
+  photoPath.value = path;   // RxString
+  // simpan ke Firestore atau server jika perlu
+}
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/login/views/login_view.dart';
 import 'package:flutter_application_1/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter_application_1/app/modules/profile/views/edit_profile_view.dart';
 import 'package:get/get.dart';
@@ -10,65 +11,30 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.selectedIndex.value,
-            onTap: controller.changeTab,
-            selectedItemColor: Colors.green,
-            unselectedItemColor: Colors.grey,
-            type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today),
-                label: "Jadwal",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.task),
-                label: "Tugas",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.assessment),
-                label: "Report",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: "Profil",
-              ),
-            ],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Profile",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ---------------- HEADER ----------------
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(10, 30, 10, 20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, top: 8), // kanan & bawah
-                    child: GestureDetector(
-                      onTap: () => Get.back(),
-                      child: const Icon(Icons.arrow_back_ios,
-                          color: Colors.white, size: 18),
-                    ),
-                  ),
-                  const SizedBox(width: 50),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 20),
             // ---------------- PROFILE PICTURE ----------------
             Container(
@@ -157,7 +123,9 @@ class ProfileView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
-                onPressed: controller.logout,
+                onPressed: (){
+                  Get.to(LoginView());
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -217,9 +185,5 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: ProfileView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => ProfileView()),
-      ],
   ));
 }

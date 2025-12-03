@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/modules/login/controllers/login_controller.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class LoginView extends StatelessWidget {
@@ -110,7 +111,7 @@ class LoginView extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         // contoh navigasi
-                        Get.snackbar("Info", "Sign Up Page belum dibuat");
+                        Get.offAllNamed(Routes.REGISTER);
                       },
                       child: const Text(
                         "Sign Up",
@@ -136,10 +137,6 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: LoginView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => LoginView()),
-      ],
   ));
 }
 

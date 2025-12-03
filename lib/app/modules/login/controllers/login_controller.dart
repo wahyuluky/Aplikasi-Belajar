@@ -1,3 +1,4 @@
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -28,12 +29,7 @@ class LoginController extends GetxController {
       "Login berhasil!",
       snackPosition: SnackPosition.BOTTOM,
     );
+
+    Get.offAllNamed(Routes.HOME);
   }
-  //TODO: Implement LoginController
-
-  final count = 0.obs;
-
-
-
-  void increment() => count.value++;
 }

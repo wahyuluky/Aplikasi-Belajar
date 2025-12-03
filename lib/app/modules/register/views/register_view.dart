@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/modules/register/controllers/register_controller.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class RegisterView extends StatelessWidget {
@@ -138,8 +139,7 @@ class RegisterView extends StatelessWidget {
                     const Text("Already have account? "),
                     GestureDetector(
                       onTap: () {
-                        // contoh navigasi ke login
-                        Get.back();
+                        Get.offAllNamed(Routes.LOGIN);
                       },
                       child: const Text(
                         "Sign In",

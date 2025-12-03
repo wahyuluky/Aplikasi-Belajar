@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/choose_friend/controllers/choose_friend_controller.dart';
 
@@ -8,98 +9,85 @@ class ChooseFriendView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, size: 18, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Tambah Lagu",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+
+      // ICON GROUP (keluar dari search bar)
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.group, size: 20, color: Colors.white),
+            onPressed: () => Get.to(GrupbelajarView()),
+          ),
+        ],
+
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+
+        // ======== FIXED SEARCH BAR + ICON GRUP =========
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Row(
+              children: [
+                // SEARCH BAR
+                Expanded(
+                  child: Container(
+                    height: 39,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.search, color: Colors.grey, size: 18),
+                        const SizedBox(width: 3),
+                        const Expanded(
+                          child: TextField(
+                            style: TextStyle(fontSize: 12),
+                            decoration: InputDecoration(
+                              hintText: "Tulis disini",
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+      body: Column(
           children: [
-            _header(),
             const SizedBox(height: 5),
             _selectedInfo(),
             const Divider(height: 1),
             Expanded(child: _friendList()),
           ],
         ),
-      ),
-    );
-  }
-
-  // ---------------- HEADER ----------------
-  Widget _header() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Column(
-        children: [
-          // BARIS ATAS
-          SizedBox(
-            height: 28,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () => Get.back(),
-                    child: const Icon(Icons.arrow_back_ios,
-                        color: Colors.white, size: 20),
-                  ),
-                ),
-                const Text(
-                  "Pilih teman",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.group,
-                        color: Colors.white, size: 20),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 15),
-
-          // SEARCH BAR
-          Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Row(
-              children: const [
-                // SizedBox(width: 12),
-                Icon(Icons.search, color: Colors.grey, size: 18),
-                Expanded(
-                  child: TextField(
-                    style: TextStyle(fontSize: 12),
-                    decoration: InputDecoration(
-                      hintText: "Tulis disini",
-                      contentPadding: EdgeInsets.all(16),
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -113,16 +101,16 @@ class ChooseFriendView extends StatelessWidget {
             children: [
               Text(
                 "${c.selectedCount.value} Teman dipilih",
-                style: const TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
               ),
-              const SizedBox(width: 300),
+              const SizedBox(width: 30),
 
               Positioned(
                 child: GestureDetector(
                   onTap: () {},
                   child: const Icon(
-                    Icons.send,
-                    size: 22,
+                    Icons.play_arrow,
+                    size: 24,
                   ),
                 ),
               ),
@@ -162,6 +150,7 @@ Widget _friendList() {
                 style: TextStyle(
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   color: isSelected ? Colors.green[800] : Colors.black,
+                  fontSize: 12,
                 ),
               ),
 

@@ -9,10 +9,28 @@ class PlayMusicView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
+       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, size: 18, color: Colors.white,),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Play Music",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF74E4A2), Color(0xFF93D8FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
+      body: Column(
           children: [
-            _header(),
             SizedBox(height: 25),
             _albumImage(),
             SizedBox(height: 35),
@@ -23,42 +41,13 @@ class PlayMusicView extends StatelessWidget {
             _playerButtons(),
           ],
         ),
-      ),
-    );
-  }
-
-  // ---------------- HEADER ----------------
-  Widget _header() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Color(0xFF7DE5A1), Color(0xFF8ED6FF)]),
-      ),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Get.back(),
-            child: Icon(Icons.arrow_back_ios, color: Colors.white),
-          ),
-          Expanded(
-            child: Center(
-              child: Text(
-                "Play Music",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SizedBox(width: 24),
-        ],
-      ),
     );
   }
 
   // ---------------- IMAGE ALBUM ----------------
   Widget _albumImage() {
     return CircleAvatar(
-      radius: 90,
+      radius: 80,
       backgroundImage: AssetImage("assets/music1.jpg"),
     );
   }
@@ -67,9 +56,9 @@ class PlayMusicView extends StatelessWidget {
   Widget _musicDescription() {
     return Column(
       children: [
-        Text("Duka", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+        Text("Duka", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
         SizedBox(height: 3),
-        Text("Last Child", style: TextStyle(fontSize: 14, color: Colors.black54)),
+        Text("Last Child", style: TextStyle(fontSize: 12, color: Colors.black54)),
       ],
     );
   }
@@ -105,22 +94,22 @@ class PlayMusicView extends StatelessWidget {
     return Obx(() => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.skip_previous, color: Colors.grey, size: 35),
+        Icon(Icons.skip_previous, color: Colors.grey, size: 24),
 
         SizedBox(width: 35),
 
         GestureDetector(
           onTap: () => c.togglePlay(),
           child: Container(
-            width: 55,
-            height: 55,
+            width: 45,
+            height: 45,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.green,
             ),
             child: Icon(
               c.isPlaying.value ? Icons.pause : Icons.play_arrow,
-              size: 30,
+              size: 24,
               color: Colors.white,
             ),
           ),
@@ -128,7 +117,7 @@ class PlayMusicView extends StatelessWidget {
 
         SizedBox(width: 35),
 
-        Icon(Icons.skip_next, color: Colors.green, size: 32),
+        Icon(Icons.skip_next, color: Colors.green, size: 24),
       ],
     ));
   }
@@ -138,9 +127,5 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: PlayMusicView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => PlayMusicView()),
-      ],
   ));
 }

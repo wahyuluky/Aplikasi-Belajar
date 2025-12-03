@@ -26,6 +26,9 @@ abstract class Routes {
   static const CHOOSE_FRIEND = _Paths.CHOOSE_FRIEND;
   static const CHOOSE_MUSIC = _Paths.CHOOSE_MUSIC;
   static const PLAY_MUSIC = _Paths.PLAY_MUSIC;
+  static const WEEKLY_REPORT = _Paths.WEEKLY_REPORT;
+  static const FOCUS_REST = _Paths.FOCUS_REST;
+  static const MUSIC_COLLECTION = _Paths.MUSIC_COLLECTION;
 }
 
 abstract class _Paths {
@@ -53,4 +56,7 @@ abstract class _Paths {
   static const CHOOSE_FRIEND = '/choose-friend';
   static const CHOOSE_MUSIC = '/choose-music';
   static const PLAY_MUSIC = '/play-music';
+  static const WEEKLY_REPORT = '/weekly-report';
+  static const FOCUS_REST = '/focus-rest';
+  static const MUSIC_COLLECTION = '/music-collection';
 }
