@@ -1,3 +1,5 @@
+import 'package:flutter_application_1/app/modules/to-do-list/bindings/to_do_list_binding.dart';
+import 'package:flutter_application_1/app/modules/to-do-list/views/to_do_list_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/addschedule/bindings/addschedule_binding.dart';

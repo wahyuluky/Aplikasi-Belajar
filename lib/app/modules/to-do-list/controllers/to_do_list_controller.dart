@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class TodoItem {
   String title;
@@ -16,7 +17,6 @@ class TodoItem {
 class TodoController extends GetxController {
   RxList<TodoItem> todos = <TodoItem>[].obs;
 
-  // sample data awal
   @override
   void onInit() {
     todos.addAll([
@@ -47,7 +47,55 @@ class TodoController extends GetxController {
     todos.removeAt(index);
   }
 
-  void addTask(TodoItem item) {
-    todos.add(item);
+  // ===========================================
+  // FUNGSI TAMBAH DATA DENGAN DIALOG
+  // ===========================================
+  void openAddDialog() {
+    final titleC = TextEditingController();
+    final descC = TextEditingController();
+    final dateC = TextEditingController();
+
+    Get.defaultDialog(
+      title: "Tambah To-Do",
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              controller: titleC,
+              decoration: const InputDecoration(
+                hintText: "Judul tugas",
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: descC,
+              decoration: const InputDecoration(
+                hintText: "Deskripsi",
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: dateC,
+              decoration: const InputDecoration(
+                hintText: "Tanggal",
+              ),
+            ),
+          ],
+        ),
+      ),
+      textConfirm: "Tambah",
+      textCancel: "Batal",
+      onConfirm: () {
+        if (titleC.text.trim().isEmpty) return; // validasi wajib isi
+
+        todos.add(TodoItem(
+          title: titleC.text,
+          description: descC.text.isEmpty ? "-" : descC.text,
+          date: dateC.text.isEmpty ? "-" : dateC.text,
+        ));
+
+        Get.back();
+      },
+    );
   }
 }
