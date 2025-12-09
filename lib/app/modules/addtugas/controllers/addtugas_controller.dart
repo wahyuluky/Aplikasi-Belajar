@@ -1,55 +1,60 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'tugas_model.dart';
 
-class AddtugasController extends GetxController {
+class TugasController extends GetxController {
+  var listTugas = <TugasModel>[].obs;
 
-  // Controller untuk input
-  TextEditingController tugasC = TextEditingController();
-  TextEditingController keteranganC = TextEditingController();
-  TextEditingController tanggalC = TextEditingController();
-
-  RxBool isDone = false.obs;
-
-  final uid = FirebaseAuth.instance.currentUser!.uid;
-  final firestore = FirebaseFirestore.instance;
-
-
-  void pilihTanggal(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      initialDate: DateTime.now(),
-    );
-
-    if (picked != null) {
-      tanggalC.text =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
-    }
+  @override
+  void onInit() {
+    super.onInit();
+    // Dummy data sesuai UI
+    listTugas.addAll([
+      TugasModel(
+        judul: "Etika dan Profesi",
+        deskripsi: "Kode etik",
+        tanggal: "20 Oktober 2025",
+      ),
+      TugasModel(
+        judul: "Pra Skripsi",
+        deskripsi: "Identifikasi topik",
+        tanggal: "25 Oktober 2025",
+      ),
+      TugasModel(
+        judul: "Rekayasa Interaksi",
+        deskripsi: "Prototype",
+        tanggal: "26 Oktober 2025",
+      ),
+    ]);
   }
 
-  Future<void> tambahTugas() async {
-    if (tugasC.text.isEmpty) {
-      Get.snackbar("Error", "Judul tugas wajib diisi");
-      return;
-    }
+  void toggleCheck(int index) {
+    listTugas[index].isDone = !listTugas[index].isDone;
+    listTugas.refresh();
+  }
 
-    await firestore
-        .collection("users")
-        .doc(uid)
-        .collection("tugas")
-        .add({
-      "judul": tugasC.text,
-      "deskripsi": keteranganC.text,
-      "tanggal": tanggalC.text,
-      "isDone": isDone.value,
-      "createdAt": DateTime.now(),
-    });
+  void hapusTugas(int index) {
+    listTugas.removeAt(index);
+  }
 
-    Get.back();
-    Get.snackbar("Sukses", "Tugas berhasil ditambahkan");
+  void editTugas(int index, TugasModel tugasBaru) {
+    listTugas[index] = tugasBaru;
+  }
+
+  void tambahTugas(TugasModel tugas) {
+    listTugas.add(tugas);
+
+    Get.snackbar(
+      "Berhasil",
+      "Tugas berhasil ditambahkan!",
+      backgroundColor: Colors.green.shade600,
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(12),
+      borderRadius: 10,
+      duration: const Duration(seconds: 2),
+      snackPosition: SnackPosition.TOP,
+      icon: const Icon(Icons.check_circle, color: Colors.white),
+    );
   }
 }
 
