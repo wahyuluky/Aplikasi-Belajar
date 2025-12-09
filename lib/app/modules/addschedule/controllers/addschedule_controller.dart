@@ -17,27 +17,89 @@ class AddscheduleController extends GetxController {
     loadSchedules();
   }
 
-  // Simpan data
-  void saveSchedule() {
-    if (subjectC.text.isEmpty || dateC.text.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Semua field harus diisi!",
-        backgroundColor: Colors.red.withOpacity(0.2),
-        colorText: Colors.red,
-      );
-      return;
+  void showPopup({
+    required String title,
+    required String message,
+    required Color color,
+    required IconData icon,
+    bool autoClose = false,
+  }) {
+    Get.dialog(
+      Center(
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            width: 250,
+            padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 18),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: color,
+                width: 1.8,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // BULATAN ICON—SOLID WARNA
+                Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
+
+                const SizedBox(height: 14),
+
+                // JUDUL
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+
+                const SizedBox(height: 6),
+
+                // PESAN
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 13.5,
+                    height: 1.3,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+
+      barrierDismissible:
+          !autoClose, // gagal → bisa tap luar, sukses → auto close
+      transitionDuration: Duration.zero, // tidak slowmo
+    );
+
+    if (autoClose) {
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+      });
     }
-
-    Get.back(result: {
-      "subject": subjectC.text,
-      "date": dateC.text,
-    });
-
-    Get.snackbar("Berhasil", "Jadwal berhasil ditambahkan",
-        backgroundColor: Colors.green.withOpacity(0.3),
-        colorText: Colors.green.shade800,
-        snackPosition: SnackPosition.TOP);
   }
 
   // ====================== LOAD DATA ============================
@@ -50,9 +112,19 @@ class AddscheduleController extends GetxController {
 // ====================== ADD ============================
   Future<void> addSchedule(String title, String date) async {
     if (title.isEmpty || date.isEmpty) {
-      Get.snackbar("Error", "Semua field harus diisi!",
-          backgroundColor: Colors.red.withOpacity(0.2), colorText: Colors.red);
-      return;
+      showPopup(
+        title: "Gagal Menambahkan Jadwal",
+        message: "Mata Pelajaran dan Tanggal wajib diisi",
+        color: const Color.fromARGB(255, 255, 107, 97),
+        icon: Icons.close,
+      );
+    } else {
+      showPopup(
+        title: "Berhasil Menambahkan Jadwal",
+        message: "Jadwal telah berhasil ditambahkan",
+        color: const Color.fromARGB(255, 97, 255, 137),
+        icon: Icons.check,
+      );
     }
 
     final uid = _auth.currentUser!.uid;
@@ -62,15 +134,5 @@ class AddscheduleController extends GetxController {
       "date": date,
       "createdAt": DateTime.now(),
     });
-
-    Get.back();
-
-    Get.snackbar(
-      "Berhasil",
-      "Jadwal berhasil ditambahkan!",
-      backgroundColor: Colors.green.withOpacity(0.3),
-      colorText: Colors.green.shade800,
-      snackPosition: SnackPosition.TOP,
-    );
   }
 }
