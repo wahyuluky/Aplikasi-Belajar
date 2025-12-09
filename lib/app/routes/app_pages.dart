@@ -175,20 +175,32 @@ class AppPages {
       binding: GrupbelajarBinding(),
     ),
     GetPage(
-      name: _Paths.CHAT,
-      page: () => ChatView(),
-      binding: ChatBinding(),
-    ),
-    GetPage(
-      name: _Paths.MATERI,
-      page: () => MateriView(),
-      binding: MateriBinding(),
-    ),
-    GetPage(
-      name: _Paths.ANGGOTA,
-      page: () => AnggotaView(),
-      binding: AnggotaBinding(),
-    ),
+  name: _Paths.CHAT,
+  page: () => ChatView(
+    groupId: "default",
+    groupName: "Default Group",
+  ),
+  binding: ChatBinding(),
+),
+
+GetPage(
+  name: _Paths.MATERI,
+  page: () => MateriView(
+    groupId: "default",
+    groupName: "Default Group",
+  ),
+  binding: MateriBinding(),
+),
+
+GetPage(
+  name: _Paths.ANGGOTA,
+  page: () => AnggotaView(
+    groupId: "default",
+    groupName: "Default Group",
+  ),
+  binding: AnggotaBinding(),
+),
+
     GetPage(
       name: _Paths.PROFILE_TEMAN,
       page: () => ProfileTemanView(),

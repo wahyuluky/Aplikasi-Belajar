@@ -42,26 +42,38 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
           itemBuilder: (context, index) {
             final item = controller.grupList[index];
 
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xffDFFFE8),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(radius: 22, backgroundImage: NetworkImage(item["foto"]!)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(item["nama"]!,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-                  ),
-                  GestureDetector(
-                    onTap: () => _showMoreMenu(context, index),
-                    child: const Icon(Icons.more_vert, color: Colors.grey),
-                  ),
-                ],
+            return InkWell(
+              onTap: () {
+                Get.to(() => ChatView(
+                      groupId: index.toString(),
+                      groupName: item["nama"]!,
+                ));
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xffDFFFE8),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  children: [
+                    CircleAvatar(radius: 22, backgroundImage: NetworkImage(item["foto"]!)),
+                    const SizedBox(width: 12),
+
+                    Expanded(
+                      child: Text(
+                        item["nama"]!,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+
+                    GestureDetector(
+                      onTap: () => _showMoreMenu(context, index),
+                      child: const Icon(Icons.more_vert, color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
             );
           },
