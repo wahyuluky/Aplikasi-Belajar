@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/views/editgrup_popup.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/views/tambahgrup_popup.dart';
 import 'package:get/get.dart';
 import '../controllers/grupbelajar_controller.dart';
+import '../../chat/views/chat_view.dart';
+import 'editgrup_popup.dart';
+import 'tambahgrup_popup.dart';
 
 class GrupbelajarView extends GetView<GrupbelajarController> {
   final controller = Get.put(GrupbelajarController());
@@ -15,7 +15,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
 
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18),
           onPressed: () => Get.back(),
         ),
         title: const Text(
@@ -35,74 +35,43 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
         ),
       ),
 
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
+      body: Obx(() {
+        return ListView.builder(
+          padding: const EdgeInsets.only(top: 10),
+          itemCount: controller.grupList.length,
+          itemBuilder: (context, index) {
+            final item = controller.grupList[index];
 
-          Expanded(
-            child: Obx(() {
-              return ListView.builder(
-                itemCount: controller.grupList.length,
-                itemBuilder: (context, index) {
-                  final item = controller.grupList[index];
-                  
-                  return InkWell(
-                    onTap: () {
-                      Get.to(ChatView());   // pindah halaman detail
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffDFFFE8),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        children: [
-                          // Foto grup
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundImage: NetworkImage(item["foto"]!),
-                          ),
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xffDFFFE8),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(radius: 22, backgroundImage: NetworkImage(item["foto"]!)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(item["nama"]!,
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  ),
+                  GestureDetector(
+                    onTap: () => _showMoreMenu(context, index),
+                    child: const Icon(Icons.more_vert, color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      }),
 
-                          const SizedBox(width: 10),
-
-                          // Nama grup
-                          Expanded(
-                            child: Text(
-                              item["nama"]!,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-
-                          // ICON MORE
-                          GestureDetector(
-                            onTap: () {
-                              _showMoreMenu(context, index);
-                            },
-                            child: const Icon(Icons.more_vert, color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
-        ],
-      ),
-
-      // Floating Button Tambah
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xffDFFFE8),
-        child: const Icon(Icons.add, color: Colors.black, size: 18,),
-        onPressed: () {
-          TambahgrupPopup.show();
-        },
+        child: const Icon(Icons.add, color: Colors.black),
+        onPressed: () => TambahgrupPopup.show(),
       ),
     );
   }
@@ -123,14 +92,16 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                 leading: const Icon(Icons.edit, color: Colors.blue),
                 title: const Text("Edit Grup"),
                 onTap: () {
-                  EditgrupPopup.show();   // Aksi edit
+                  Navigator.pop(context);
+                  EditgrupPopup.show(index);
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
                 title: const Text("Hapus Grup"),
                 onTap: () {
-                  showDeleteDialog(index);// Aksi hapus
+                  Navigator.pop(context);
+                  _showDeleteDialog(index);
                 },
               ),
             ],
@@ -140,27 +111,31 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
     );
   }
 
-  void showDeleteDialog(int index) {
+  void _showDeleteDialog(int index) {
     Get.defaultDialog(
-      title: "Hapus Tugas?",
-      middleText: "Apakah kamu yakin ingin menghapus tugas ini?",
-      textCancel: "Batal",
-      textConfirm: "Hapus",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        controller.deleteGrup(index);
-        Get.back();
-      },
+      title: "",
+      content: Column(
+        children: const [
+          Icon(Icons.warning_amber_rounded, color: Colors.orange, size: 60),
+          SizedBox(height: 10),
+          Text("Apakah Anda yakin?", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 5),
+          Text("ingin menghapus grup ini!", style: TextStyle(fontSize: 14)),
+        ],
+      ),
+      cancel: ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+        onPressed: () => Get.back(),
+        child: const Text("Tidak"),
+      ),
+      confirm: ElevatedButton(
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+        onPressed: () {
+          controller.deleteGrup(index);
+          Get.back();
+        },
+        child: const Text("Iya"),
+      ),
     );
   }
-
 }
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: GrupbelajarView(),
-  ));
-}
-
-

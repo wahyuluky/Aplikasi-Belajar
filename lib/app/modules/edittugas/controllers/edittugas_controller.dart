@@ -56,16 +56,18 @@ class EdittugasController extends GetxController {
 
 
   void pilihTanggal(BuildContext context) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      initialDate: DateTime.now(),
-    );
+  DateTime? picked = await showDatePicker(
+    context: context,
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2100),
+    initialDate: DateTime.now(),
+  );
 
-    if (picked != null) {
-      tanggalC.text =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
-    }
+  if (picked != null) {
+    tanggalC.text =
+        "${picked.day.toString().padLeft(2, '0')}/"
+        "${picked.month.toString().padLeft(2, '0')}/"
+        "${picked.year}";
   }
+}
 }

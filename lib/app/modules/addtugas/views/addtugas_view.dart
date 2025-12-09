@@ -17,18 +17,19 @@ class AddtugasView extends StatelessWidget {
 
   final isCompleted = false.obs;
 
-  Future<void> pilihTanggal(BuildContext context) async {
-    DateTime? pilih = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-    );
+Future<void> pilihTanggal(BuildContext context) async {
+  DateTime? pilih = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2020),
+    lastDate: DateTime(2030),
+  );
 
-    if (pilih != null) {
-      tanggalC.text = "${pilih.day}/${pilih.month}/${pilih.year}";
-    }
+  if (pilih != null) {
+    tanggalC.text = "${pilih.day}/${pilih.month}/${pilih.year}";
   }
+}
+
 
   void simpan() {
     if (tugasC.text.isEmpty || keteranganC.text.isEmpty || tanggalC.text.isEmpty) {
