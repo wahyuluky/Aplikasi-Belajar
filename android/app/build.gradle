@@ -27,10 +27,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.flutter_application_1"
-
-        // 🔥 WAJIB: Naikkan versi minSdk ke 24 (bukan 23)
-        minSdkVersion 24
-
+        minSdkVersion flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
