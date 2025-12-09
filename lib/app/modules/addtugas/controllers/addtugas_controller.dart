@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +10,11 @@ class AddtugasController extends GetxController {
   TextEditingController keteranganC = TextEditingController();
   TextEditingController tanggalC = TextEditingController();
 
-  RxBool isCompleted = false.obs;
+  RxBool isDone = false.obs;
+
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final firestore = FirebaseFirestore.instance;
+
 
   void pilihTanggal(BuildContext context) async {
     DateTime? picked = await showDatePicker(
@@ -24,16 +30,26 @@ class AddtugasController extends GetxController {
     }
   }
 
-  void simpan() {
-    // Logika simpan data
-    if (tugasC.text.isEmpty || tanggalC.text.isEmpty) {
-      Get.snackbar("Error", "Tugas dan tanggal wajib diisi");
+  Future<void> tambahTugas() async {
+    if (tugasC.text.isEmpty) {
+      Get.snackbar("Error", "Judul tugas wajib diisi");
       return;
     }
 
-    // TODO: Simpan ke database / API
-    Get.snackbar("Sukses", "To-Do berhasil disimpan");
+    await firestore
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .add({
+      "judul": tugasC.text,
+      "deskripsi": keteranganC.text,
+      "tanggal": tanggalC.text,
+      "isDone": isDone.value,
+      "createdAt": DateTime.now(),
+    });
+
     Get.back();
+    Get.snackbar("Sukses", "Tugas berhasil ditambahkan");
   }
 }
 

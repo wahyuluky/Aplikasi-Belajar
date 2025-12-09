@@ -156,7 +156,7 @@ class ScheduleView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 6),  // 🔽 turunkan sedikit
                     child: GestureDetector(
-                      onTap: () => showDeleteDialog(index),
+                      onTap: () => showDeleteDialog(item['id']),
                       child: Row(
                         children: const [
                           Icon(Icons.delete, color: Colors.red, size: 18),
@@ -174,7 +174,11 @@ class ScheduleView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 6),  // 🔽 turunkan sedikit
                     child: GestureDetector(
                       onTap: () {
-                        Get.to(EditscheduleView());
+                        Get.to(() => EditscheduleView(), arguments: {
+                          "id": item['id'],
+                          "title": item['title'],
+                          "date": item['date'],
+                        });
                       },
                       child: Row(
                         children: const [
@@ -196,19 +200,20 @@ class ScheduleView extends StatelessWidget {
     );
   }
 
-    void showDeleteDialog(int index) {
+  void showDeleteDialog(String id) {
     Get.defaultDialog(
-      title: "Hapus Tugas?",
-      middleText: "Apakah kamu yakin ingin menghapus tugas ini?",
+      title: "Hapus Jadwal?",
+      middleText: "Apakah kamu yakin ingin menghapus jadwal ini?",
       textCancel: "Batal",
       textConfirm: "Hapus",
       confirmTextColor: Colors.white,
       onConfirm: () {
-        c.deleteSchedule(index);
+        c.deleteSchedule(id);
         Get.back();
       },
     );
   }
+
 }
 
 Future<void> main() async {

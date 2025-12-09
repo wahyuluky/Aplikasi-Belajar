@@ -101,9 +101,9 @@ class EdittugasView extends GetView<EdittugasController> {
               Obx(() => Row(
                     children: [
                       Checkbox(
-                        value: controller.isCompleted.value,
+                        value: controller.isDone.value,
                         onChanged: (value) {
-                          controller.isCompleted.value = value ?? false;
+                          controller.isDone.value = value ?? false;
                         },
                       ),
                       const Text("Completed", style: TextStyle(fontSize: 12),)
@@ -138,7 +138,7 @@ class EdittugasView extends GetView<EdittugasController> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     ),
-                    onPressed: controller.simpan,
+                    onPressed: () => controller.simpan(),
                     child: const Text("Simpan", style: TextStyle(fontSize: 12, color: Colors.white),),
                   ),
                 ],

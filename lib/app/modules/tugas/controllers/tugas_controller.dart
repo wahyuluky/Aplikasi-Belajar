@@ -1,48 +1,61 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'tugas_model.dart';
 
 class TugasController extends GetxController {
+  final _db = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  
   var listTugas = <TugasModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Dummy data sesuai UI
-    listTugas.addAll([
-      TugasModel(
-        judul: "Etika dan Profesi",
-        deskripsi: "Kode etik",
-        tanggal: "20 Oktober 2025",
-      ),
-      TugasModel(
-        judul: "Pra Skripsi",
-        deskripsi: "Identifikasi topik",
-        tanggal: "25 Oktober 2025",
-      ),
-      TugasModel(
-        judul: "Rekayasa Interaksi",
-        deskripsi: "Prototype",
-        tanggal: "26 Oktober 2025",
-      ),
-    ]);
+    _listenTugas();   // Realtime listener
   }
 
-  void toggleCheck(int index) {
-    listTugas[index].isDone = !listTugas[index].isDone;
-    listTugas.refresh();
+  // 🔥 LISTEN DATA REALTIME
+  void _listenTugas() {
+    String uid = _auth.currentUser!.uid;
+
+    _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .orderBy("tanggal")
+        .snapshots()
+        .listen((snapshot) {
+      listTugas.value = snapshot.docs.map((doc) {
+        return TugasModel.fromMap(doc.id, doc.data());
+      }).toList();
+    });
   }
 
-  void hapusTugas(int index) {
-    listTugas.removeAt(index);
+  // 🔥 TOGGLE CHECKBOX
+  Future<void> toggleCheck(TugasModel t) async {
+    String uid = _auth.currentUser!.uid;
+
+    await _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .doc(t.id)
+        .update({
+      "isDone": !t.isDone,
+    });
   }
 
-  void editTugas(int index, TugasModel tugasBaru) {
-    listTugas[index] = tugasBaru;
-  }
+  // 🔥 TAMBAH TUGAS
+  Future<void> tambahTugas(TugasModel t) async {
+    String uid = _auth.currentUser!.uid;
 
-  void tambahTugas(TugasModel tugas) {
-    listTugas.add(tugas);
+    await _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .add(t.toMap());
 
     Get.snackbar(
       "Berhasil",
@@ -55,5 +68,29 @@ class TugasController extends GetxController {
       snackPosition: SnackPosition.TOP,
       icon: const Icon(Icons.check_circle, color: Colors.white),
     );
+  }
+
+  // 🔥 EDIT TUGAS
+  Future<void> editTugas(TugasModel t) async {
+    String uid = _auth.currentUser!.uid;
+
+    await _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .doc(t.id)
+        .update(t.toMap());
+  }
+
+  // 🔥 HAPUS TUGAS
+  Future<void> hapusTugas(String id) async {
+    String uid = _auth.currentUser!.uid;
+
+    await _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .doc(id)
+        .delete();
   }
 }

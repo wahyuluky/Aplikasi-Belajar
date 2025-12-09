@@ -76,7 +76,7 @@ class TugasView extends StatelessWidget {
         children: [
           Checkbox(
             value: t.isDone,
-            onChanged: (_) => controller.toggleCheck(index),
+            onChanged: (_) => controller.toggleCheck(t),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // checkbox lebih kecil
             visualDensity: VisualDensity(horizontal: -4, vertical: -4),
           ),
@@ -107,7 +107,7 @@ class TugasView extends StatelessWidget {
                   children: [
                     GestureDetector(
                       // onTap: () => controller.hapusTugas(index),
-                      onTap: () => showDeleteDialog(index),
+                      onTap: () => showDeleteDialog(t.id),
                       child: Row(
                         children: const [
                           Icon(Icons.delete, size: 14, color: Colors.red),
@@ -122,7 +122,14 @@ class TugasView extends StatelessWidget {
 
                     GestureDetector(
                       onTap: () {
-                        Get.to(EdittugasView());
+                        Get.to(() => EdittugasView(), arguments: {
+                        "id": t.id,
+                        "judul": t.judul,
+                        "deskripsi": t.deskripsi,
+                        "tanggal": t.tanggal,
+                        "isDone": t.isDone,
+                      });
+
                       },
                       child: Row(
                         children: const [
@@ -142,19 +149,20 @@ class TugasView extends StatelessWidget {
     );
   }
 
-  void showDeleteDialog(int index) {
+  void showDeleteDialog(String id) {
     Get.defaultDialog(
       title: "Hapus Tugas?",
-      middleText: "Apakah kamu yakin ingin menghapus tugas ini?",
+      middleText: "Apakah kamu yakin?",
       textCancel: "Batal",
       textConfirm: "Hapus",
       confirmTextColor: Colors.white,
       onConfirm: () {
-        controller.hapusTugas(index);
+        controller.hapusTugas(id);
         Get.back();
       },
     );
   }
+
 
 
   // -------------------------------------------------------

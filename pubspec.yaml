@@ -16,12 +16,11 @@ dependencies:
   firebase_core: ^4.2.1
   intl: 0.19.0
   table_calendar: ^3.0.9
-<<<<<<< HEAD
   image_picker: ^1.1.2
   file_picker: ^8.0.0
-=======
-  flutter_localization: ^0.3.3
->>>>>>> 11aa680527d64057feedc6a6c104418d7dcf0c75
+  firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
+  firebase_database: ^12.1.0
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +32,6 @@ flutter:
   uses-material-design: true
 
   assets:
-<<<<<<< HEAD
     - assets\IllustrationLogin.png
     - assets\IllustrationRegister.png
     - assets\logo.png
@@ -41,9 +39,3 @@ flutter:
     - assets\happy.png
 
 
-=======
-    - assets/IllustrationLogin.png
-    - assets/IllustrationRegister.png
-    - assets/logo.png
-    - assets/User.png
->>>>>>> 11aa680527d64057feedc6a6c104418d7dcf0c75

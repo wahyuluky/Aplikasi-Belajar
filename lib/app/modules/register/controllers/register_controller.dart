@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/data/auth_service.dart';
 import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,7 @@ class RegisterController extends GetxController {
       Get.snackbar(
         "Error",
         "Semua field harus diisi",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
@@ -25,21 +26,38 @@ class RegisterController extends GetxController {
       Get.snackbar(
         "Error",
         "Email tidak valid",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
 
     isLoading.value = true;
+    final result = await AuthService.to.register(
+      emailC.text.trim(),
+      passwordC.text.trim(),
+      usernameC.text.trim(),
+    );
+
     await Future.delayed(const Duration(seconds: 2)); // simulasi API
     isLoading.value = false;
 
-    Get.snackbar(
-      "Success",
-      "Registrasi berhasil!",
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    if (result == null) {
+      Get.snackbar(
+        "Success",
+        "Registrasi berhasil!",
+        snackPosition: SnackPosition.TOP,
+      );
+      Get.offAllNamed(Routes.LOGIN); // gunakan off agar tidak bisa kembali
+    } else {
+      Get.snackbar("Failed", result);
+    }
+  }
 
-    Get.offAllNamed(Routes.LOGIN);
+  @override
+  void onClose() {
+    emailC.dispose();
+    passwordC.dispose();
+    usernameC.dispose();
+    super.onClose();
   }
 }

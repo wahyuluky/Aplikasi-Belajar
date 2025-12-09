@@ -1,13 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/login/views/login_view.dart';
 import 'package:flutter_application_1/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter_application_1/app/modules/profile/views/edit_profile_view.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
-
-  ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,19 +42,18 @@ class ProfileView extends StatelessWidget {
               // transform: Matrix4.translationValues(0, -60, 0),
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.white,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(70),
-                      child: Image.asset(
-                        "assets/User.png",
-                        fit: BoxFit.cover,
-                        height: 120,
-                        width: 120,
+                  Obx(() {
+                    return CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(70),
+                        child: controller.photo.value.isEmpty
+                          ? Image.asset("assets/User.png", height: 120, width: 120, fit: BoxFit.cover,)
+                          : Image.file(File(controller.photo.value), height: 120, width: 120, fit: BoxFit.cover),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () => Get.to(() => EditProfileView()),
@@ -126,7 +124,7 @@ class ProfileView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 onPressed: (){
-                  Get.to(LoginView());
+                  Get.offAllNamed(Routes.LOGIN);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,

@@ -130,7 +130,10 @@ class EditscheduleView extends GetView<EditscheduleController> {
 
                         // SIMPAN
                         ElevatedButton(
-                          onPressed: controller.saveSchedule,
+                          onPressed: () {
+                            controller.updateSchedule();
+                            Get.back();
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade500,
                             padding: const EdgeInsets.symmetric(

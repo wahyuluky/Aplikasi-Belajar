@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 class LoginView extends StatelessWidget {
   final controller = Get.put(LoginController());
 
-  LoginView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,12 +47,12 @@ class LoginView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextField(
-                  controller: controller.usernameC,
+                  controller: controller.emailC,
                   style: const TextStyle(fontSize: 12),
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person_outline, size: 18,),
                     border: InputBorder.none,
-                    hintText: "Username",
+                    hintText: "Email",
                     contentPadding: EdgeInsets.all(12),
                   ),
                 ),

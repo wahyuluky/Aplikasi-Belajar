@@ -1,3 +1,4 @@
+import 'package:flutter_application_1/app/data/auth_service.dart';
 import 'package:flutter_application_1/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 import 'package:flutter_application_1/app/modules/profile/views/profile_view.dart';
@@ -9,6 +10,20 @@ import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
+  var username = "".obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadUser();
+  }
+
+  void loadUser() async {
+    final data = await AuthService.to.getUserProfile();
+    if (data != null) {
+      username.value = data["username"] ?? "";
+    }
+  }
 
   final pages = [
     ScheduleView(),

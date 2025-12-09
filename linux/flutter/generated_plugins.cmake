@@ -3,11 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
   file_selector_linux
-=======
-  flutter_localization
->>>>>>> 11aa680527d64057feedc6a6c104418d7dcf0c75
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

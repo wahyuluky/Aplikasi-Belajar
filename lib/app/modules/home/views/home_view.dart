@@ -10,22 +10,12 @@ class HomeView extends StatelessWidget {
   final controller = Get.put(HomeController());
 
   final List<Map<String, dynamic>> menuItems = [
-    {"icon": Icons.bar_chart, "label": "Dashboard", "route": "/dashboard"},
-    {"icon": Icons.assignment_outlined, "label": "Tugas", "route": "/tasks"},
-    {"icon": Icons.menu_book_outlined, "label": "Belajar", "route": "/learn"},
-    {
-      "icon": Icons.calendar_month_outlined,
-      "label": "Jadwal",
-      "route": "/schedule"
-    },
-    {
-      "icon": Icons.people_alt_outlined,
-      "label": "Diskusi",
-      "route": "/discussion"
-    },
+    {"icon": Icons.bar_chart, "label": "Dashboard"},
+    {"icon": Icons.assignment_outlined, "label": "Tugas"},
+    {"icon": Icons.menu_book_outlined, "label": "Belajar"},
+    {"icon": Icons.calendar_month_outlined, "label": "Jadwal"},
+    {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
   ];
-
-  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -107,26 +97,31 @@ class HomeView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                        "assets/User.png",
-                        height: 30,
-                        width: 30,
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () => controller.changeTab(4), // pindah ke tab Profil
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          "assets/User.png",
+                          height: 30,
+                          width: 30,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
+
                   ],
                 ).paddingOnly(top: 15),
 
                 const SizedBox(height: 10),
-                const Text(
-                  "Hello, Nabila",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Obx(() => Text(
+                      "Hello, ${controller.username.value}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                 ),
 
                 const SizedBox(height: 15),

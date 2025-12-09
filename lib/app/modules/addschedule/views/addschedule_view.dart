@@ -130,7 +130,13 @@ class AddscheduleView extends GetView<AddscheduleController> {
 
                         // SIMPAN
                         ElevatedButton(
-                          onPressed: controller.saveSchedule,
+                          onPressed: () {
+                            controller.addSchedule(
+                              controller.subjectC.text,
+                              controller.dateC.text,
+                            );
+                            Get.back();
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade500,
                             padding: const EdgeInsets.symmetric(
