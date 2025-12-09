@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 class AddscheduleController extends GetxController {
   final subjectC = TextEditingController();
   final dateC = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
+  FirebaseFirestore get _firestore => FirebaseFirestore.instance;
 
   RxList<Map<String, dynamic>> schedules = <Map<String, dynamic>>[].obs;
 
@@ -16,7 +16,6 @@ class AddscheduleController extends GetxController {
     super.onInit();
     loadSchedules();
   }
-
 
   // Simpan data
   void saveSchedule() {
@@ -35,42 +34,30 @@ class AddscheduleController extends GetxController {
       "date": dateC.text,
     });
 
-    Get.snackbar(
-      "Berhasil",
-      "Jadwal berhasil ditambahkan",
-      backgroundColor: Colors.green.withOpacity(0.3),
-      colorText: Colors.green.shade800,
-      snackPosition: SnackPosition.TOP
-    );
+    Get.snackbar("Berhasil", "Jadwal berhasil ditambahkan",
+        backgroundColor: Colors.green.withOpacity(0.3),
+        colorText: Colors.green.shade800,
+        snackPosition: SnackPosition.TOP);
   }
 
   // ====================== LOAD DATA ============================
   Future<void> loadSchedules() async {
     final uid = _auth.currentUser!.uid;
 
-    await _firestore
-        .collection("users")
-        .doc(uid)
-        .collection("schedules")
-        .get();
+    await _firestore.collection("users").doc(uid).collection("schedules").get();
   }
 
 // ====================== ADD ============================
   Future<void> addSchedule(String title, String date) async {
     if (title.isEmpty || date.isEmpty) {
       Get.snackbar("Error", "Semua field harus diisi!",
-          backgroundColor: Colors.red.withOpacity(0.2),
-          colorText: Colors.red);
+          backgroundColor: Colors.red.withOpacity(0.2), colorText: Colors.red);
       return;
     }
 
     final uid = _auth.currentUser!.uid;
 
-    await _firestore
-        .collection("users")
-        .doc(uid)
-        .collection("schedules")
-        .add({
+    await _firestore.collection("users").doc(uid).collection("schedules").add({
       "title": title,
       "date": date,
       "createdAt": DateTime.now(),
@@ -87,5 +74,3 @@ class AddscheduleController extends GetxController {
     );
   }
 }
-
-
