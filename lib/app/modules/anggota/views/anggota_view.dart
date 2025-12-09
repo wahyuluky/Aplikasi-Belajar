@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
-import 'package:flutter_application_1/app/modules/choose_friend/views/choose_friend_view.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
-import 'package:flutter_application_1/app/modules/materi/views/materi_view.dart';
 import 'package:get/get.dart';
+
+import '../../chat/views/chat_view.dart';
+import '../../grupbelajar/views/grupbelajar_view.dart';
+import '../../materi/views/materi_view.dart';
 import '../controllers/anggota_controller.dart';
 
 class AnggotaView extends StatelessWidget {
+  final String groupId;
+  final String groupName;
+
+  AnggotaView({
+    super.key,
+    required this.groupId,
+    required this.groupName,
+  });
+
   final AnggotaController controller = Get.put(AnggotaController());
 
   @override
@@ -18,7 +27,6 @@ class AnggotaView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // TAB (DISKUSI - MATERI - ANGGOTA)
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -27,10 +35,9 @@ class AnggotaView extends StatelessWidget {
                 end: Alignment.bottomRight,
               ),
             ),
-            child: _buildTabs()
+            child: _buildTabs(),
           ),
 
-          // LIST ANGGOTA
           Expanded(
             child: Obx(() => ListView.builder(
                   itemCount: controller.anggotaList.length,
@@ -66,19 +73,18 @@ class AnggotaView extends StatelessWidget {
         ],
       ),
 
-      // FLOATING BUTTON (+)
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green.shade100,
         onPressed: () {
-          // Diisi untuk action tambah anggota
-          Get.to(ChooseFriendView());
+          // contoh: pindah ke choose friend
+          // Get.to(ChooseFriendView());
         },
         child: const Icon(Icons.add, color: Colors.black, size: 28),
       ),
     );
   }
 
-    Widget _buildAppBar() {
+  Widget _buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
       flexibleSpace: Container(
@@ -90,18 +96,20 @@ class AnggotaView extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        "Rekayasa Interaksi",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
+      title: Text(
+        groupName,
+        style: const TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
       ),
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18),
         onPressed: () => Get.back(),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.people_alt_rounded, size: 18, color: Colors.white,),
+          icon: const Icon(Icons.people_alt_rounded,
+              size: 18, color: Colors.white),
           onPressed: () {
             Get.to(GrupbelajarView());
           },
@@ -111,28 +119,7 @@ class AnggotaView extends StatelessWidget {
     );
   }
 
-  Widget _tabItem(String title, bool isActive, VoidCallback onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          color: isActive ? const Color(0xffCCF2CD) : Colors.white,
-          alignment: Alignment.center,
-          child: Text(
-            title,
-            style: TextStyle(
-              fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-              fontSize: 14,
-              color: Colors.black87,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-    Widget _buildTabs() {
+  Widget _buildTabs() {
     return Container(
       color: const Color(0xffF8F8F8),
       height: 45,
@@ -140,23 +127,41 @@ class AnggotaView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _tabItem("DISKUSI", false, () {
-            Get.to(() => ChatView());
+            Get.off(() => ChatView(
+                  groupId: groupId,
+                  groupName: groupName,
+                ));
           }),
           _tabItem("MATERI", false, () {
-            Get.to(() => MateriView());
+            Get.off(() => MateriView(
+                  groupId: groupId,
+                  groupName: groupName,
+                ));
           }),
-          _tabItem("ANGGOTA", true, () {
-
-          }),
+          _tabItem("ANGGOTA", true, () {}),
         ],
       ),
     );
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AnggotaView(),
-  ));
+Widget _tabItem(String title, bool isActive, VoidCallback onTap) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        color: isActive ? const Color(0xffCCF2CD) : Colors.white,
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
+            fontSize: 14,
+            color: Colors.black87,
+          ),
+        ),
+      ),
+    ),
+  );
 }

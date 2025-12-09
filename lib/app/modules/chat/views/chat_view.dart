@@ -1,11 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/anggota/views/anggota_view.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
-import 'package:flutter_application_1/app/modules/materi/views/materi_view.dart';
 import 'package:get/get.dart';
+
 import '../controllers/chat_controller.dart';
+import '../controllers/chat_message.dart';
+import '../../materi/views/materi_view.dart';
+import '../../anggota/views/anggota_view.dart';
 
 class ChatView extends StatelessWidget {
+  final String groupId;
+  final String groupName;
+
+  ChatView({
+    super.key,
+    required this.groupId,
+    required this.groupName,
+  });
+
   final ChatController controller = Get.put(ChatController());
   final TextEditingController textController = TextEditingController();
 
@@ -26,7 +38,7 @@ class ChatView extends StatelessWidget {
     );
   }
 
-  // 🔹 GRADIENT APPBAR
+  // === APPBAR ===
   Widget _buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
@@ -39,28 +51,30 @@ class ChatView extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        "Rekayasa Interaksi",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
+      title: Text(
+        groupName,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: Colors.white,
+        ),
       ),
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
+        icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18),
         onPressed: () => Get.back(),
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.people_alt_rounded, size: 18, color: Colors.white,),
-          onPressed: () {
-            Get.to(GrupbelajarView());
-          },
+      actions: const [
+        Padding(
+          padding: EdgeInsets.only(right: 12),
+          child: Icon(Icons.people_alt_rounded, size: 18, color: Colors.white),
         ),
       ],
       elevation: 0,
     );
   }
 
-  // 🔹 TAB DISKUSI – MATERI – ANGGOTA
+  // === TAB ATAS ===
   Widget _buildTabs() {
     return Container(
       color: const Color(0xffF8F8F8),
@@ -68,101 +82,160 @@ class ChatView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _tabItem("DISKUSI", true, () {
-            // Halaman ini sendiri, tidak pindah
-          }),
+          _tabItem("DISKUSI", true, () {}),
           _tabItem("MATERI", false, () {
-            Get.to(() => MateriView());
+            Get.to(() => MateriView(
+                  groupId: groupId,
+                  groupName: groupName,
+                ));
           }),
           _tabItem("ANGGOTA", false, () {
-            Get.to(() => AnggotaView());
+            Get.to(() => AnggotaView(
+                  groupId: groupId,
+                  groupName: groupName,
+                ));
           }),
         ],
       ),
     );
   }
 
-
-  // 🔹 LIST CHAT DENGAN FOTO AVATAR
+  // === LIST CHAT ===
   Widget _chatList() {
-    return Obx(() => ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: controller.messages.length,
-      itemBuilder: (context, index) {
-        final msg = controller.messages[index];
+    return Obx(() {
+      final msgs = controller.getMessages(groupId);
+      return ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: msgs.length,
+        itemBuilder: (context, index) {
+          final msg = msgs[index];
 
-        return GestureDetector(
-          onLongPress: () => _showOptions(context, index),
-          child: Row(
-            mainAxisAlignment:
-                msg.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Avatar kiri jika bukan kita
-              if (!msg.isMe)
-                CircleAvatar(
-                  radius: 18,
-                  backgroundImage: NetworkImage(msg.avatar),
+          return GestureDetector(
+            onLongPress: () => _showOptions(context, index),
+            child: Row(
+              mainAxisAlignment:
+                  msg.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (!msg.isMe)
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: NetworkImage(msg.avatar),
+                  ),
+                if (!msg.isMe) const SizedBox(width: 8),
+
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  constraints: BoxConstraints(
+                    maxWidth: Get.width * 0.65,
+                  ),
+                  decoration: BoxDecoration(
+                    color: msg.isMe
+                        ? Colors.green.shade100
+                        : Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: _buildMessageContent(msg),
                 ),
 
-              if (!msg.isMe) const SizedBox(width: 8),
-
-              // Bubble pesan
-              Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.symmetric(vertical: 6),
-                constraints: BoxConstraints(
-                  maxWidth: Get.width * 0.65,
-                ),
-                decoration: BoxDecoration(
-                  color: msg.isMe
-                      ? Colors.green.shade100
-                      : Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Text(
-                  msg.message,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ),
-
-              // Avatar kanan jika kita
-              if (msg.isMe) const SizedBox(width: 8),
-              if (msg.isMe)
-                CircleAvatar(
-                  radius: 18,
-                  backgroundImage: NetworkImage(msg.avatar),
-                ),
-            ],
-          ),
-        );
-      },
-    ));
+                if (msg.isMe) const SizedBox(width: 8),
+                if (msg.isMe)
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: NetworkImage(msg.avatar),
+                  ),
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 
-  // 🔹 INPUT FIELD BAWAH (kamera + mic)
+  Widget _buildMessageContent(ChatMessage msg) {
+    switch (msg.type) {
+      case MessageType.image:
+        if (msg.filePath != null && File(msg.filePath!).existsSync()) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.file(
+                File(msg.filePath!),
+                width: 180,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                msg.message,
+                style: const TextStyle(fontSize: 12),
+              ),
+            ],
+          );
+        }
+        return Text(msg.message, style: const TextStyle(fontSize: 12));
+
+      case MessageType.document:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.insert_drive_file, size: 18),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                msg.message,
+                style: const TextStyle(fontSize: 12),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        );
+
+      case MessageType.voice:
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.graphic_eq, size: 20),
+            SizedBox(width: 6),
+            Text(
+              "Voice note",
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        );
+
+      case MessageType.text:
+      default:
+        return Text(
+          msg.message,
+          style: const TextStyle(fontSize: 12),
+        );
+    }
+  }
+
+  // === INPUT BAWAH ===
   Widget _inputField() {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 6, 10, 14),
       child: Row(
         children: [
-          // Icon attachment / camera
           IconButton(
-            icon: const Icon(Icons.attach_file,),
+            icon: const Icon(Icons.attach_file),
             onPressed: _showAttachmentMenu,
           ),
 
           Expanded(
             child: TextField(
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
               onChanged: controller.onTyping,
               controller: textController,
               decoration: InputDecoration(
                 hintText: "Ketik Pesan",
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 8),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide(color: Colors.grey.shade400),
@@ -173,66 +246,82 @@ class ChatView extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          // Mic button
-       Obx(() {
-          return CircleAvatar(
-            radius: 22,
-            backgroundColor: Colors.green.shade300,
-            child: IconButton(
-              icon: Icon(
-                controller.isTyping.value ? Icons.send : Icons.mic,
-                color: Colors.white,
+          Obx(() {
+            final isTyping = controller.isTyping.value;
+            final isRecording = controller.isRecording.value;
+
+            return CircleAvatar(
+              radius: 22,
+              backgroundColor:
+                  isRecording ? Colors.redAccent : Colors.green.shade300,
+              child: IconButton(
+                icon: Icon(
+                  isTyping
+                      ? Icons.send
+                      : (isRecording ? Icons.stop : Icons.mic),
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  if (isTyping) {
+                    controller.sendMessage(groupId, textController.text);
+                    textController.clear();
+                    controller.onTyping("");
+                  } else {
+                    if (!isRecording) {
+                      await controller.startRecording(groupId);
+                    } else {
+                      await controller.stopRecording(groupId);
+                    }
+                  }
+                },
               ),
-              onPressed: () {
-                if (controller.isTyping.value) {
-                  controller.sendMessage(textController.text);
-                  textController.clear();
-                  controller.onTyping("");  // reset
-                } else {
-                  // aksi untuk mic (record)
-                }
-              },
-            ),
-          );
-        }),
+            );
+          }),
         ],
       ),
     );
   }
 
+  // === MENU LAMPIRAN ===
   void _showAttachmentMenu() {
-  showModalBottomSheet(
-    context: Get.context!,
-    builder: (_) {
-      return SafeArea(
-        child: Wrap(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo),
-              title: const Text("Galeri"),
-              onTap: () async {
-                Navigator.pop(Get.context!);
-                // ambil foto
-                controller.pickImage();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.file_copy),
-              title: const Text("Dokumen"),
-              onTap: () async {
-                Navigator.pop(Get.context!);
-                controller.pickDocument();
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+    showModalBottomSheet(
+      context: Get.context!,
+      builder: (_) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Kamera"),
+                onTap: () async {
+                  Navigator.pop(Get.context!);
+                  await controller.pickImageFromCamera(groupId);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo),
+                title: const Text("Galeri"),
+                onTap: () async {
+                  Navigator.pop(Get.context!);
+                  await controller.pickImage(groupId);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.file_copy),
+                title: const Text("Dokumen"),
+                onTap: () async {
+                  Navigator.pop(Get.context!);
+                  await controller.pickDocument(groupId);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-
-  // 🔹 BOTTOMSHEET OPTION EDIT/HAPUS
+  // === MENU EDIT / HAPUS PESAN ===
   void _showOptions(BuildContext context, int index) {
     showModalBottomSheet(
       context: context,
@@ -244,7 +333,7 @@ class ChatView extends StatelessWidget {
               title: const Text("Edit"),
               onTap: () {
                 Navigator.pop(context);
-                controller.startEdit(index);
+                _showEditDialog(index);
               },
             ),
             ListTile(
@@ -252,7 +341,7 @@ class ChatView extends StatelessWidget {
               title: const Text("Hapus"),
               onTap: () {
                 Navigator.pop(context);
-                controller.deleteMessage(index);
+                controller.deleteMessage(groupId, index);
               },
             ),
           ],
@@ -260,34 +349,51 @@ class ChatView extends StatelessWidget {
       ),
     );
   }
+
+  void _showEditDialog(int index) {
+    final msgs = controller.getMessages(groupId);
+    final msg = msgs[index];
+    final editC = TextEditingController(text: msg.message);
+
+    Get.defaultDialog(
+      title: "Edit Pesan",
+      content: Column(
+        children: [
+          TextField(
+            controller: editC,
+            decoration: const InputDecoration(hintText: "Ubah pesan"),
+          ),
+        ],
+      ),
+      textCancel: "Batal",
+      textConfirm: "Simpan",
+      confirmTextColor: Colors.white,
+      onConfirm: () {
+        controller.editMessage(groupId, index, editC.text);
+        Get.back();
+      },
+    );
+  }
 }
 
-  // 🔹 TAB ITEM
-  Widget _tabItem(String title, bool isActive, VoidCallback onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          color: isActive ? const Color(0xffCCF2CD) : Colors.white,
-          alignment: Alignment.center,
-          child: Text(
-            title,
-            style: TextStyle(
-              fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+// Widget tab
+Widget _tabItem(String title, bool isActive, VoidCallback onTap) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        color: isActive ? const Color(0xffCCF2CD) : Colors.white,
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontWeight: isActive ? FontWeight.bold : FontWeight.w600,
+            fontSize: 14,
+            color: Colors.black87,
           ),
         ),
       ),
-    );
-  }
-
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ChatView(),
-  ));
+    ),
+  );
 }
