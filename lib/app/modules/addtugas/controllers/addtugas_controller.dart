@@ -16,6 +16,8 @@ class AddtugasController extends GetxController {
   final firestore = FirebaseFirestore.instance;
 
 
+  DateTime? selectedDate;
+
   void pilihTanggal(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -25,10 +27,20 @@ class AddtugasController extends GetxController {
     );
 
     if (picked != null) {
+      selectedDate = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+      );
+
       tanggalC.text =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+          "${picked.day.toString().padLeft(2, '0')}/"
+          "${picked.month.toString().padLeft(2, '0')}/"
+          "${picked.year}";
     }
   }
+
+
 
   Future<void> tambahTugas() async {
     if (tugasC.text.isEmpty) {
@@ -43,7 +55,7 @@ class AddtugasController extends GetxController {
         .add({
       "judul": tugasC.text,
       "deskripsi": keteranganC.text,
-      "tanggal": tanggalC.text,
+      "tanggal": Timestamp.fromDate(selectedDate!), 
       "isDone": isDone.value,
       "createdAt": DateTime.now(),
     });

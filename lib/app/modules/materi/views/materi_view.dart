@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/anggota/views/anggota_view.dart';
 import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
-import 'package:get/get.dart';
 import '../controllers/materi_controller.dart';
 
 class MateriView extends StatelessWidget {
   final MateriController controller = Get.put(MateriController());
+  final String groupId;
+  MateriView({super.key, required this.groupId});
+
 
   @override
   Widget build(BuildContext context) {
+    controller.loadGroupInfo(groupId); 
+    controller.loadMateriFromChat(groupId);
+
     return Scaffold(
        appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -27,7 +33,7 @@ class MateriView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final materi = controller.materiList[index];
                     return InkWell(
-                      onTap: () => controller.onItemTap(index),
+                      onTap: () => controller.onItemTap(context, index),
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
@@ -78,10 +84,14 @@ class MateriView extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        "Rekayasa Interaksi",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
-      ),
+      // title: const Text(
+      //   "Rekayasa Interaksi",
+      //   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
+      // ),
+      title: Obx(() => Text(
+              controller.groupName.value,
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )),
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
@@ -129,13 +139,13 @@ class MateriView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _tabItem("DISKUSI", false, () {
-            Get.to(() => ChatView());
+            Get.to(() => ChatView(groupId: groupId));
           }),
           _tabItem("MATERI", true, () {
             
           }),
           _tabItem("ANGGOTA", false, () {
-            Get.to(() => AnggotaView());
+            Get.to(() => AnggotaView(groupId: groupId,));
           }),
         ],
       ),
@@ -143,9 +153,3 @@ class MateriView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MateriView(),
-  ));
-}

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/splash/controllers/splash_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/splash/controllers/splash_controller.dart';
 
 class SplashView extends StatelessWidget {
   final controller = Get.put(SplashController());
-
-  SplashView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +44,5 @@ void main() {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: SplashView(),
-    initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => SplashView()),
-      ],
   ));
 }

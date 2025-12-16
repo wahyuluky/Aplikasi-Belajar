@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/addschedule/views/addschedule_view.dart';
 import 'package:flutter_application_1/app/modules/editschedule/views/editschedule_view.dart';
 import 'package:flutter_application_1/app/modules/schedule/controllers/schedule_controller.dart';
-import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -148,7 +148,7 @@ class ScheduleView extends StatelessWidget {
                         Text(item['title'], style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(item['date'], style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
-                      ],
+                      ]
                     ),
                   ),
 

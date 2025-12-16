@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/editgrup_controller.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/grupbelajar_controller.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/tambahgrup_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/grupbelajar/controllers/editgrup_controller.dart';
 
 class EditgrupPopup {
-  static void show() {
+  static void show({
+    required String id, 
+    required String nama, 
+    required String foto}) 
+    {
     final c = Get.put(EditgrupController());
-    final grupC = Get.find<GrupbelajarController>();
+    // isi nilai awal
+    c.namaGrupC.text = nama;
+    c.foto.value = foto;
+    c.groupId = id;
+
 
     Get.dialog(
       Dialog(
@@ -26,7 +32,7 @@ class EditgrupPopup {
                     onTap: c.pilihFoto,
                     child: CircleAvatar(
                       radius: 55,
-                      backgroundImage: NetworkImage(c.fotoUrl.value),
+                      backgroundImage: NetworkImage(c.foto.value),
                     ),
                   );
                 }),
@@ -76,15 +82,19 @@ class EditgrupPopup {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
+                   onPressed: () async {
                       if (c.namaGrupC.text.isEmpty) {
                         Get.snackbar("Error", "Nama grup harus diisi");
                         return;
                       }
 
-                      grupC.tambahGrup(c.namaGrupC.text, c.fotoUrl.value);
-                      Get.back(); // tutup popup
-                      Get.delete<TambahgrupController>();
+                      await c.updateGrup(
+                        c.groupId, 
+                        c.namaGrupC.text, 
+                        c.foto.value);
+
+                      Get.back(); // Tutup popup
+                      Get.delete<EditgrupController>();
                     },
                     child: const Text(
                       "Edit Grup",

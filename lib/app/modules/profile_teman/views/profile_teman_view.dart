@@ -3,10 +3,15 @@ import 'package:get/get.dart';
 import '../controllers/profile_teman_controller.dart';
 
 class ProfileTemanView extends GetView<ProfileTemanController> {
+  final String userId;
   final ProfileTemanController controller = Get.put(ProfileTemanController());
+
+  ProfileTemanView({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
+    controller.loadUser(userId);
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -27,6 +32,10 @@ class ProfileTemanView extends GetView<ProfileTemanController> {
       ),
       body: Obx(() {
         final data = controller.profile.value;
+         if (data == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
         return Column(
           children: [
             const SizedBox(height: 20),
@@ -34,7 +43,7 @@ class ProfileTemanView extends GetView<ProfileTemanController> {
             // FOTO PROFIL
             CircleAvatar(
               radius: 80,
-              backgroundImage: AssetImage(data.avatar),
+              backgroundImage: NetworkImage(data.avatar),
             ),
             const SizedBox(height: 12),
 
@@ -128,11 +137,4 @@ class ProfileTemanView extends GetView<ProfileTemanController> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ProfileTemanView(),
-  ));
 }

@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
 import 'package:flutter_application_1/app/modules/choose_friend/views/choose_friend_view.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 import 'package:flutter_application_1/app/modules/materi/views/materi_view.dart';
-import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/profile_teman/views/profile_teman_view.dart';
 import '../controllers/anggota_controller.dart';
 
 class AnggotaView extends StatelessWidget {
   final AnggotaController controller = Get.put(AnggotaController());
+  final String groupId;
+
+  AnggotaView({super.key, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
+    controller.loadGroupInfo(groupId); 
+    controller.loadMembers(groupId);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -37,7 +44,11 @@ class AnggotaView extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
                     final anggota = controller.anggotaList[index];
-                    return Container(
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(() => ProfileTemanView(userId: anggota.uid));
+                      },
+                      child: Container(
                       decoration: BoxDecoration(
                         color: index % 2 == 0
                             ? Colors.green.shade50
@@ -49,16 +60,25 @@ class AnggotaView extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 18,
-                            backgroundImage: AssetImage(anggota.avatar),
+                            backgroundImage: NetworkImage(anggota.fotoUrl),
                           ),
                           const SizedBox(width: 14),
                           Text(
-                            anggota.name,
+                            anggota.username,
                             style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w500),
                           ),
+                          SizedBox(width: 10,),
+                          // ElevatedButton(
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: Colors.red,
+                          //   ),
+                          //   onPressed: () => controller.leaveGroup(groupId),
+                          //   child: const Text("Keluar Grup", style: TextStyle(fontSize: 10, color: Colors.white),),
+                          // )
                         ],
                       ),
+                    ),
                     );
                   },
                 )),
@@ -71,12 +91,13 @@ class AnggotaView extends StatelessWidget {
         backgroundColor: Colors.green.shade100,
         onPressed: () {
           // Diisi untuk action tambah anggota
-          Get.to(ChooseFriendView());
+          Get.to(ChooseFriendView(groupId: groupId,));
         },
         child: const Icon(Icons.add, color: Colors.black, size: 28),
       ),
     );
   }
+
 
     Widget _buildAppBar() {
     return AppBar(
@@ -90,10 +111,10 @@ class AnggotaView extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        "Rekayasa Interaksi",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
-      ),
+      title: Obx(() => Text(
+              controller.groupName.value,
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )),
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
@@ -140,10 +161,10 @@ class AnggotaView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _tabItem("DISKUSI", false, () {
-            Get.to(() => ChatView());
+            Get.to(() => ChatView(groupId: groupId));
           }),
           _tabItem("MATERI", false, () {
-            Get.to(() => MateriView());
+            Get.to(() => MateriView(groupId: groupId,));
           }),
           _tabItem("ANGGOTA", true, () {
 
@@ -154,9 +175,3 @@ class AnggotaView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AnggotaView(),
-  ));
-}

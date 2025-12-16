@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/editschedule/controllers/editschedule_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/editschedule/controllers/editschedule_controller.dart';
 
 class EditscheduleView extends GetView<EditscheduleController> {
   final EditscheduleController c = Get.put(EditscheduleController());

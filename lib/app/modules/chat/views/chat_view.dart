@@ -1,16 +1,24 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/anggota/views/anggota_view.dart';
+import 'package:flutter_application_1/app/modules/chat/controllers/chat_message.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 import 'package:flutter_application_1/app/modules/materi/views/materi_view.dart';
-import 'package:get/get.dart';
 import '../controllers/chat_controller.dart';
 
 class ChatView extends StatelessWidget {
   final ChatController controller = Get.put(ChatController());
   final TextEditingController textController = TextEditingController();
 
+  final String groupId;
+  ChatView({required this.groupId});
+
   @override
   Widget build(BuildContext context) {
+    controller.loadGroupInfo(groupId);
+    controller.loadMessages(groupId);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
@@ -39,10 +47,10 @@ class ChatView extends StatelessWidget {
           ),
         ),
       ),
-      title: const Text(
-        "Rekayasa Interaksi",
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
-      ),
+      title: Obx(() => Text(
+              controller.groupName.value,
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )),
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
@@ -72,10 +80,10 @@ class ChatView extends StatelessWidget {
             // Halaman ini sendiri, tidak pindah
           }),
           _tabItem("MATERI", false, () {
-            Get.to(() => MateriView());
+            Get.to(() => MateriView(groupId: groupId,));
           }),
           _tabItem("ANGGOTA", false, () {
-            Get.to(() => AnggotaView());
+            Get.to(() => AnggotaView(groupId: groupId,));
           }),
         ],
       ),
@@ -92,19 +100,20 @@ class ChatView extends StatelessWidget {
         final msg = controller.messages[index];
 
         return GestureDetector(
-          onLongPress: () => _showOptions(context, index),
+          onLongPress: () => _showOptions(context, msg),
           child: Row(
             mainAxisAlignment:
-                msg.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                msg.isMe 
+                ? MainAxisAlignment.end 
+                : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // Avatar kiri jika bukan kita
               if (!msg.isMe)
                 CircleAvatar(
-                  radius: 18,
+                  radius: 16,
                   backgroundImage: NetworkImage(msg.avatar),
-                ),
-
+                ),          
               if (!msg.isMe) const SizedBox(width: 8),
 
               // Bubble pesan
@@ -116,14 +125,23 @@ class ChatView extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: msg.isMe
-                      ? Colors.green.shade100
-                      : Colors.grey.shade200,
+                      ? const Color.fromARGB(255, 210, 247, 212)
+                      : const Color.fromARGB(255, 237, 237, 237),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Text(
-                  msg.message,
-                  style: const TextStyle(fontSize: 12),
-                ),
+                child: msg.type == 'image' && msg.imageBase64 != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.memory(
+                      base64Decode(msg.imageBase64!),
+                      width: 180,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Text(
+                    msg.message ?? '',
+                    style: const TextStyle(fontSize: 12),
+                  ),
               ),
 
               // Avatar kanan jika kita
@@ -158,7 +176,9 @@ class ChatView extends StatelessWidget {
               onChanged: controller.onTyping,
               controller: textController,
               decoration: InputDecoration(
-                hintText: "Ketik Pesan",
+                hintText: controller.isEditMode.value
+                  ? "Edit pesan..."
+                  : "Ketik pesan...",
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: const EdgeInsets.symmetric(
@@ -173,28 +193,26 @@ class ChatView extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          // Mic button
-       Obx(() {
-          return CircleAvatar(
+          CircleAvatar(
             radius: 22,
             backgroundColor: Colors.green.shade300,
             child: IconButton(
-              icon: Icon(
-                controller.isTyping.value ? Icons.send : Icons.mic,
-                color: Colors.white,
-              ),
+                icon: const Icon(Icons.send, color: Colors.white),
               onPressed: () {
-                if (controller.isTyping.value) {
-                  controller.sendMessage(textController.text);
-                  textController.clear();
-                  controller.onTyping("");  // reset
-                } else {
+                final text = textController.text.trim();
+                if (text.isEmpty) return;
+
+                if (controller.isEditing.value) {
+                  controller.updateMessage(groupId, textController.text);
+                  controller.isEditing.value = false;
+                } else if(controller.isTyping.value){
+                  controller.sendMessage(groupId, textController.text);
                   // aksi untuk mic (record)
                 }
+                textController.clear();
               },
             ),
-          );
-        }),
+          )
         ],
       ),
     );
@@ -208,20 +226,20 @@ class ChatView extends StatelessWidget {
         child: Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.photo),
-              title: const Text("Galeri"),
+              leading: const Icon(Icons.camera_alt_outlined),
+              title: const Text("Camera"),
               onTap: () async {
                 Navigator.pop(Get.context!);
                 // ambil foto
-                controller.pickImage();
+                controller.pickImageFromCamera(groupId);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.file_copy),
-              title: const Text("Dokumen"),
+              leading: const Icon(Icons.image),
+              title: const Text("Foto"),
               onTap: () async {
                 Navigator.pop(Get.context!);
-                controller.pickDocument();
+                controller.pickImageFromGallery(groupId);
               },
             ),
           ],
@@ -233,7 +251,7 @@ class ChatView extends StatelessWidget {
 
 
   // 🔹 BOTTOMSHEET OPTION EDIT/HAPUS
-  void _showOptions(BuildContext context, int index) {
+  void _showOptions(BuildContext context, ChatMessage msg) {
     showModalBottomSheet(
       context: context,
       builder: (_) => SafeArea(
@@ -244,7 +262,8 @@ class ChatView extends StatelessWidget {
               title: const Text("Edit"),
               onTap: () {
                 Navigator.pop(context);
-                controller.startEdit(index);
+                controller.startEdit(msg.id, msg.message ?? '');
+                textController.text = msg.message ?? '';
               },
             ),
             ListTile(
@@ -252,7 +271,7 @@ class ChatView extends StatelessWidget {
               title: const Text("Hapus"),
               onTap: () {
                 Navigator.pop(context);
-                controller.deleteMessage(index);
+                controller.deleteMessage(groupId, msg.id);
               },
             ),
           ],
@@ -285,9 +304,3 @@ class ChatView extends StatelessWidget {
   }
 
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ChatView(),
-  ));
-}

@@ -18,6 +18,9 @@ class EdittugasController extends GetxController {
 
   late String tugasId;
 
+  DateTime? selectedDate;
+
+
   @override
   void onInit() {
     super.onInit();
@@ -27,7 +30,11 @@ class EdittugasController extends GetxController {
 
     tugasC.text = Get.arguments["judul"];
     keteranganC.text = Get.arguments["deskripsi"];
-    tanggalC.text = Get.arguments["tanggal"];
+    selectedDate = Get.arguments["tanggal"] as DateTime;
+    tanggalC.text =
+      "${selectedDate!.day.toString().padLeft(2, '0')}/"
+      "${selectedDate!.month.toString().padLeft(2, '0')}/"
+      "${selectedDate!.year}";
     isDone.value = Get.arguments["isDone"];
   }
 
@@ -45,7 +52,7 @@ class EdittugasController extends GetxController {
         .update({
       "judul": tugasC.text,
       "deskripsi": keteranganC.text,
-      "tanggal": tanggalC.text,
+      "tanggal": Timestamp.fromDate(selectedDate!),
       "isDone": isDone.value,
       "updatedAt": DateTime.now(),
     });
@@ -60,12 +67,21 @@ class EdittugasController extends GetxController {
       context: context,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
-      initialDate: DateTime.now(),
+      initialDate: selectedDate ?? DateTime.now(),
     );
 
     if (picked != null) {
+      selectedDate = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+      );
+
       tanggalC.text =
-          "${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}";
+          "${picked.day.toString().padLeft(2, '0')}/"
+          "${picked.month.toString().padLeft(2, '0')}/"
+          "${picked.year}";
     }
   }
+
 }

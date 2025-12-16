@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/timerfokus/views/timerfokus_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/dashboard/controllers/dashboard_controller.dart';
+import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 
 class DashboardView extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
-
-   DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +59,7 @@ class DashboardView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
               color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))
         ],
@@ -72,13 +70,13 @@ class DashboardView extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.calendar_month, color: Colors.green, size: 20,),
+                Icon(Icons.calendar_month, color: Colors.green, size: 20,),
                 const SizedBox(width: 8),
                 const Text(
                   "Tugas Mendatang",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
-                const SizedBox(width: 75),
+                const Spacer(),
                 Text(
                   "${controller.upcomingTasks.length} Tugas Aktif",
                   style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
@@ -106,7 +104,7 @@ class DashboardView extends StatelessWidget {
 
             InkWell(
               onTap: () {
-                Get.to(() => TimerFokusView());
+                Get.to(() => TugasView());
               },
               child: Align(
                 alignment: Alignment.bottomRight,
@@ -136,23 +134,21 @@ Widget _buildStudyFocusCard() {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
-      boxShadow: const [
+      boxShadow: [
         BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2)),
       ],
     ),
     child: Obx(() {
-      // double progress = controller.studyHoursCompleted.value /
-      //     controller.studyHoursTarget;
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // TITLE
-          const Row(
+          Row(
             children: [
               Icon(Icons.menu_book, color: Colors.green, size: 20),
-              SizedBox(width: 8),
-              Text(
+              const SizedBox(width: 8),
+              const Text(
                 "Fokus Belajar",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
@@ -251,7 +247,7 @@ Widget _buildStudyFocusCard() {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))
         ],
       ),
@@ -264,11 +260,11 @@ Widget _buildStudyFocusCard() {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.history, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text(
+                      const SizedBox(width: 8),
+                      const Text(
                         "Tugas Ditunda",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
@@ -306,11 +302,11 @@ Widget _buildStudyFocusCard() {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.bar_chart, color: Colors.green),
-                      SizedBox(width: 8),
-                      Text(
+                      const SizedBox(width: 8),
+                      const Text(
                         "Produktivitas",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),

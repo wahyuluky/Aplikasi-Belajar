@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/controllers/grupbelajar_controller.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/controllers/tambahgrup_controller.dart';
-import 'package:get/get.dart';
 
 class TambahgrupPopup {
   static void show() {
@@ -75,14 +75,19 @@ class TambahgrupPopup {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (c.namaGrupC.text.isEmpty) {
                         Get.snackbar("Error", "Nama grup harus diisi");
                         return;
                       }
 
-                      grupC.tambahGrup(c.namaGrupC.text, c.fotoUrl.value);
-                      Get.back(); // tutup popup
+                      /// 🔥 Panggil Firestore (Tambah Grup)
+                      await grupC.tambahGrup(
+                        c.namaGrupC.text,
+                        c.fotoUrl.value,
+                      );
+
+                      Get.back();
                       Get.delete<TambahgrupController>();
                     },
                     child: const Text(

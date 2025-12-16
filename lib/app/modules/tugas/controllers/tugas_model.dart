@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class TugasModel {
   String id;
   String judul;
   String deskripsi;
-  String tanggal;
+  DateTime tanggal;
   bool isDone;
 
   TugasModel({
@@ -18,7 +20,7 @@ class TugasModel {
       id: id,
       judul: data['judul'] ?? "",
       deskripsi: data['deskripsi'] ?? "",
-      tanggal: data['tanggal'] ?? "",
+      tanggal: (data['tanggal'] as Timestamp).toDate(),
       isDone: data['isDone'] ?? false,
     );
   }
@@ -27,7 +29,7 @@ class TugasModel {
     return {
       "judul": judul,
       "deskripsi": deskripsi,
-      "tanggal": tanggal,
+      "tanggal": Timestamp.fromDate(tanggal),
       "isDone": isDone,
     };
   }

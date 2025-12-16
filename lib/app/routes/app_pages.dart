@@ -1,5 +1,3 @@
-import 'package:flutter_application_1/app/modules/to-do-list/bindings/to_do_list_binding.dart';
-import 'package:flutter_application_1/app/modules/to-do-list/views/to_do_list_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/addschedule/bindings/addschedule_binding.dart';
@@ -61,36 +59,10 @@ class AppPages {
   static const INITIAL = Routes.SPLASH;
 
   static final routes = [
-    /// Splash
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
-    ),
-    GetPage(
-      name: _Paths.LOGIN,
-      page: () => LoginView(),
-      binding: LoginBinding(),
-    ),
-    GetPage(
-      name: _Paths.REGISTER,
-      page: () => RegisterView(),
-      binding: RegisterBinding(),
-    ),
-    GetPage(
-      name: _Paths.PROFILE,
-      page: () => ProfileView(),
-      binding: ProfileBinding(),
-    ),
-    GetPage(
-      name: _Paths.DASHBOARD,
-      page: () => DashboardView(),
-      binding: DashboardBinding(),
-    ),
-    GetPage(
-      name: _Paths.SCHEDULE,
-      page: () => ScheduleView(),
-      binding: ScheduleBinding(),
     ),
     GetPage(
       name: _Paths.ADDSCHEDULE,
@@ -98,66 +70,99 @@ class AppPages {
       binding: AddscheduleBinding(),
     ),
     GetPage(
-      name: _Paths.EDITSCHEDULE,
-      page: () => EditscheduleView(),
-      binding: EditscheduleBinding(),
-    ),
-    GetPage(
-      name: _Paths.SPLASH,
-      page: () => SplashView(),
-      binding: SplashBinding(),
-    ),
-
-    /// Home
-    GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
-
-    /// Login
-    GetPage(
-      name: _Paths.LOGIN,
-      page: () => LoginView(),
-      binding: LoginBinding(),
-    ),
-
-    /// Register
-    GetPage(
-      name: _Paths.REGISTER,
-      page: () => RegisterView(),
-      binding: RegisterBinding(),
-    ),
-
-    /// Profile
-    GetPage(
-      name: _Paths.PROFILE,
-      page: () => ProfileView(),
-      binding: ProfileBinding(),
-    ),
-
-    /// Dashboard
-    GetPage(
-      name: _Paths.DASHBOARD,
-      page: () => DashboardView(),
-      binding: DashboardBinding(),
-    ),
-
-    /// Choose Friend (hapus jika tidak dipakai)
-    GetPage(
-      name: _Paths.TUGAS,
-      page: () => TugasView(),
-      binding: TugasBinding(),
-    ),
-    GetPage(
       name: _Paths.ADDTUGAS,
       page: () => AddtugasView(),
       binding: AddtugasBinding(),
     ),
     GetPage(
+      name: _Paths.ANGGOTA,
+      page: () => AnggotaView(groupId: "group",),
+      binding: AnggotaBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT,
+      page: () => ChatView(groupId: "group",),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHOOSE_FRIEND,
+      page: () => ChooseFriendView(groupId: "group",),
+      binding: ChooseFriendBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHOOSE_MUSIC,
+      page: () => ChooseMusicView(),
+      binding: ChooseMusicBinding(),
+    ),
+    GetPage(
+      name: _Paths.DASHBOARD,
+      page: () => DashboardView(),
+      binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDITSCHEDULE,
+      page: () => EditscheduleView(),
+      binding: EditscheduleBinding(),
+    ),
+    GetPage(
       name: _Paths.EDITTUGAS,
       page: () => EdittugasView(),
       binding: EdittugasBinding(),
+    ),
+    GetPage(
+      name: _Paths.FOCUS_REST,
+      page: () => FocusRestView(),
+      binding: FocusRestBinding(),
+    ),
+    GetPage(
+      name: _Paths.GRUPBELAJAR,
+      page: () => GrupbelajarView(),
+      binding: GrupbelajarBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.MATERI,
+      page: () => MateriView(groupId: "group",),
+      binding: MateriBinding(),
+    ),
+    GetPage(
+      name: _Paths.MUSIC_COLLECTION,
+      page: () => MusicCollectionView(),
+      binding: MusicCollectionBinding(),
+    ),
+    GetPage(
+      name: _Paths.PLAY_MUSIC,
+      page: () => PlayMusicView(),
+      binding: PlayMusicBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => ProfileView(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE_TEMAN,
+      page: () => ProfileTemanView(userId: "user",),
+      binding: ProfileTemanBinding(),
+    ),
+    GetPage(
+      name: _Paths.REGISTER,
+      page: () => RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.SCHEDULE,
+      page: () => ScheduleView(),
+      binding: ScheduleBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => SplashView(),
+      binding: SplashBinding(),
     ),
     GetPage(
       name: _Paths.TIMERFOKUS,
@@ -170,63 +175,14 @@ class AppPages {
       binding: TimerfokusresultBinding(),
     ),
     GetPage(
-      name: _Paths.GRUPBELAJAR,
-      page: () => GrupbelajarView(),
-      binding: GrupbelajarBinding(),
-    ),
-    GetPage(
-      name: _Paths.CHAT,
-      page: () => ChatView(),
-      binding: ChatBinding(),
-    ),
-    GetPage(
-      name: _Paths.MATERI,
-      page: () => MateriView(),
-      binding: MateriBinding(),
-    ),
-    GetPage(
-      name: _Paths.ANGGOTA,
-      page: () => AnggotaView(),
-      binding: AnggotaBinding(),
-    ),
-    GetPage(
-      name: _Paths.PROFILE_TEMAN,
-      page: () => ProfileTemanView(),
-      binding: ProfileTemanBinding(),
-    ),
-    GetPage(
-      name: _Paths.CHOOSE_FRIEND,
-      page: () => ChooseFriendView(),
-      binding: ChooseFriendBinding(),
-    ),
-
-    /// Choose Music (Koleksi musik)
-    GetPage(
-      name: _Paths.CHOOSE_MUSIC,
-      page: () => ChooseMusicView(),
-      binding: ChooseMusicBinding(),
-    ),
-
-    /// Play Music
-    GetPage(
-      name: _Paths.PLAY_MUSIC,
-      page: () => PlayMusicView(),
-      binding: PlayMusicBinding(),
+      name: _Paths.TUGAS,
+      page: () => TugasView(),
+      binding: TugasBinding(),
     ),
     GetPage(
       name: _Paths.WEEKLY_REPORT,
       page: () => WeeklyReportView(),
       binding: WeeklyReportBinding(),
-    ),
-    GetPage(
-      name: _Paths.FOCUS_REST,
-      page: () => FocusRestView(),
-      binding: FocusRestBinding(),
-    ),
-    GetPage(
-      name: _Paths.MUSIC_COLLECTION,
-      page: () => MusicCollectionView(),
-      binding: MusicCollectionBinding(),
     ),
   ];
 }

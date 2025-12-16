@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/register/controllers/register_controller.dart';
 import 'package:flutter_application_1/app/routes/app_pages.dart';
-import 'package:get/get.dart';
 
 class RegisterView extends StatelessWidget {
   final controller = Get.put(RegisterController());

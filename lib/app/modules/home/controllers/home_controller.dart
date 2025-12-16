@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/data/auth_service.dart';
 import 'package:flutter_application_1/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
@@ -6,22 +9,36 @@ import 'package:flutter_application_1/app/modules/schedule/views/schedule_view.d
 import 'package:flutter_application_1/app/modules/timerfokus/views/timerfokus_view.dart';
 import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 import 'package:flutter_application_1/app/modules/weekly_report/views/weekly_report_view.dart';
-import 'package:get/get.dart';
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
   var username = "".obs;
+  RxString photo = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     loadUser();
+    loadUserPhoto();
   }
 
   void loadUser() async {
     final data = await AuthService.to.getUserProfile();
     if (data != null) {
       username.value = data["username"] ?? "";
+    }
+  }
+
+  Future<void> loadUserPhoto() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+
+    if (doc.exists) {
+      photo.value = doc['photo'] ?? '';
     }
   }
 

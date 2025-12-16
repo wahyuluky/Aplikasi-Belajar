@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/timerfokus/controllers/timerfokus_controller.dart';
 import 'package:flutter_application_1/app/modules/timerfokusresult/views/timerfokusresult_view.dart';
-import 'package:get/get.dart';
 
 class TimerFokusView extends GetView<TimerFokusController> {
   final controller = Get.put(TimerFokusController());

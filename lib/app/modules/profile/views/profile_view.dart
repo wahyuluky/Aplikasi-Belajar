@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter_application_1/app/modules/profile/views/edit_profile_view.dart';
 import 'package:flutter_application_1/app/routes/app_pages.dart';
-import 'package:get/get.dart';
 
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
@@ -39,7 +39,6 @@ class ProfileView extends StatelessWidget {
             const SizedBox(height: 20),
             // ---------------- PROFILE PICTURE ----------------
             Container(
-              // transform: Matrix4.translationValues(0, -60, 0),
               child: Column(
                 children: [
                   Obx(() {
@@ -49,7 +48,7 @@ class ProfileView extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(70),
                         child: controller.photo.value.isEmpty
-                          ? Image.asset("assets/User.png", height: 120, width: 120, fit: BoxFit.cover,)
+                          ? Image.asset("assets/akun.png", height: 120, width: 120, fit: BoxFit.cover,)
                           : Image.file(File(controller.photo.value), height: 120, width: 120, fit: BoxFit.cover),
                       ),
                     );

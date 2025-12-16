@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/choose_music/views/choose_music_view.dart';
 import 'package:flutter_application_1/app/modules/music_collection/controllers/music_collection_controller.dart';
 import 'package:flutter_application_1/app/modules/play_music/views/play_music_view.dart';
-import 'package:get/get.dart';
 
 class MusicCollectionView extends StatelessWidget {
   final MusicCollectionController controller =

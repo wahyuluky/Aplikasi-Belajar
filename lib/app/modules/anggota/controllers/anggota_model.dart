@@ -1,9 +1,15 @@
 class AnggotaModel {
-  final String name;
-  final String avatar; // url / asset path
+  final String uid;
+  final String username;
+  final String fotoUrl;
+  final String role;
+  final DateTime joinedAt;
 
   AnggotaModel({
-    required this.name,
-    required this.avatar,
+    required this.uid,
+    required this.username,
+    required this.fotoUrl,
+    required this.role,
+    required this.joinedAt,
   });
 }

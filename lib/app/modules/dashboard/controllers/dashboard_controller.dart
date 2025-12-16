@@ -1,61 +1,103 @@
 import 'package:get/get.dart';
+import '../../tugas/controllers/tugas_controller.dart';
 
+/// MODEL LAMA (DIPERTAHANKAN UNTUK VIEW)
 class Task {
   final String title;
   final String description;
   final String deadline;
 
-  Task({required this.title, required this.description, required this.deadline});
+  Task({
+    required this.title,
+    required this.description,
+    required this.deadline,
+  });
 }
 
 class PostponedTask {
   final String title;
   final String description;
 
-  PostponedTask({required this.title, required this.description});
+  PostponedTask({
+    required this.title,
+    required this.description,
+  });
 }
 
 class DashboardController extends GetxController {
-  // Tugas Mendatang
-  var upcomingTasks = <Task>[
-    Task(
-      title: 'Etika dan Profesi',
-      description: 'Kode Etik',
-      deadline: '20 Oktober 2025',
-    ),
-    Task(
-      title: 'Pra Skripsi',
-      description: 'Identifikasi Topik',
-      deadline: '25 Oktober 2025',
-    ),
-    Task(
-      title: 'Rekayasa Interaksi',
-      description: 'Prototype',
-      deadline: '26 Oktober 2025',
-    ),
-  ].obs;
+  final TugasController tugasC = Get.find<TugasController>();
 
-  // Fokus Belajar
+  /// ===============================
+  /// SESUAI YANG DIPAKAI VIEW
+  /// ===============================
+  var upcomingTasks = <Task>[].obs;
+  var postponedTasks = <PostponedTask>[].obs;
+
+  var totalMendatang = 0.obs;
+  var totalDitunda = 0.obs;
+
+  /// ===============================
+  /// DATA LAIN (TIDAK DIUBAH)
+  /// ===============================
   var studyFocusTitle = 'Belajar Pra Skripsi'.obs;
   var studyHoursCompleted = 0.obs;
   final int studyHoursTarget = 4;
 
-  // Tugas Ditunda
-  var postponedTasks = <PostponedTask>[
-    PostponedTask(
-      title: 'Presentasi Pra Skripsi',
-      description: 'Ditunda hingga 24 Oktober',
-    ),
-    PostponedTask(
-      title: 'Kuis Etika Profesi',
-      description: 'Ditunda hingga 19 Oktober',
-    ),
-  ].obs;
-
-  // Produktivitas
   var productivityDateRange = '19 - 25 Okt 2025'.obs;
   var studyHoursPerDay = 3.5.obs;
   var tasksCompletedPercent = 50.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    /// 🔥 LISTEN REALTIME DARI FIRESTORE
+    ever(tugasC.listTugas, (_) => _olahData());
+  }
+
+  void _olahData() {
+    final aktif = tugasC.listTugas.where((t) => !t.isDone).toList();
+
+    totalMendatang.value = aktif.length;
+    totalDitunda.value = aktif.length;
+
+    /// ===============================
+    /// TUGAS MENDATANG (3 TERDEKAT)
+    /// ===============================
+    final mendatang = [...aktif]
+      ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+
+    upcomingTasks.value = mendatang
+        .take(3)
+        .map((t) => Task(
+              title: t.judul,
+              description: t.deskripsi,
+              deadline: _formatTanggal(t.tanggal),
+            ))
+        .toList();
+
+    /// ===============================
+    /// TUGAS DITUNDA (3 TERLAMA)
+    /// ===============================
+    final ditunda = [...aktif]
+      ..sort((a, b) => b.tanggal.compareTo(a.tanggal));
+
+    postponedTasks.value = ditunda
+        .take(3)
+        .map((t) => PostponedTask(
+              title: t.judul,
+              description: "Ditunda hingga ${_formatTanggal(t.tanggal)}",
+            ))
+        .toList();
+  }
+
+  String _formatTanggal(DateTime date) {
+    return "${date.day.toString().padLeft(2, '0')}/"
+        "${date.month.toString().padLeft(2, '0')}/"
+        "${date.year}";
+  }
+
+
 
   void startLearning() {
     if (studyHoursCompleted.value < studyHoursTarget) {
