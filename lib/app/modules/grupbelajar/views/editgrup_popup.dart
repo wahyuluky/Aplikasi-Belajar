@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/editgrup_controller.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/grupbelajar_controller.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/controllers/tambahgrup_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/grupbelajar/controllers/editgrup_controller.dart';
 
 class EditgrupPopup {
-  static void show() {
+  static void show({
+    required String id, 
+    required String nama, 
+    required String foto}) 
+    {
     final c = Get.put(EditgrupController());
-    final grupC = Get.find<GrupbelajarController>();
+    // isi nilai awal
+    c.namaGrupC.text = nama;
+    c.foto.value = foto;
+    c.groupId = id;
+
 
     Get.dialog(
       Dialog(
@@ -20,24 +26,22 @@ class EditgrupPopup {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                // Foto Profile
                 Obx(() {
                   return GestureDetector(
                     onTap: c.pilihFoto,
                     child: CircleAvatar(
                       radius: 55,
-                      backgroundImage: NetworkImage(c.fotoUrl.value),
+                      backgroundImage: NetworkImage(c.foto.value),
                     ),
                   );
                 }),
 
                 const SizedBox(height: 10),
-                const Text(
-                  "Foto Profile",
-                  style: TextStyle(color: Colors.black54),
-                ),
+                const Text("Foto Profile",
+                    style: TextStyle(color: Colors.black54)),
 
                 const SizedBox(height: 25),
+
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -45,14 +49,13 @@ class EditgrupPopup {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 const SizedBox(height: 10),
 
-                // Input Nama Grup
                 TextField(
                   controller: c.namaGrupC,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.group),
-                    hintText: "Tulis disini",
                     labelText: "Nama Grup",
                     fillColor: const Color(0xffF5F5F5),
                     filled: true,
@@ -65,7 +68,6 @@ class EditgrupPopup {
 
                 const SizedBox(height: 25),
 
-                // Tombol Tambah
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -76,20 +78,22 @@ class EditgrupPopup {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {
+                   onPressed: () async {
                       if (c.namaGrupC.text.isEmpty) {
                         Get.snackbar("Error", "Nama grup harus diisi");
                         return;
                       }
 
-                      grupC.tambahGrup(c.namaGrupC.text, c.fotoUrl.value);
-                      Get.back(); // tutup popup
-                      Get.delete<TambahgrupController>();
+                      await c.updateGrup(
+                        c.groupId, 
+                        c.namaGrupC.text, 
+                        c.foto.value);
+
+                      Get.back(); // Tutup popup
+                      Get.delete<EditgrupController>();
                     },
-                    child: const Text(
-                      "Edit Grup",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                    child: const Text("Edit Grup",
+                        style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],
@@ -98,5 +102,42 @@ class EditgrupPopup {
         ),
       ),
     );
+  }
+
+  // NOTIFIKASI SUKSES EDIT
+  static void suksesEditGrup() {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(color: Color(0xFF4ADE80), width: 2),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          width: 280,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: Color(0xFF4ADE80),
+                child: Icon(Icons.check, color: Colors.white, size: 45),
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Grup berhasil diedit!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      if (Get.isDialogOpen ?? false) Get.back();
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,19 +41,18 @@ class EditProfileView extends StatelessWidget {
             // ---------------- PROFILE PICTURE ----------------
             Column(
               children: [
-                CircleAvatar(
-                  radius: 60,
-                  backgroundColor: Colors.white,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(70),
-                    child: Image.asset(
-                      "assets/User.png",
-                      fit: BoxFit.cover,
-                      height: 120,
-                      width: 120,
-                    ),
-                  ),
-                ),
+                Obx(() {
+                    return CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(70),
+                        child: controller.photo.value.isEmpty
+                          ? Image.asset("assets/akun.png", height: 120, width: 120, fit: BoxFit.cover,)
+                          : Image.file(File(controller.photo.value), height: 120, width: 120, fit: BoxFit.cover),
+                      ),
+                    );
+                  }),
                 const SizedBox(height: 12),
                 GestureDetector(
                     onTap: () => _showPhotoOptions(context),

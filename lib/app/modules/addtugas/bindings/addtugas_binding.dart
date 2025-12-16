@@ -5,8 +5,8 @@ import '../controllers/addtugas_controller.dart';
 class AddtugasBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<TugasController>(
-      () => TugasController(),
+    Get.lazyPut<AddtugasController>(
+      () => AddtugasController(),
     );
   }
 }

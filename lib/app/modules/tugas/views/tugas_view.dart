@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/addtugas/views/addtugas_view.dart';
 import 'package:flutter_application_1/app/modules/edittugas/views/edittugas_view.dart';
 import 'package:flutter_application_1/app/modules/tugas/controllers/tugas_controller.dart';
 import 'package:flutter_application_1/app/modules/tugas/controllers/tugas_model.dart';
-import 'package:get/get.dart';
 
 class TugasView extends StatelessWidget {
   final controller = Get.put(TugasController());
@@ -96,7 +96,7 @@ class TugasView extends StatelessWidget {
                 ),
 
                 Text(
-                  "${t.deskripsi} | ${t.tanggal}",
+                  "${t.deskripsi} | ${controller.formatTanggal(t.tanggal)}",
                   style: const TextStyle(fontSize: 10),
                 ),
 
@@ -106,7 +106,6 @@ class TugasView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      // onTap: () => controller.hapusTugas(index),
                       onTap: () => showDeleteDialog(t.id),
                       child: Row(
                         children: const [
@@ -129,9 +128,8 @@ class TugasView extends StatelessWidget {
                         "tanggal": t.tanggal,
                         "isDone": t.isDone,
                       });
-
-                      },
-                      child: Row(
+                    },
+                    child: Row(
                         children: const [
                           Icon(Icons.edit, size: 14, color: Colors.black54),
                           SizedBox(width: 3),

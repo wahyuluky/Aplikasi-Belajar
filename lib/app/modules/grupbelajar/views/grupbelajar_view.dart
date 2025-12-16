@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/editgrup_popup.dart';
 import 'package:flutter_application_1/app/modules/grupbelajar/views/tambahgrup_popup.dart';
-import 'package:get/get.dart';
 import '../controllers/grupbelajar_controller.dart';
 
 class GrupbelajarView extends GetView<GrupbelajarController> {
   final controller = Get.put(GrupbelajarController());
+  
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,8 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                   
                   return InkWell(
                     onTap: () {
-                      Get.to(ChatView());   // pindah halaman detail
+                      print("GROUP ID DIKIRIM: ${item['id']}");
+                      Get.to(ChatView(groupId: item['id'],));   // pindah halaman detail
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -81,7 +83,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                           // ICON MORE
                           GestureDetector(
                             onTap: () {
-                              _showMoreMenu(context, index);
+                              _showMoreMenu(context, item);
                             },
                             child: const Icon(Icons.more_vert, color: Colors.grey),
                           )
@@ -107,7 +109,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
     );
   }
 
-  void _showMoreMenu(BuildContext context, int index) {
+  void _showMoreMenu(BuildContext context, Map<String, dynamic> item) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -123,14 +125,19 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                 leading: const Icon(Icons.edit, color: Colors.blue),
                 title: const Text("Edit Grup"),
                 onTap: () {
-                  EditgrupPopup.show();   // Aksi edit
-                },
+                  //Get.back(); // tutup bottom sheet dulu
+                  EditgrupPopup.show(
+                    id: item['id'],
+                    nama: item['nama'],
+                    foto: item['foto'],
+                  );
+                }
               ),
               ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
                 title: const Text("Hapus Grup"),
                 onTap: () {
-                  showDeleteDialog(index);// Aksi hapus
+                  showDeleteDialog(item['id']);// Aksi hapus
                 },
               ),
             ],
@@ -140,7 +147,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
     );
   }
 
-  void showDeleteDialog(int index) {
+  void showDeleteDialog(String docId) {
     Get.defaultDialog(
       title: "Hapus Tugas?",
       middleText: "Apakah kamu yakin ingin menghapus tugas ini?",
@@ -148,7 +155,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
       textConfirm: "Hapus",
       confirmTextColor: Colors.white,
       onConfirm: () {
-        controller.deleteGrup(index);
+        controller.deleteGrup(docId);
         Get.back();
       },
     );

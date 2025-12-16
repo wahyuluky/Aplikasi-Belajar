@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter_application_1/app/modules/profile/views/profile_view.dart';
 import 'package:flutter_application_1/app/modules/schedule/views/schedule_view.dart';
 import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 import 'package:flutter_application_1/app/modules/weekly_report/views/weekly_report_view.dart';
-import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
   final controller = Get.put(HomeController());
@@ -96,20 +98,25 @@ class HomeView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(),
+                   const SizedBox(),
                     GestureDetector(
-                      onTap: () => controller.changeTab(4), // pindah ke tab Profil
+                      onTap: () => controller.changeTab(4),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          "assets/User.png",
-                          height: 30,
-                          width: 30,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Obx(() {
+                          return CircleAvatar(
+                            // radius: 60,
+                            backgroundColor: Colors.white,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(70),
+                              child: controller.photo.value.isEmpty
+                                ? Image.asset("assets/akun.png", height: 30, width: 30, fit: BoxFit.cover,)
+                                : Image.file(File(controller.photo.value), height: 30, width: 30, fit: BoxFit.cover),
+                            ),
+                          );
+                        }),
                       ),
                     ),
-
                   ],
                 ).paddingOnly(top: 15),
 

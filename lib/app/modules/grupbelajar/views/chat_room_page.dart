@@ -8,19 +8,6 @@ class ChatRoomPage extends StatefulWidget {
   State<ChatRoomPage> createState() => _ChatRoomPageState();
 }
 
-class MateriModel {
-  final String title;
-  final String fileType; // pdf, docx, error, dll
-  MateriModel({required this.title, required this.fileType});
-}
-
-class MemberModel {
-  final String name;
-  final String imageUrl;
-
-  MemberModel({required this.name, required this.imageUrl});
-}
-
 class _ChatRoomPageState extends State<ChatRoomPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
@@ -135,7 +122,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     backgroundImage: NetworkImage(
                       "https://i.imgur.com/BoN9kdC.png",
                     ),
@@ -187,7 +174,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const CircleAvatar(
+                  CircleAvatar(
                     backgroundImage: NetworkImage(
                       "https://i.imgur.com/BoN9kdC.png",
                     ),
@@ -206,145 +193,20 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   // =======================
   // MATERI
   // =======================
-Widget materiViewUI() {
-  // Dummy data materi
-  final List<MateriModel> materiList = [
-    MateriModel(title: "Pertemuan 1_Rekayasa Interaksi", fileType: "pdf"),
-    MateriModel(title: "Pertemuan 2_Rekayasa Interaksi", fileType: "error"),
-    MateriModel(title: "Pertemuan 3_Rekayasa Interaksi", fileType: "pdf"),
-    MateriModel(title: "Pertemuan 4_Rekayasa Interaksi", fileType: "error"),
-    MateriModel(title: "Pertemuan 5_Rekayasa Interaksi", fileType: "pdf"),
-  ];
-
-  return ListView.builder(
-    itemCount: materiList.length,
-    itemBuilder: (context, index) {
-      final item = materiList[index];
-
-      // Warna selang-seling (PUTIH → HIJAU → PUTIH → HIJAU)
-      final bgColor = index % 2 == 0
-          ? Colors.white
-          : const Color(0xFFDFFFEA);
-
-      // Tentukan warna ikon
-      IconData icon = Icons.insert_drive_file;
-      Color iconColor =
-          item.fileType == "pdf" ? Colors.blue : Colors.red;
-
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        color: bgColor,
-        child: Row(
-          children: [
-            Icon(icon, color: iconColor, size: 32),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                item.title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
+  Widget materiViewUI() {
+    return const Center(
+      child: Text("Belum ada materi", style: TextStyle(color: Colors.grey)),
+    );
+  }
 
   // =======================
   // ANGGOTA
   // =======================
-Widget anggotaViewUI() {
-  // Dummy data anggota
-  final List<MemberModel> members = [
-    MemberModel(
-      name: "Putri Nabila",
-      imageUrl: "https://i.imgur.com/7Q0p3eS.png",
-    ),
-    MemberModel(
-      name: "Ernaya Fitri",
-      imageUrl: "https://i.imgur.com/XnX6f6f.png",
-    ),
-    MemberModel(
-      name: "Nadra Tan",
-      imageUrl: "https://i.imgur.com/bDg4Yx2.png",
-    ),
-    MemberModel(
-      name: "Wahyu Lukytaningtyas",
-      imageUrl: "https://i.imgur.com/LK7ZC3O.png",
-    ),
-    MemberModel(
-      name: "Jauza Wijdaniah",
-      imageUrl: "https://i.imgur.com/BoN9kdC.png",
-    ),
-  ];
-
-  return Stack(
-    children: [
-      ListView.builder(
-        padding: EdgeInsets.zero,
-        itemCount: members.length,
-        itemBuilder: (context, index) {
-          final m = members[index];
-
-          // Warna selang-seling sama seperti screenshot
-          final bgColor = index % 2 == 0
-              ? Colors.white
-              : const Color(0xFFDFFFEA);
-
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            color: bgColor,
-            child: Row(
-              children: [
-                // Profile image
-                CircleAvatar(
-                  radius: 22,
-                  backgroundImage: NetworkImage(m.imageUrl),
-                ),
-
-                const SizedBox(width: 12),
-
-                // Name
-                Text(
-                  m.name,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-
-      // Floating + button (untuk tambah anggota)
-      Positioned(
-        bottom: 16,
-        right: 16,
-        child: InkWell(
-          onTap: () {
-            // nanti: buka halaman tambah anggota
-          },
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Color(0xFFDFFFEA),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.add, size: 32, color: Colors.black),
-          ),
-        ),
-      ),
-    ],
-  );
-}
+  Widget anggotaViewUI() {
+    return const Center(
+      child: Text("Daftar Anggota Grup", style: TextStyle(color: Colors.grey)),
+    );
+  }
 
   // =======================
   // INPUT CHAT BAR

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/focus_rest/controllers/focus_rest_controller.dart';
 import 'package:flutter_application_1/app/modules/music_collection/views/music_collection_view.dart';
-import 'package:get/get.dart';
 
 class FocusRestView extends StatelessWidget {
   final FocusRestController controller = Get.put(FocusRestController());

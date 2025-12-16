@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/editschedule/controllers/editschedule_controller.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/editschedule/controllers/editschedule_controller.dart';
 
 class EditscheduleView extends GetView<EditscheduleController> {
   final EditscheduleController c = Get.put(EditscheduleController());
@@ -91,18 +91,19 @@ class EditscheduleView extends GetView<EditscheduleController> {
                         ),
                       ),
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2050),
-                          initialDate: DateTime.now(),
-                        );
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2050),
+    initialDate: DateTime.now(),
+  );
 
-                        if (pickedDate != null) {
-                          controller.dateC.text =
-                              "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-                        }
-                      },
+  if (pickedDate != null) {
+    controller.dateC.text =
+        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+  }
+},
+
                     ),
                   ),
 

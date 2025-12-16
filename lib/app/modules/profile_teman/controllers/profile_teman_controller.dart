@@ -1,18 +1,19 @@
-import 'package:flutter_application_1/app/modules/profile_teman/controllers/profile_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/profile_teman/controllers/profile_model.dart';
 
 class ProfileTemanController extends GetxController {
-Rx<ProfileModel> profile = ProfileModel(
-    name: "Jauza Wijdaniah",
-    phone: "+62 123 456 789",
-    avatar: "assets/user5.jpg",
-  ).obs;
+Rx<ProfileModel?> profile = Rx<ProfileModel?>(null);
 
-  void updateAvatar(String newAvatar) {
-    profile.value = profile.value.copyWith(avatar: newAvatar);
+  Future<void> loadUser(String userId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get();
+
+    if (doc.exists && doc.data() != null) {
+      profile.value = ProfileModel.fromFirestore(doc.data()!);
+    }
   }
 
-  void updateProfile({String? name, String? phone}) {
-    profile.value = profile.value.copyWith(name: name, phone: phone);
-  }
 }

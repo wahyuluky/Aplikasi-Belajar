@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/choose_friend/controllers/choose_friend_controller.dart';
+import 'package:flutter_application_1/app/modules/grupbelajar/views/grupbelajar_view.dart';
 
 class ChooseFriendView extends StatelessWidget {
+  final String groupId;
   final ChooseFriendController c = Get.put(ChooseFriendController());
 
-  ChooseFriendView({super.key});
+  ChooseFriendView({super.key, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
+    c.init(groupId);
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -18,7 +21,7 @@ class ChooseFriendView extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: const Text(
-          "Tambah Lagu",
+          "Tambah Teman",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
         ),
         centerTitle: true,
@@ -107,21 +110,24 @@ class ChooseFriendView extends StatelessWidget {
               ),
               const SizedBox(width: 30),
 
-              Positioned(
-                child: GestureDetector(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.play_arrow,
-                    size: 24,
-                  ),
+               GestureDetector(
+                onTap: c.selectedCount.value == 0
+                    ? null
+                    : () => c.addSelectedToGroup(),
+                child: Icon(
+                  Icons.play_arrow,
+                  size: 24,
+                  color: c.selectedCount.value == 0
+                      ? Colors.grey
+                      : Colors.green,
                 ),
+
               ),
             ],
           ),
         ));
   }
 
-  // ---------------- DAFTAR TEMAN ----------------
 // ---------------- DAFTAR TEMAN ----------------
 Widget _friendList() {
   return Obx(() => ListView.builder(
@@ -141,14 +147,14 @@ Widget _friendList() {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
 
-              onTap: () => c.toggleAndCount(index),
+              onTap: () => c.toggle(index),
 
               leading: const CircleAvatar(
-                backgroundImage: AssetImage('assets/profile.jpg'),
+                backgroundImage: NetworkImage("https://picsum.photos/200"),
               ),
 
               title: Text(
-                c.friends[index]['name']!,
+                c.friends[index]['username']!,
                 style: TextStyle(
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                   color: isSelected ? Colors.green[800] : Colors.black,
@@ -167,9 +173,3 @@ Widget _friendList() {
 
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ChooseFriendView(),
-  ));
-}

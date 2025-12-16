@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/focus_rest/views/focus_rest_view.dart';
 
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/focus_rest/views/focus_rest_view.dart';
 
 import '../controllers/timerfokusresult_controller.dart';
 

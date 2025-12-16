@@ -1,7 +1,7 @@
-import 'package:flutter_application_1/app/data/auth_service.dart';
-import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/data/auth_service.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
 
 // LoginController bertugas mengatur logika login
 // termasuk validasi input, pemanggilan service,
