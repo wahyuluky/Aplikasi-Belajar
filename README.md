@@ -19,6 +19,15 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 - Firebase Authentication
 - Cloud Firestore
 
+### Fitur Utama
+- Login & Register
+- Manajemen Jadwal
+- To Do List
+- Fokus Belajar (Timer)
+- Grup Belajar
+- Weekly Report
+- Profil Pengguna
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
