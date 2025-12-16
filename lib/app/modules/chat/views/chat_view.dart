@@ -12,7 +12,7 @@ class ChatView extends StatelessWidget {
   final TextEditingController textController = TextEditingController();
 
   final String groupId;
-  ChatView({required this.groupId});
+  ChatView({super.key, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ChatView extends StatelessWidget {
       ),
       title: Obx(() => Text(
               controller.groupName.value,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             )),
       centerTitle: true,
       leading: IconButton(
@@ -172,7 +172,7 @@ class ChatView extends StatelessWidget {
 
           Expanded(
             child: TextField(
-              style: TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 14),
               onChanged: controller.onTyping,
               controller: textController,
               decoration: InputDecoration(

@@ -60,11 +60,11 @@ class ChooseFriendView extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
-                        const Icon(Icons.search, color: Colors.grey, size: 18),
-                        const SizedBox(width: 3),
-                        const Expanded(
+                        Icon(Icons.search, color: Colors.grey, size: 18),
+                        SizedBox(width: 3),
+                        Expanded(
                           child: TextField(
                             style: TextStyle(fontSize: 12),
                             decoration: InputDecoration(

@@ -5,6 +5,8 @@ import '../controllers/addschedule_controller.dart';
 class AddscheduleView extends GetView<AddscheduleController> {
   final AddscheduleController c = Get.put(AddscheduleController());
 
+  const AddscheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +58,7 @@ class AddscheduleView extends GetView<AddscheduleController> {
                           hintText: "Tulis disini",
                           filled: true,
                           fillColor: Colors.grey.shade100,
-                          contentPadding: EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(12),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
@@ -83,7 +85,7 @@ class AddscheduleView extends GetView<AddscheduleController> {
                           hintText: "DD/MM/YYYY",
                           filled: true,
                           fillColor: Colors.grey.shade100,
-                          contentPadding: EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(12),
                           suffixIcon: const Icon(Icons.calendar_month, size: 18, color: Colors.grey,),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),

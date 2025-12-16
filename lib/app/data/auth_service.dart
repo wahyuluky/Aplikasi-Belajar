@@ -3,71 +3,92 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class AuthService extends GetxService {
-  static AuthService get to => Get.find();
+  static AuthService get to => Get.find<AuthService>();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // Pantau status login user
-  Stream<User?> authStateChanges() => _auth.authStateChanges();
+  // ===============================
+  // AUTH STATE
+  // ===============================
+  Stream<User?> authStateChanges() => auth.authStateChanges();
 
-  // Register
-  Future<String?> register(String email, String password, String username) async {
+  // ===============================
+  // REGISTER
+  // ===============================
+  Future<String?> register(
+    String email,
+    String password,
+    String username,
+  ) async {
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      final cred = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Ambil UID
-      String uid = userCredential.user!.uid;
+      await saveUserToFirestore(
+        cred.user!,
+        username,
+      );
 
-      try {
-        await _db.collection("users").doc(uid).set({
-          "username": username,
-          "email": email,
-          "created_at": FieldValue.serverTimestamp(),
-        });
-        print("✔ Firestore success");
-      } catch (err) {
-        print("❌ Firestore error: $err");
-      }
-
-
-      return null; // sukses
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
   }
 
-  // Login
+  // ===============================
+  // LOGIN
+  // ===============================
   Future<String?> login(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      final cred = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return null; // sukses
+
+      // pastikan user ada
+      await saveUserToFirestore(
+        cred.user!,
+        cred.user!.displayName ?? "User",
+      );
+
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
   }
 
-  Future<Map<String, dynamic>?> getUserProfile() async {
-    try {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final doc = await FirebaseFirestore.instance.collection("users").doc(uid).get();
-      return doc.data();
-    } catch (e) {
-      print("Error getUserProfile: $e");
-      return null;
-    }
+  // ===============================
+  // SAVE USER
+  // ===============================
+  Future<void> saveUserToFirestore(User user, String name) async {
+    await firestore.collection("users").doc(user.uid).set({
+      "uid": user.uid,
+      "email": user.email,
+      "name": name,
+      "photo": user.photoURL ??
+          "https://i.pravatar.cc/150?u=${user.uid}",
+      "createdAt": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
   }
 
+  // ===============================
+  // CURRENT USER DATA
+  // ===============================
+  Future<Map<String, dynamic>?> getCurrentUser() async {
+    final uid = auth.currentUser?.uid;
+    if (uid == null) return null;
 
-  // Logout
+    final doc = await firestore.collection("users").doc(uid).get();
+    return doc.data();
+  }
+
+  // ===============================
+  // LOGOUT
+  // ===============================
   Future<void> logout() async {
-    await _auth.signOut();
+    await auth.signOut();
   }
 }

@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app/modules/music_collection/views/music_c
 class FocusRestView extends StatelessWidget {
   final FocusRestController controller = Get.put(FocusRestController());
 
+  const FocusRestView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

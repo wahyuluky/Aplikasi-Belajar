@@ -5,6 +5,8 @@ import '../controllers/choose_music_controller.dart';
 class ChooseMusicView extends StatelessWidget {
   final c = Get.put(ChooseMusicController());
 
+  const ChooseMusicView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +43,8 @@ class ChooseMusicView extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Icon(Icons.search, color: Colors.grey, size: 18),
                   SizedBox(width: 3),
                   Expanded(
@@ -128,7 +130,7 @@ class ChooseMusicView extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                subtitle: Text(item["artist"]!, style: TextStyle(fontSize: 10),),
+                subtitle: Text(item["artist"]!, style: const TextStyle(fontSize: 10),),
 
                 trailing: isSelected
                     ? const Icon(Icons.check_circle, color: Colors.green)

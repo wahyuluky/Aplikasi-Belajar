@@ -8,6 +8,8 @@ class MusicCollectionView extends StatelessWidget {
   final MusicCollectionController controller =
       Get.put(MusicCollectionController());
 
+  const MusicCollectionView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,8 +167,8 @@ class MusicCollectionView extends StatelessWidget {
                       onTap: () {
                         showDeleteDialog(i);
                       },
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.delete, color: Colors.red, size: 20),
                           SizedBox(width: 4),
                           Text(

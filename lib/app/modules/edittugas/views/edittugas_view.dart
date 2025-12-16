@@ -5,6 +5,8 @@ import '../controllers/edittugas_controller.dart';
 class EdittugasView extends StatelessWidget {
   final controller = Get.put(EdittugasController());
 
+  const EdittugasView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

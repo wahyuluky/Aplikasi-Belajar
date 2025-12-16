@@ -116,9 +116,9 @@ class EditgrupPopup {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           width: 280,
-          child: Column(
+          child: const Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               CircleAvatar(
                 radius: 40,
                 backgroundColor: Color(0xFF4ADE80),

@@ -6,7 +6,10 @@ import 'package:flutter_application_1/app/modules/focus_rest/views/focus_rest_vi
 import '../controllers/timerfokusresult_controller.dart';
 
 class TimerfokusresultView extends GetView<TimerfokusresultController> {
+  @override
   final controller = Get.put(TimerfokusresultController());
+
+  const TimerfokusresultView({super.key});
 
   @override
   Widget build(BuildContext context) {

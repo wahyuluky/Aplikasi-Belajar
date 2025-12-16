@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app/routes/app_pages.dart';
 class RegisterView extends StatelessWidget {
   final controller = Get.put(RegisterController());
 
+  const RegisterView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

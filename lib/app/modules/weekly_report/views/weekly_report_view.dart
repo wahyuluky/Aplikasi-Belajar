@@ -6,6 +6,8 @@ class WeeklyReportView extends StatelessWidget {
   final WeeklyReportController controller =
       Get.put(WeeklyReportController());
 
+  const WeeklyReportView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +37,14 @@ class WeeklyReportView extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildWeekInfo(),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildProductivityChart(),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   _buildInsights(),
                 ],
               ),
@@ -63,18 +65,18 @@ class WeeklyReportView extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   "Week : ",
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   controller.weekRange.value,
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 ),
               ],
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Productivity",
               style: TextStyle(
                   fontSize: 14,
@@ -93,7 +95,7 @@ class WeeklyReportView extends StatelessWidget {
       final data = controller.productivity;
 
       return Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 16),
         height: 180,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -101,11 +103,11 @@ class WeeklyReportView extends StatelessWidget {
           children: List.generate(
             data.length,
             (i) => AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               width: 35,
               height: data[i] * 18.0,
               decoration: BoxDecoration(
-                color: Color(0xFF86F7A7),
+                color: const Color(0xFF86F7A7),
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
@@ -122,29 +124,29 @@ class WeeklyReportView extends StatelessWidget {
     return Obx(() => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Insights",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
             // Main insight card
             Center(
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFE7B5),
+                  color: const Color(0xFFFFE7B5),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   controller.mainInsight.value,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
               ),
             ),
 
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
 
             // Additional insights list
             Column(
@@ -160,16 +162,16 @@ class WeeklyReportView extends StatelessWidget {
 
   Widget _buildInsightItem(String text) {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       child: Row(
         children: [
-          Icon(Icons.check_circle_outline,
+          const Icon(Icons.check_circle_outline,
               color: Colors.green, size: 24),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
             ),
           )
         ],

@@ -4,7 +4,10 @@ import 'package:flutter_application_1/app/modules/timerfokus/controllers/timerfo
 import 'package:flutter_application_1/app/modules/timerfokusresult/views/timerfokusresult_view.dart';
 
 class TimerFokusView extends GetView<TimerFokusController> {
+  @override
   final controller = Get.put(TimerFokusController());
+
+  const TimerFokusView({super.key});
 
   @override
   Widget build(BuildContext context) {

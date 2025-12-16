@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 class DashboardView extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
 
+  const DashboardView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +61,7 @@ class DashboardView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))
         ],
@@ -70,7 +72,7 @@ class DashboardView extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.calendar_month, color: Colors.green, size: 20,),
+                const Icon(Icons.calendar_month, color: Colors.green, size: 20,),
                 const SizedBox(width: 8),
                 const Text(
                   "Tugas Mendatang",
@@ -106,7 +108,7 @@ class DashboardView extends StatelessWidget {
               onTap: () {
                 Get.to(() => TugasView());
               },
-              child: Align(
+              child: const Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
                   "Lihat semua",
@@ -134,7 +136,7 @@ Widget _buildStudyFocusCard() {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2)),
       ],
     ),
@@ -144,11 +146,11 @@ Widget _buildStudyFocusCard() {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // TITLE
-          Row(
+          const Row(
             children: [
               Icon(Icons.menu_book, color: Colors.green, size: 20),
-              const SizedBox(width: 8),
-              const Text(
+              SizedBox(width: 8),
+              Text(
                 "Fokus Belajar",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
@@ -247,7 +249,7 @@ Widget _buildStudyFocusCard() {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 2))
         ],
       ),
@@ -260,11 +262,11 @@ Widget _buildStudyFocusCard() {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Icon(Icons.history, color: Colors.green),
-                      const SizedBox(width: 8),
-                      const Text(
+                      SizedBox(width: 8),
+                      Text(
                         "Tugas Ditunda",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
@@ -302,11 +304,11 @@ Widget _buildStudyFocusCard() {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Icon(Icons.bar_chart, color: Colors.green),
-                      const SizedBox(width: 8),
-                      const Text(
+                      SizedBox(width: 8),
+                      Text(
                         "Produktivitas",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),

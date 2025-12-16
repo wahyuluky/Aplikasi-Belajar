@@ -5,18 +5,17 @@ import 'package:get/get.dart';
 
 
 class GrupbelajarController extends GetxController {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-  
+  final firestore = FirebaseFirestore.instance;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+
   RxList<Map<String, dynamic>> grupList = <Map<String, dynamic>>[].obs;
-  
+
   @override
   void onInit() {
     super.onInit();
     loadUserGroups();
   }
 
-  // Ambil grup yang diikuti user
   void loadUserGroups() {
     firestore
         .collection("users")
@@ -24,84 +23,46 @@ class GrupbelajarController extends GetxController {
         .collection("joined_groups")
         .snapshots()
         .listen((snapshot) async {
-      grupList.clear();
+      final List<Map<String, dynamic>> temp = [];
 
       for (var doc in snapshot.docs) {
-        var grupId = doc.id;
+        final grup =
+            await firestore.collection("grup_belajar").doc(doc.id).get();
 
-        var grupData = await firestore.collection("grup_belajar").doc(grupId).get();
-
-        if (grupData.exists) {
-          grupList.add({
-            "id": grupId,
-            "nama": grupData["nama"],
-            "foto": grupData["foto"],
+        if (grup.exists) {
+          temp.add({
+            "id": doc.id,
+            "nama": grup["nama"],
+            "foto": grup["foto"],
           });
         }
       }
+
+      grupList.value = temp;
     });
   }
 
-  /// Tambah Grup
-  Future<void> tambahGrup(String namaGrup, String foto) async {
-    String groupId = firestore.collection("grup_belajar").doc().id;
+  Future<void> tambahGrup(String nama, String foto) async {
+    final groupRef = firestore.collection("grup_belajar").doc();
+    final groupId = groupRef.id;
 
-    // 1. Buat grup di koleksi grup_belajar
-    await firestore.collection("grup_belajar").doc(groupId).set({
-      "nama": namaGrup,
+    await groupRef.set({
+      "nama": nama,
       "foto": foto,
-      "createdAt": DateTime.now(),
       "createdBy": userId,
+      "createdAt": FieldValue.serverTimestamp(),
     });
 
-    // 2. Tambahkan pembuat ke subcollection members
-    await firestore
-        .collection("grup_belajar")
-        .doc(groupId)
-        .collection("members")
-        .doc(userId)
-        .set({
+    await groupRef.collection("members").doc(userId).set({
       "role": "admin",
-      "joinedAt": DateTime.now(),
+      "joinedAt": FieldValue.serverTimestamp(),
     });
 
-    // 3. Tambahkan grup ke joined_groups user
     await firestore
         .collection("users")
         .doc(userId)
         .collection("joined_groups")
         .doc(groupId)
         .set({"joined": true});
-
-    Get.snackbar("Berhasil", "Grup berhasil dibuat",
-        backgroundColor: Colors.green, colorText: Colors.white);
   }
-
-
-  /// Hapus Grup
-  Future<void> deleteGrup(String grupId) async {
-  await firestore.collection("grup_belajar").doc(grupId).delete();
-
-  await firestore
-      .collection("users")
-      .doc(userId)
-      .collection("joined_groups")
-      .doc(grupId)
-      .delete();
-
-  Get.snackbar("Berhasil", "Grup berhasil dihapus",
-    backgroundColor: Colors.green, colorText: Colors.white);
-  }
-
-
-  /// Edit (Update)
-  Future<void> editGrup(String docId, String namaBaru, String fotoBaru) async {
-    await firestore.collection("grup_belajar").doc(docId).update({
-      "nama": namaBaru,
-      "foto": fotoBaru,
-    });
-    Get.snackbar("Berhasil", "Grup berhasil diupdate",
-        backgroundColor: Colors.blue, colorText: Colors.white);
-  }
-
 }

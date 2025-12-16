@@ -5,6 +5,8 @@ import 'package:flutter_application_1/app/modules/editschedule/controllers/edits
 class EditscheduleView extends GetView<EditscheduleController> {
   final EditscheduleController c = Get.put(EditscheduleController());
 
+  const EditscheduleView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +58,7 @@ class EditscheduleView extends GetView<EditscheduleController> {
                           hintText: "Tulis disini",
                           filled: true,
                           fillColor: Colors.grey.shade100,
-                          contentPadding: EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(12),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
@@ -83,7 +85,7 @@ class EditscheduleView extends GetView<EditscheduleController> {
                           hintText: "DD/MM/YYYY",
                           filled: true,
                           fillColor: Colors.grey.shade100,
-                          contentPadding: EdgeInsets.all(12),
+                          contentPadding: const EdgeInsets.all(12),
                           suffixIcon: const Icon(Icons.calendar_month, size: 18, color: Colors.grey,),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),

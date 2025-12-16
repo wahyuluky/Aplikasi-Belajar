@@ -8,6 +8,8 @@ import 'package:flutter_application_1/app/routes/app_pages.dart';
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
 
+  const ProfileView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,21 +1,27 @@
+enum MessageType { 
+  text, 
+  image, 
+  document 
+}
+
 class ChatMessage {
   final String id;
-  final String? message;
-  final bool isMe;
   final String senderId;
   final String avatar;
-  final DateTime? createdAt;
+  final MessageType type;
+  final String? message;
   final String? imageBase64;
-  final String type; // "text" | "image"
+  final DateTime createdAt;
+  final bool isMe;
 
   ChatMessage({
     required this.id,
-    this.message,
-    required this.isMe,
     required this.senderId,
     required this.avatar,
-    this.createdAt,
     required this.type,
+    this.message,
     this.imageBase64,
+    required this.createdAt,
+    required this.isMe,
   });
 }
