@@ -1,160 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/addtugas/controllers/addtugas_controller.dart';
 import 'package:get/get.dart';
+import '../controllers/addtugas_controller.dart';
 
-class AddtugasView extends GetView<AddtugasController> {
-  final Controller  = Get.put(AddtugasController());
+class AddtugasView extends StatelessWidget {
+  final controller = Get.put(AddtugasController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 18,),
-          onPressed: () => Get.back(),
-        ),
-        title: const Text(
-          "Tambah To-Do-List",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
-        ),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xff8EF8B9), Color(0xff8CB3F4)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-      ),
-
+      appBar: AppBar(title: const Text("Tambah Tugas")),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              // Tugas
-              const Text("Tugas", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 39,
-                  child: TextField(
-                  style: TextStyle(fontSize: 12),
-                  controller: controller.tugasC,
-                  decoration: InputDecoration(
-                    hintText: "Tulis disini",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: controller.tugasC,
+              decoration: const InputDecoration(labelText: 'Judul'),
+            ),
+            TextField(
+              controller: controller.ketC,
+              decoration: const InputDecoration(labelText: 'Deskripsi'),
+            ),
+            TextField(
+              controller: controller.tanggalC,
+              decoration: const InputDecoration(
+                labelText: 'Tanggal',
+                hintText: 'yyyy-mm-dd',
               ),
-              const SizedBox(height: 10),
-              // Keterangan
-              const Text("Keterangan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 39,
-                child:  TextField(
-                  style: TextStyle(fontSize: 12),
-                  controller: controller.keteranganC,
-                  // maxLines: 2,
-                  decoration: InputDecoration(
-                    hintText: "Tulis disini",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              // Tanggal Berakhir
-              const Text("Tanggal Berakhir",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-              const SizedBox(height: 8),
-              SizedBox(
-                height: 39,
-                child: TextField(
-                  style: TextStyle(fontSize: 12),
-                  controller: controller.tanggalC,
-                  readOnly: true,
-                  onTap: () => controller.pilihTanggal(context),
-                  decoration: InputDecoration(
-                    hintText: "DD/MM/YYYY",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              // Checkbox Completed
-              Obx(() => Row(
-                    children: [
-                      Checkbox(
-                        value: controller.isDone.value,
-                        onChanged: (value) {
-                          controller.isDone.value = value ?? false;
-                        },
-                      ),
-                      const Text("Completed", style: TextStyle(fontSize: 12),)
-                    ],
-                  )),
-
-              const SizedBox(height: 30),
-
-              // Tombol Aksi
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Tombol Batal
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: () => Get.back(),
-                    child: const Text("Batal", style: TextStyle(fontSize: 12, color: Colors.white),),
-                  ),
-
-                  // Tombol Simpan
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    onPressed: () {
-                      controller.tambahTugas();
-                    },
-                    child: const Text("Simpan", style: TextStyle(fontSize: 12, color: Colors.white),),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: controller.tambahTugas,
+              child: const Text("Simpan"),
+            )
+          ],
         ),
       ),
     );
   }
 }
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AddtugasView(),
-  ));
-}
-

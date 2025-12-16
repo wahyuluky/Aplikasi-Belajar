@@ -1,68 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'tugas_model.dart';
+import 'package:intl/intl.dart';
 
 class TugasController extends GetxController {
-  final _db = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  
-  var listTugas = <TugasModel>[].obs;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  RxList<TugasModel> listTugas = <TugasModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    _listenTugas();   // Realtime listener
+    ambilTugas();
   }
 
-  // LISTEN DATA REALTIME
-  void _listenTugas() {
-    String uid = _auth.currentUser!.uid;
-
-    _db
-        .collection("users")
-        .doc(uid)
-        .collection("tugas")
-        .orderBy("tanggal")
+  // 🔥 READ realtime
+  void ambilTugas() {
+    firestore
+        .collection('tugas')
+        .orderBy('created_at', descending: true)
         .snapshots()
         .listen((snapshot) {
-      listTugas.value = snapshot.docs.map((doc) {
-        return TugasModel.fromMap(doc.id, doc.data());
-      }).toList();
+      listTugas.value = snapshot.docs
+          .map((doc) =>
+              TugasModel.fromFirestore(doc.id, doc.data()))
+          .toList();
     });
   }
 
+  // ✔ checkbox
+  void toggleCheck(TugasModel tugas) async {
+    await firestore.collection('tugas').doc(tugas.id).update({
+      'isDone': !tugas.isDone,
+    });
+  }
+
+  // 🗑 delete
+  void hapusTugas(String id) async {
+    await firestore.collection('tugas').doc(id).delete();
+  }
+
+  // 📅 formatter
   String formatTanggal(DateTime date) {
-    return "${date.day.toString().padLeft(2, '0')}/"
-          "${date.month.toString().padLeft(2, '0')}/"
-          "${date.year}";
-  }
-
-  
-  // 🔥 TOGGLE CHECKBOX
-  Future<void> toggleCheck(TugasModel t) async {
-    String uid = _auth.currentUser!.uid;
-
-    await _db
-        .collection("users")
-        .doc(uid)
-        .collection("tugas")
-        .doc(t.id)
-        .update({
-      "isDone": !t.isDone,
-    });
-  }
-
-
-  // 🔥 HAPUS TUGAS
-  Future<void> hapusTugas(String id) async {
-    String uid = _auth.currentUser!.uid;
-
-    await _db
-        .collection("users")
-        .doc(uid)
-        .collection("tugas")
-        .doc(id)
-        .delete();
+    return DateFormat('dd MMM yyyy').format(date);
   }
 }
