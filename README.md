@@ -13,6 +13,12 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 - assets/
 - docs/
 
+### Teknologi yang Digunakan
+- Flutter
+- GetX (State Management & Routing)
+- Firebase Authentication
+- Cloud Firestore
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
