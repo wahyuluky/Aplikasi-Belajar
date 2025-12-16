@@ -3,10 +3,18 @@ import 'package:flutter_application_1/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+// LoginController bertugas mengatur logika login
+// termasuk validasi input, pemanggilan service,
+// serta navigasi setelah login
+
 class LoginController extends GetxController {
+  // Controller untuk input email
   final emailC = TextEditingController();
+  // Controller untuk input password
   final passwordC = TextEditingController();
 
+  
+  // State loading untuk indikator proses login
   var isLoading = false.obs;
 
   // ============================================================
@@ -83,11 +91,15 @@ class LoginController extends GetxController {
         ),
       ),
 
+
+      // Jika autoClose false → dialog bisa ditutup manual
+      // Jika autoClose true → dialog tertutup otomatis
       barrierDismissible:
           !autoClose, // gagal → bisa tap luar, sukses → auto close
       transitionDuration: Duration.zero, // tidak slowmo
     );
 
+    // Menutup popup otomatis jika login berhasil
     if (autoClose) {
       Future.delayed(const Duration(milliseconds: 1500), () {
         if (Get.isDialogOpen ?? false) {
@@ -99,8 +111,11 @@ class LoginController extends GetxController {
 
   // ============================================================
   // FUNGSI LOGIN
+  // Menangani validasi input, proses autentikasi,
+  // serta navigasi ke halaman utama
   // ============================================================
   void login() async {
+    // Validasi input kosong
     if (emailC.text.isEmpty || passwordC.text.isEmpty) {
       showPopup(
         title: "Login gagal",
@@ -111,6 +126,7 @@ class LoginController extends GetxController {
       return;
     }
 
+    // Validasi format email sederhana
     if (!emailC.text.contains("@")) {
       showPopup(
         title: "Login gagal",
@@ -121,17 +137,22 @@ class LoginController extends GetxController {
       return;
     }
 
+    // Menampilkan loading saat proses login
     isLoading.value = true;
 
+    // Memanggil AuthService untuk proses login
     final result = await AuthService.to.login(
       emailC.text.trim(),
       passwordC.text.trim(),
     );
 
+    // Delay kecil agar transisi loading lebih halus
     await Future.delayed(const Duration(seconds: 1));
     isLoading.value = false;
 
-    // == LOGIN SUKSES ==
+    // ======================
+    // LOGIN BERHASIL
+    // ======================
     if (result == null) {
       showPopup(
         title: "Login berhasil",
@@ -141,6 +162,7 @@ class LoginController extends GetxController {
         autoClose: true,
       );
 
+      // Navigasi ke halaman HOME
       Future.delayed(const Duration(milliseconds: 1500), () {
         Get.offAllNamed(Routes.HOME);
       });
@@ -148,7 +170,9 @@ class LoginController extends GetxController {
       return;
     }
 
-    // == LOGIN GAGAL ==
+    // ======================
+    // LOGIN GAGAL
+    // ======================
     showPopup(
       title: "Login gagal",
       message: result,
@@ -157,6 +181,7 @@ class LoginController extends GetxController {
     );
   }
 
+// Membersihkan controller ketika halaman ditutup
   @override
   void onClose() {
     emailC.dispose();
