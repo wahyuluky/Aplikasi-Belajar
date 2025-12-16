@@ -28,6 +28,11 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 - Weekly Report
 - Profil Pengguna
 
+### Cara Menjalankan Aplikasi
+1. Clone repository
+2. Jalankan `flutter pub get`
+3. Jalankan `flutter run`
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
