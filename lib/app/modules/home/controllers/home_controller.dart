@@ -10,18 +10,28 @@ import 'package:flutter_application_1/app/modules/timerfokus/views/timerfokus_vi
 import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 import 'package:flutter_application_1/app/modules/weekly_report/views/weekly_report_view.dart';
 
+
+// HomeController mengatur logika utama pada halaman home
+// termasuk navigasi menu, pengambilan data user,
+// serta pengelolaan state tab
 class HomeController extends GetxController {
+   // Index tab yang sedang aktif
   var selectedIndex = 0.obs;
+  // Username user yang sedang login
   var username = "".obs;
+  // Foto profil user (URL)
   RxString photo = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
+    // Memuat data user saat controller pertama kali dibuat
     loadUser();
+     // Memuat foto profil user dari Firestore
     loadUserPhoto();
   }
 
+// Mengambil data profil user dari AuthService
   void loadUser() async {
     final data = await AuthService.to.getUserProfile();
     if (data != null) {
@@ -29,6 +39,7 @@ class HomeController extends GetxController {
     }
   }
 
+// Mengambil foto profil user dari Firestore
   Future<void> loadUserPhoto() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -42,6 +53,7 @@ class HomeController extends GetxController {
     }
   }
 
+// Daftar halaman untuk navigasi tab
   final pages = [
     ScheduleView(),
     TugasView(),
@@ -49,6 +61,7 @@ class HomeController extends GetxController {
     ProfileView(),
   ];
 
+// Navigasi menu berdasarkan index
   void openMenu(int index) {
     switch (index) {
       case 0:
@@ -69,6 +82,7 @@ class HomeController extends GetxController {
     }
   }
 
+// Mengubah tab yang aktif
   void changeTab(int index) {
     selectedIndex.value = index;
   }

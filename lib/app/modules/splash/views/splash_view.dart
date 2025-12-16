@@ -5,7 +5,7 @@ import 'package:flutter_application_1/app/modules/splash/controllers/splash_cont
 class SplashView extends StatelessWidget {
   final controller = Get.put(SplashController());
 
-  const SplashView({super.key});
+  SplashView({super.key});
 
   @override
   Widget build(BuildContext context) {

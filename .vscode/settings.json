@@ -1,4 +1,4 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "cmake.sourceDirectory": "C:/flutter/Belajar/flutter_application_1/linux"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "cmake.sourceDirectory": "C:/flutter/Belajar/flutter_application_1/linux"
 }

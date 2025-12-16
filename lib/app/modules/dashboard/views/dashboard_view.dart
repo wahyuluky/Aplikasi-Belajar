@@ -6,7 +6,7 @@ import 'package:flutter_application_1/app/modules/tugas/views/tugas_view.dart';
 class DashboardView extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
 
-  const DashboardView({super.key});
+  DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {

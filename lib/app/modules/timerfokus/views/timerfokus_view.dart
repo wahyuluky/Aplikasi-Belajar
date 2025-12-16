@@ -7,7 +7,7 @@ class TimerFokusView extends GetView<TimerFokusController> {
   @override
   final controller = Get.put(TimerFokusController());
 
-  const TimerFokusView({super.key});
+  TimerFokusView({super.key});
 
   @override
   Widget build(BuildContext context) {

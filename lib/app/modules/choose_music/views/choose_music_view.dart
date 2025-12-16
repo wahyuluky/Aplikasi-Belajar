@@ -5,7 +5,7 @@ import '../controllers/choose_music_controller.dart';
 class ChooseMusicView extends StatelessWidget {
   final c = Get.put(ChooseMusicController());
 
-  const ChooseMusicView({super.key});
+  ChooseMusicView({super.key});
 
   @override
   Widget build(BuildContext context) {

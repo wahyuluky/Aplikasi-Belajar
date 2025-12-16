@@ -5,7 +5,7 @@ import 'package:flutter_application_1/app/modules/play_music/controllers/play_mu
 class PlayMusicView extends StatelessWidget {
   final PlayMusicController c = Get.put(PlayMusicController());
 
-  const PlayMusicView({super.key});
+  PlayMusicView({super.key});
 
   @override
   Widget build(BuildContext context) {

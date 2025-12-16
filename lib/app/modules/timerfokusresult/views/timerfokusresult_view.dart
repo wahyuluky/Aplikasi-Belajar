@@ -9,7 +9,7 @@ class TimerfokusresultView extends GetView<TimerfokusresultController> {
   @override
   final controller = Get.put(TimerfokusresultController());
 
-  const TimerfokusresultView({super.key});
+  TimerfokusresultView({super.key});
 
   @override
   Widget build(BuildContext context) {

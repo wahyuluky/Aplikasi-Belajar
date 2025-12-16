@@ -1,68 +1,129 @@
+import 'dart:async'; // 🔥 WAJIB
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_application_1/app/data/auth_service.dart';
 
 class GrupbelajarController extends GetxController {
-  final firestore = FirebaseFirestore.instance;
-  final userId = FirebaseAuth.instance.currentUser!.uid;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   RxList<Map<String, dynamic>> grupList = <Map<String, dynamic>>[].obs;
+  StreamSubscription? _sub;
 
   @override
   void onInit() {
     super.onInit();
-    loadUserGroups();
+    _listenUserGroups();
   }
 
-  void loadUserGroups() {
-    firestore
+  // ======================
+  // LISTEN GRUP USER (REALTIME)
+  // ======================
+  void _listenUserGroups() {
+    final user = AuthService.to.currentUser;
+    if (user == null) {
+      grupList.clear();
+      return;
+    }
+
+    _sub?.cancel();
+    _sub = firestore
         .collection("users")
-        .doc(userId)
+        .doc(user.uid)
         .collection("joined_groups")
         .snapshots()
         .listen((snapshot) async {
-      final List<Map<String, dynamic>> temp = [];
+      grupList.clear();
 
-      for (var doc in snapshot.docs) {
-        final grup =
-            await firestore.collection("grup_belajar").doc(doc.id).get();
+      for (final doc in snapshot.docs) {
+        final groupId = doc.id;
 
-        if (grup.exists) {
-          temp.add({
-            "id": doc.id,
-            "nama": grup["nama"],
-            "foto": grup["foto"],
+        final grupDoc =
+            await firestore.collection("grup_belajar").doc(groupId).get();
+
+        if (grupDoc.exists) {
+          final data = grupDoc.data()!;
+          grupList.add({
+            "id": groupId,
+            "nama": data["nama"] ?? "-",
+            "foto": data["foto"] ?? "https://picsum.photos/200",
           });
         }
       }
-
-      grupList.value = temp;
     });
   }
 
-  Future<void> tambahGrup(String nama, String foto) async {
+  // ======================
+  // BUAT GRUP
+  // ======================
+  Future<void> tambahGrup(String namaGrup, String foto) async {
+    final user = AuthService.to.currentUser;
+    if (user == null) {
+      Get.snackbar("Error", "Silakan login dulu");
+      return;
+    }
+
     final groupRef = firestore.collection("grup_belajar").doc();
     final groupId = groupRef.id;
 
     await groupRef.set({
-      "nama": nama,
+      "nama": namaGrup,
       "foto": foto,
-      "createdBy": userId,
       "createdAt": FieldValue.serverTimestamp(),
+      "createdBy": user.uid,
     });
 
-    await groupRef.collection("members").doc(userId).set({
+    // admin member
+    await groupRef.collection("members").doc(user.uid).set({
       "role": "admin",
       "joinedAt": FieldValue.serverTimestamp(),
     });
 
+    // joined_groups
     await firestore
         .collection("users")
-        .doc(userId)
+        .doc(user.uid)
         .collection("joined_groups")
         .doc(groupId)
-        .set({"joined": true});
+        .set({
+      "joined": true,
+      "joinedAt": FieldValue.serverTimestamp(),
+    });
+
+    Get.snackbar(
+      "Berhasil",
+      "Grup berhasil dibuat",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+  }
+
+  // ======================
+  // HAPUS GRUP
+  // ======================
+  Future<void> deleteGrup(String groupId) async {
+    final user = AuthService.to.currentUser;
+    if (user == null) return;
+
+    await firestore.collection("grup_belajar").doc(groupId).delete();
+    await firestore
+        .collection("users")
+        .doc(user.uid)
+        .collection("joined_groups")
+        .doc(groupId)
+        .delete();
+
+    Get.snackbar(
+      "Berhasil",
+      "Grup berhasil dihapus",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+  }
+
+  @override
+  void onClose() {
+    _sub?.cancel();
+    super.onClose();
   }
 }

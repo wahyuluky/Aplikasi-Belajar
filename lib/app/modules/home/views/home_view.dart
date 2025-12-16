@@ -19,7 +19,7 @@ class HomeView extends StatelessWidget {
     {"icon": Icons.people_alt_outlined, "label": "Diskusi"},
   ];
 
-  const HomeView({super.key});
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

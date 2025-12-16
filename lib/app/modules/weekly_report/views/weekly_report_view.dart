@@ -6,7 +6,7 @@ class WeeklyReportView extends StatelessWidget {
   final WeeklyReportController controller =
       Get.put(WeeklyReportController());
 
-  const WeeklyReportView({super.key});
+  WeeklyReportView({super.key});
 
   @override
   Widget build(BuildContext context) {

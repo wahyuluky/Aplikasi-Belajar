@@ -5,7 +5,7 @@ import '../controllers/addtugas_controller.dart';
 class AddtugasView extends StatelessWidget {
   final controller = Get.put(AddtugasController());
 
-  const AddtugasView({super.key});
+  AddtugasView({super.key});
 
   @override
   Widget build(BuildContext context) {

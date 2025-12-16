@@ -8,7 +8,7 @@ class MusicCollectionView extends StatelessWidget {
   final MusicCollectionController controller =
       Get.put(MusicCollectionController());
 
-  const MusicCollectionView({super.key});
+  MusicCollectionView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import '../controllers/addschedule_controller.dart';
 class AddscheduleView extends GetView<AddscheduleController> {
   final AddscheduleController c = Get.put(AddscheduleController());
 
-  const AddscheduleView({super.key});
+  AddscheduleView({super.key});
 
   @override
   Widget build(BuildContext context) {

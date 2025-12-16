@@ -5,7 +5,7 @@ import 'package:flutter_application_1/app/modules/editschedule/controllers/edits
 class EditscheduleView extends GetView<EditscheduleController> {
   final EditscheduleController c = Get.put(EditscheduleController());
 
-  const EditscheduleView({super.key});
+  EditscheduleView({super.key});
 
   @override
   Widget build(BuildContext context) {
