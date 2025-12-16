@@ -4,6 +4,15 @@ Nama Aplikasi :
 ### Deskripsi Aplikasi:
 MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancang khusus untuk mahasiswa dan pelajar agar tetap fokus, teratur, dan konsisten dalam mengelola aktivitas akademik. Aplikasi ini membantu pengguna mengatasi kebiasaan menunda, menjaga fokus, serta meningkatkan kualitas belajar melalui fitur-fitur terstruktur seperti focus timer, to-do list, jadwal tugas, dan grup belajar.
 
+### Struktur Folder Utama
+- lib/
+  - app/
+    - modules/
+    - data/
+    - routes/
+- assets/
+- docs/
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
