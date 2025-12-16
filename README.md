@@ -33,6 +33,10 @@ MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancan
 2. Jalankan `flutter pub get`
 3. Jalankan `flutter run`
 
+### Catatan
+Aplikasi ini dikembangkan sebagai bagian dari mata kuliah Rekayasa Interaksi.
+
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
