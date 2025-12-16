@@ -6,7 +6,6 @@ import 'package:flutter_application_1/app/modules/schedule/controllers/schedule_
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 class ScheduleView extends StatelessWidget {
   final ScheduleController c = Get.put(ScheduleController());
 
@@ -15,15 +14,20 @@ class ScheduleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white,
-       appBar: AppBar(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, size: 18, color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 18,
+            color: Colors.white,
+          ),
           onPressed: () => Get.back(),
         ),
         title: const Text(
           "Jadwal",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
         ),
         centerTitle: true,
         flexibleSpace: Container(
@@ -37,64 +41,65 @@ class ScheduleView extends StatelessWidget {
         ),
       ),
       body: Column(
-          children: [
-            _calendar(),  // diganti dengan TableCalendar
-            _sectionTitle(),
-            _scheduleList(),
-          ],
-        ),
-      );
+        children: [
+          _calendar(), // diganti dengan TableCalendar
+          _sectionTitle(),
+          _scheduleList(),
+        ],
+      ),
+    );
   }
 
   // --------------------- TABLE CALENDAR ---------------------
   Widget _calendar() {
-  return Obx(() {
-    return Column(
-      children: [
-        // 🗓 TableCalendar
-        TableCalendar(
-          locale: 'id_ID',
-          focusedDay: c.focusedDay.value,
-          firstDay: DateTime(2000),
-          lastDay: DateTime(2100),
-          currentDay: c.selectedDay.value,
-          calendarFormat: c.calendarFormat.value,
+    return Obx(() {
+      return Column(
+        children: [
+          // 🗓 TableCalendar
+          TableCalendar(
+            locale: 'id_ID',
+            focusedDay: c.focusedDay.value,
+            firstDay: DateTime(2000),
+            lastDay: DateTime(2100),
+            currentDay: c.selectedDay.value,
+            calendarFormat: c.calendarFormat.value,
 
-          // 🔁 Update format ketika di-swipe
-          onFormatChanged: (format) {
-            c.calendarFormat.value = format;
-          },
+            // 🔁 Update format ketika di-swipe
+            onFormatChanged: (format) {
+              c.calendarFormat.value = format;
+            },
 
-          // 📌 When a day selected
-          selectedDayPredicate: (day) =>
-              isSameDay(c.selectedDay.value, day),
-          onDaySelected: (selected, focused) {
-            c.selectedDay.value = selected;
-            c.focusedDay.value = focused;
-          },
-          // 🔽 Styling ukuran font calendar
-          daysOfWeekStyle: const DaysOfWeekStyle(
-            weekdayStyle: TextStyle(fontSize: 11),
-            weekendStyle: TextStyle(fontSize: 11),
+            // 📌 When a day selected
+            selectedDayPredicate: (day) => isSameDay(c.selectedDay.value, day),
+            onDaySelected: (selected, focused) {
+              c.selectedDay.value = selected;
+              c.focusedDay.value = focused;
+            },
+            // 🔽 Styling ukuran font calendar
+            daysOfWeekStyle: const DaysOfWeekStyle(
+              weekdayStyle: TextStyle(fontSize: 11),
+              weekendStyle: TextStyle(fontSize: 11),
+            ),
+            headerStyle: const HeaderStyle(
+              titleTextStyle:
+                  TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              formatButtonTextStyle: TextStyle(fontSize: 11),
+            ),
+            calendarStyle: const CalendarStyle(
+              defaultTextStyle: TextStyle(fontSize: 11),
+              weekendTextStyle: TextStyle(fontSize: 11),
+              selectedTextStyle:
+                  TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+              todayTextStyle:
+                  TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            ),
           ),
-          headerStyle: const HeaderStyle(
-            titleTextStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            formatButtonTextStyle: TextStyle(fontSize: 11),
-          ),
-          calendarStyle: const CalendarStyle(
-            defaultTextStyle: TextStyle(fontSize: 11),
-            weekendTextStyle: TextStyle(fontSize: 11),
-            selectedTextStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-            todayTextStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  });
-}
+        ],
+      );
+    });
+  }
 
   // ----------------------------------------------------------
-
 
   Widget _sectionTitle() {
     return Container(
@@ -111,7 +116,7 @@ class ScheduleView extends StatelessWidget {
           // === BUTTON ADD ===
           GestureDetector(
             onTap: () {
-              Get.to(AddscheduleView());   // halaman tujuan
+              Get.to(AddscheduleView()); // halaman tujuan
             },
             child: const Icon(
               Icons.add,
@@ -122,7 +127,6 @@ class ScheduleView extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _scheduleList() {
     return Expanded(
@@ -145,7 +149,9 @@ class ScheduleView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(item['title'], style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text(item['title'],
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text(item['date'], style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
                       ]
@@ -154,14 +160,17 @@ class ScheduleView extends StatelessWidget {
 
                   // Hapus
                   Padding(
-                    padding: const EdgeInsets.only(top: 6),  // 🔽 turunkan sedikit
+                    padding:
+                        const EdgeInsets.only(top: 6), // 🔽 turunkan sedikit
                     child: GestureDetector(
                       onTap: () => showDeleteDialog(item['id']),
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.delete, color: Colors.red, size: 18),
                           SizedBox(width: 4),
-                          Text("Hapus", style: TextStyle(color: Colors.red, fontSize: 12)),
+                          Text("Hapus",
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 12)),
                         ],
                       ),
                     ),
@@ -171,7 +180,8 @@ class ScheduleView extends StatelessWidget {
 
                   // Edit
                   Padding(
-                    padding: const EdgeInsets.only(top: 6),  // 🔽 turunkan sedikit
+                    padding:
+                        const EdgeInsets.only(top: 6), // 🔽 turunkan sedikit
                     child: GestureDetector(
                       onTap: () {
                         Get.to(() => EditscheduleView(), arguments: {
@@ -180,19 +190,19 @@ class ScheduleView extends StatelessWidget {
                           "date": item['date'],
                         });
                       },
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.edit, color: Colors.green, size: 18),
                           SizedBox(width: 4),
-                          Text("Edit", style: TextStyle(color: Colors.green, fontSize: 12)),
+                          Text("Edit",
+                              style:
+                                  TextStyle(color: Colors.green, fontSize: 12)),
                         ],
                       ),
-            ),
+                    ),
                   ),
                 ],
               ),
-
-
             );
           },
         );
@@ -213,14 +223,12 @@ class ScheduleView extends StatelessWidget {
       },
     );
   }
-
 }
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('id_ID', null); 
-  
+  await initializeDateFormatting('id_ID', null);
+
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
     home: ScheduleView(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/app/modules/addtugas/controllers/addtugas_controller.dart';
 import 'package:get/get.dart';
-import '../controllers/addtugas_controller.dart';
 
 class AddtugasView extends GetView<AddtugasController> {
   final Controller  = Get.put(AddtugasController());

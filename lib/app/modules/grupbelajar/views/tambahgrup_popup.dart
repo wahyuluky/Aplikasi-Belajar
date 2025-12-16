@@ -31,12 +31,11 @@ class TambahgrupPopup {
                 }),
 
                 const SizedBox(height: 10),
-                const Text(
-                  "Foto Profile",
-                  style: TextStyle(color: Colors.black54),
-                ),
+                const Text("Foto Profile",
+                    style: TextStyle(color: Colors.black54)),
 
                 const SizedBox(height: 25),
+
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -44,6 +43,7 @@ class TambahgrupPopup {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 const SizedBox(height: 10),
 
                 // Input Nama Grup
@@ -89,6 +89,9 @@ class TambahgrupPopup {
 
                       Get.back();
                       Get.delete<TambahgrupController>();
+
+                      // 🔥 === Notif Sukses ===
+                      suksesTambahGrup();
                     },
                     child: const Text(
                       "Tambah Grup",
@@ -102,5 +105,60 @@ class TambahgrupPopup {
         ),
       ),
     );
+  }
+
+  static void suksesTambahGrup() {
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(
+            color: Color(0xFF4ADE80), // Hijau border seperti gambar
+            width: 2,
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          width: 280,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Lingkaran hijau + centang
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF4ADE80), // Hijau like gambar
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 45,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                "Grup berhasil ditambahkan",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+
+    // Auto close dalam 1.8 detik
+    Future.delayed(const Duration(milliseconds: 1800), () {
+      if (Get.isDialogOpen ?? false) Get.back();
+    });
   }
 }

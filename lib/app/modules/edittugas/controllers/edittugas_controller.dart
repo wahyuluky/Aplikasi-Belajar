@@ -85,3 +85,4 @@ class EdittugasController extends GetxController {
   }
 
 }
+
