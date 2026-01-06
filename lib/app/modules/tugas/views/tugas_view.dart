@@ -78,7 +78,7 @@ class TugasView extends StatelessWidget {
             value: t.isDone,
             onChanged: (_) => controller.toggleCheck(t),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // checkbox lebih kecil
-            visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
           ),
 
           const SizedBox(width: 4),
@@ -107,8 +107,8 @@ class TugasView extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () => showDeleteDialog(t.id),
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Icon(Icons.delete, size: 14, color: Colors.red),
                           SizedBox(width: 3),
                           Text("Hapus",
@@ -129,8 +129,8 @@ class TugasView extends StatelessWidget {
                         "isDone": t.isDone,
                       });
                     },
-                    child: Row(
-                        children: const [
+                    child: const Row(
+                        children: [
                           Icon(Icons.edit, size: 14, color: Colors.black54),
                           SizedBox(width: 3),
                           Text("Edit", style: TextStyle(fontSize: 11)),

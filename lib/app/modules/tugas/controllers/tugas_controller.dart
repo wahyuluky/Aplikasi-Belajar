@@ -1,3 +1,5 @@
+/* INI TERHUBUNG KE DATABASE. NOTES SAMA KAYA DI MODEL
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -94,5 +96,38 @@ class TugasController extends GetxController {
         .collection("tugas")
         .doc(id)
         .delete();
+  }
+}
+---------------------------------------------------*/
+
+import 'package:get/get.dart';
+import 'tugas_model.dart';
+
+class TugasController extends GetxController {
+  var listTugas = <TugasModel>[].obs;
+
+  void tambahTugas(TugasModel tugas) {
+    listTugas.add(tugas);
+    urutkanTanggal();
+  }
+
+  void toggleCheck(TugasModel tugas) {
+    tugas.isDone = !tugas.isDone;
+    listTugas.refresh();
+  }
+
+  void hapusTugas(String id) {
+    listTugas.removeWhere((t) => t.id == id);
+  }
+
+  String formatTanggal(DateTime date) {
+    return "${date.day.toString().padLeft(2, '0')}/"
+        "${date.month.toString().padLeft(2, '0')}/"
+        "${date.year}";
+  }
+
+  void urutkanTanggal() {
+    listTugas.sort((a, b) => a.tanggal.compareTo(b.tanggal));
+    listTugas.refresh();
   }
 }

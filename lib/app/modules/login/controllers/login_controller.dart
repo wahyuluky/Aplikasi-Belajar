@@ -3,13 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/data/auth_service.dart';
 import 'package:flutter_application_1/app/routes/app_pages.dart';
 
+// LoginController bertugas mengatur logika login
+// termasuk validasi input, pemanggilan service,
+// serta navigasi setelah login
+
 class LoginController extends GetxController {
+  // Controller untuk input email
   final emailC = TextEditingController();
+  // Controller untuk input password
   final passwordC = TextEditingController();
 
+  
+  // State loading untuk indikator proses login
   var isLoading = false.obs;
 
   void login() async {
+    // Validasi input kosong
     if (emailC.text.isEmpty || passwordC.text.isEmpty) {
       Get.snackbar(
         "Warning!",
@@ -21,6 +30,7 @@ class LoginController extends GetxController {
       return;
     }
 
+    // Validasi format email sederhana
     if (!emailC.text.contains("@")) {
       Get.snackbar(
         "Error",
@@ -32,8 +42,10 @@ class LoginController extends GetxController {
       return;
     }
 
+    // Menampilkan loading saat proses login
     isLoading.value = true;
 
+    // Memanggil AuthService untuk proses login
     final result = await AuthService.to.login(
       emailC.text.trim(),
       passwordC.text.trim(),
@@ -64,6 +76,7 @@ class LoginController extends GetxController {
     
   }
 
+// Membersihkan controller ketika halaman ditutup
   @override
   void onClose() {
     emailC.dispose();

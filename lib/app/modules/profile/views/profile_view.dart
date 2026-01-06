@@ -7,6 +7,8 @@ import 'package:flutter_application_1/app/modules/profile/views/edit_profile_vie
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
 
+  ProfileView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

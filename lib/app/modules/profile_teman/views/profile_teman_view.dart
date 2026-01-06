@@ -6,6 +6,7 @@ import '../controllers/profile_teman_controller.dart';
 
 class ProfileTemanView extends GetView<ProfileTemanController> {
   final String userId;
+  @override
   final ProfileTemanController controller = Get.put(ProfileTemanController());
 
   ProfileTemanView({super.key, required this.userId});

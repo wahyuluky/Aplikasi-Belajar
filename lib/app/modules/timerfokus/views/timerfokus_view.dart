@@ -6,6 +6,8 @@ import 'package:flutter_application_1/app/modules/timerfokusresult/views/timerfo
 class TimerFokusView extends StatelessWidget {
   final controller = Get.put(TimerFokusController());
 
+  TimerFokusView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

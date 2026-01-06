@@ -8,6 +8,8 @@ class MusicCollectionView extends StatelessWidget {
   final MusicCollectionController controller =
       Get.put(MusicCollectionController());
 
+  MusicCollectionView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

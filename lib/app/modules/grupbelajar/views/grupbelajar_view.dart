@@ -6,7 +6,10 @@ import 'package:flutter_application_1/app/modules/grupbelajar/views/tambahgrup_p
 import '../controllers/grupbelajar_controller.dart';
 
 class GrupbelajarView extends GetView<GrupbelajarController> {
+  @override
   final controller = Get.put(GrupbelajarController());
+
+  GrupbelajarView({super.key});
   
 
   @override

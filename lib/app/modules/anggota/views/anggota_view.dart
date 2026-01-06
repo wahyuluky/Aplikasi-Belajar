@@ -129,7 +129,7 @@ class AnggotaView extends StatelessWidget {
       ),
       title: Obx(() => Text(
               controller.groupName.value,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             )),
       centerTitle: true,
       leading: IconButton(

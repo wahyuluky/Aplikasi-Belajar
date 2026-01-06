@@ -5,6 +5,8 @@ import 'package:flutter_application_1/app/modules/play_music/controllers/play_mu
 class PlayMusicView extends StatelessWidget {
   final PlayMusicController c = Get.find<PlayMusicController>();
 
+  PlayMusicView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +34,13 @@ class PlayMusicView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             _albumImage(),
-            SizedBox(height: 35),
+            const SizedBox(height: 35),
             _musicDescription(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _progressBar(),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             _playerButtons(),
           ],
         ),
@@ -48,9 +50,9 @@ class PlayMusicView extends StatelessWidget {
 
   // ---------------- IMAGE ALBUM ----------------
   Widget _albumImage() {
-    return CircleAvatar(
+    return const CircleAvatar(
       radius: 80,
-      backgroundColor: Colors.green.shade100,
+      backgroundColor: Colors.green,
       child: const Icon(Icons.music_note, color: Colors.green),
     );
   }
@@ -136,7 +138,7 @@ String _format(Duration d) =>
           child: Container(
             width: 45,
             height: 45,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.green,
             ),
@@ -148,7 +150,7 @@ String _format(Duration d) =>
           ),
         ),
 
-        SizedBox(width: 35),
+        const SizedBox(width: 35),
 
          IconButton(
         icon: const Icon(Icons.skip_next, size: 24, color: Colors.green),

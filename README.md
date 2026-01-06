@@ -4,6 +4,39 @@ Nama Aplikasi :
 ### Deskripsi Aplikasi:
 MindStudy adalah aplikasi pendukung produktivitas dan pembelajaran yang dirancang khusus untuk mahasiswa dan pelajar agar tetap fokus, teratur, dan konsisten dalam mengelola aktivitas akademik. Aplikasi ini membantu pengguna mengatasi kebiasaan menunda, menjaga fokus, serta meningkatkan kualitas belajar melalui fitur-fitur terstruktur seperti focus timer, to-do list, jadwal tugas, dan grup belajar.
 
+### Struktur Folder Utama
+- lib/
+  - app/
+    - modules/
+    - data/
+    - routes/
+- assets/
+- docs/
+
+### Teknologi yang Digunakan
+- Flutter
+- GetX (State Management & Routing)
+- Firebase Authentication
+- Cloud Firestore
+
+### Fitur Utama
+- Login & Register
+- Manajemen Jadwal
+- To Do List
+- Fokus Belajar (Timer)
+- Grup Belajar
+- Weekly Report
+- Profil Pengguna
+
+### Cara Menjalankan Aplikasi
+1. Clone repository
+2. Jalankan `flutter pub get`
+3. Jalankan `flutter run`
+
+### Catatan
+Aplikasi ini dikembangkan sebagai bagian dari mata kuliah Rekayasa Interaksi.
+
+
 ### Kelas-NIM-Nama-Username github:
 - B - 202210370311124 - Nadra Tan - Nadragrande26
 - B - 202210370311129 - Putri Nabila - Putri-Nabila123
