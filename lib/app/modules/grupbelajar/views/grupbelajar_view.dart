@@ -125,7 +125,7 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                 leading: const Icon(Icons.edit, color: Colors.blue),
                 title: const Text("Edit Grup"),
                 onTap: () {
-                  //Get.back(); // tutup bottom sheet dulu
+                  Get.back(); // tutup bottom sheet dulu
                   EditgrupPopup.show(
                     id: item['id'],
                     nama: item['nama'],
@@ -137,7 +137,16 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
                 leading: const Icon(Icons.delete, color: Colors.red),
                 title: const Text("Hapus Grup"),
                 onTap: () {
+                  Get.back();
                   showDeleteDialog(item['id']);// Aksi hapus
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.exit_to_app, color: Colors.orange),
+                title: const Text("Keluar dari Grup"),
+                onTap: () {
+                  Get.back();
+                  showLeaveGroupDialog(item['id']);
                 },
               ),
             ],
@@ -147,27 +156,128 @@ class GrupbelajarView extends GetView<GrupbelajarController> {
     );
   }
 
+  void showLeaveGroupDialog(String grupId) {
+    Get.defaultDialog(
+      title: "",
+      backgroundColor: Colors.white,
+      radius: 20,
+      content: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.orange.shade100,
+            child: const Icon(Icons.exit_to_app, color: Colors.orange, size: 32),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            "Keluar dari Grup?",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Anda akan keluar dari grup ini, namun grup tetap tersedia untuk anggota lain.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+          const SizedBox(height: 25),
+
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Batal", style: TextStyle(color: Colors.black),),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                  ),
+                  onPressed: () {
+                    controller.leaveGroup(grupId);
+                    Get.back();
+                  },
+                  child: const Text("Keluar", style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+
   void showDeleteDialog(String docId) {
     Get.defaultDialog(
-      title: "Hapus Tugas?",
-      middleText: "Apakah kamu yakin ingin menghapus tugas ini?",
-      textCancel: "Batal",
-      textConfirm: "Hapus",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        controller.deleteGrup(docId);
-        Get.back();
-      },
+      title: "",
+      backgroundColor: Colors.white,
+      radius: 20,
+      content: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.red.shade100,
+            child: const Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+              size: 32,
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            "Hapus Grup?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Tindakan ini tidak dapat dibatalkan.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+          const SizedBox(height: 25),
+
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Batal", style: TextStyle(color: Colors.black),),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () {
+                    controller.deleteGrup(docId);
+                    Get.back();
+                    Get.snackbar(
+                      "Sukses",
+                      "Grup berhasil dihapus",
+                      backgroundColor: Colors.green,
+                      colorText: Colors.white,
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  },
+                  child: const Text("Hapus", style: TextStyle(color: Colors.white),),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: GrupbelajarView(),
-  ));
-}
 
 

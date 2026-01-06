@@ -133,11 +133,5 @@ class LoginView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: LoginView(),
-  ));
-}
 
 

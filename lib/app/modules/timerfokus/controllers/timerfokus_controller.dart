@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:get/get.dart';
 
 class TimerFokusController extends GetxController {
-  RxDouble waktu = 25.0.obs; // menit
+  RxInt sisaDetik = (25 * 60).obs; // 1500 detik
   RxBool isRunning = false.obs;
+  
 
   Timer? timer;
 
   // Target belajar
-  RxInt progress = 3.obs;
+  RxInt progress = 0.obs;
   RxInt totalTarget = 4.obs;
 
   void mulaiTimer() {
@@ -17,11 +18,11 @@ class TimerFokusController extends GetxController {
     isRunning.value = true;
 
     timer = Timer.periodic(const Duration(seconds: 1), (t) {
-      if (waktu.value <= 0) {
+      if (sisaDetik.value <= 0) {
         selesai();
         return;
       }
-      waktu.value -= (1 / 60); // mengurangi 1 detik
+      sisaDetik.value --; // mengurangi 1 detik
     });
   }
 
@@ -33,7 +34,20 @@ class TimerFokusController extends GetxController {
   void selesai() {
     isRunning.value = false;
     timer?.cancel();
-    waktu.value = 25.0;
+
+    // 🎯 Tambah target belajar 1 sesi
+    if (progress.value < totalTarget.value) {
+      progress.value++;
+    }
+
+    // Reset ke 25 menit
+    sisaDetik.value = 25 * 60;
+  }
+
+  String get formattedTime {
+    final minutes = sisaDetik.value ~/ 60;
+    final seconds = sisaDetik.value % 60;
+    return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
   }
 
   @override

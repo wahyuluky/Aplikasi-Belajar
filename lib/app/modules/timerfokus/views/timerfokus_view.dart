@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/timerfokus/controllers/timerfokus_controller.dart';
 import 'package:flutter_application_1/app/modules/timerfokusresult/views/timerfokusresult_view.dart';
 
-class TimerFokusView extends GetView<TimerFokusController> {
+class TimerFokusView extends StatelessWidget {
   final controller = Get.put(TimerFokusController());
 
   @override
@@ -36,7 +36,7 @@ class TimerFokusView extends GetView<TimerFokusController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Belajar Pra Skripsi",
+              "Belajar",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 20),
@@ -56,7 +56,7 @@ class TimerFokusView extends GetView<TimerFokusController> {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    controller.waktu.value.toStringAsFixed(2),
+                    controller.formattedTime,
                     style: const TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -152,8 +152,16 @@ class TimerFokusView extends GetView<TimerFokusController> {
             const SizedBox(height: 10),
 
             Obx(() {
-              double value =
-                  controller.progress.value / controller.totalTarget.value;
+              final int progress = controller.progress.value;
+              final int total = controller.totalTarget.value;
+              double value = 0.0 ;
+
+               if (total > 0) {
+                  value = progress / total;
+                }
+
+                // Jaga agar nilai tetap 0.0 - 1.0
+                value = value.clamp(0.0, 1.0);
 
               return Column(
                 children: [
@@ -167,7 +175,7 @@ class TimerFokusView extends GetView<TimerFokusController> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${controller.progress.value}/${controller.totalTarget.value}",
+                    "$progress/$total",
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   )
                 ],
@@ -180,9 +188,3 @@ class TimerFokusView extends GetView<TimerFokusController> {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: TimerFokusView(),
-  ));
-}

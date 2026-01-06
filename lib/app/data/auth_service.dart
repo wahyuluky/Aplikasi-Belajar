@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/data/analytics_service.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
@@ -11,6 +12,8 @@ class AuthService extends GetxService {
   // Pantau status login user
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
+  User? get currentUser => _auth.currentUser;
+
   // Register
   Future<String?> register(String email, String password, String username) async {
     try {
@@ -19,6 +22,9 @@ class AuthService extends GetxService {
         email: email,
         password: password,
       );
+      // setelah register berhasil
+      AnalyticsService.analytics.logSignUp(signUpMethod: 'email');
+
 
       // Ambil UID
       String uid = userCredential.user!.uid;
@@ -48,10 +54,13 @@ class AuthService extends GetxService {
         email: email,
         password: password,
       );
+      // ✅ ANALYTICS DITARUH DI SINI (SETELAH LOGIN BERHASIL)
+      AnalyticsService.analytics.logLogin(loginMethod: 'email');
       return null; // sukses
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
+
   }
 
   Future<Map<String, dynamic>?> getUserProfile() async {

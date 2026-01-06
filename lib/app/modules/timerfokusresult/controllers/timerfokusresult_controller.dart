@@ -7,5 +7,5 @@ class TimerfokusresultController extends GetxController {
 
   // Catatan hasil belajar
   String hasilCatatan =
-      "Berhasil menyelesaikan 4 sesi belajar pra skripsi dengan fokus dan baik";
+      "Sesi belajar telah diselesaikan dengan fokus dan konsisten";
 }

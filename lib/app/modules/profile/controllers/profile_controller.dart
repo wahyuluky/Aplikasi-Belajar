@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/data/auth_service.dart';
+import 'package:flutter_application_1/app/routes/app_pages.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileController extends GetxController {
   final _auth = FirebaseAuth.instance;
@@ -103,35 +108,92 @@ class ProfileController extends GetxController {
     birthDate.value = birthDateC.text;
 
     Get.back();
-    Get.snackbar("Berhasil", "Profil diperbarui",
+    Get.snackbar(
+      "Berhasil", 
+      "Profil diperbarui",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
     snackPosition: SnackPosition.TOP
     );
   }
 
   void logout() {
     Get.defaultDialog(
-      title: "Logout",
-      middleText: "Apakah kamu yakin ingin logout?",
-      textCancel: "Batal",
-      textConfirm: "Logout",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        Get.offAllNamed("/login"); 
-      },
+      title: "",
+      backgroundColor: Colors.white,
+      radius: 20,
+      content: Column(
+        children: [
+          const SizedBox(height: 15),
+          const Text(
+            "Keluar Akun?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Tindakan ini tidak dapat dibatalkan.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+          const SizedBox(height: 25),
+
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Tidak", style: TextStyle(color: Colors.black),),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () async{
+                    await AuthService.to.logout();
+                    Get.offAllNamed(Routes.LOGIN);
+                  },
+                  child: const Text("Iya", style: TextStyle(color: Colors.white),),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  // ---------------------------------------------------------
-  // UPDATE FOTO
-  // ---------------------------------------------------------
   Future<void> updatePhoto(String imagePath) async {
-    photo.value = imagePath; // jika mau upload ke storage, aku bisa buatkan
-
     final uid = _auth.currentUser!.uid;
 
-    await _firestore.collection("users").doc(uid)
-        .set({"photo": imagePath}, SetOptions(merge: true));
+    final tempFile = File(imagePath);
+
+    // ❌ Jika file cache sudah hilang
+    if (!tempFile.existsSync()) {
+      return;
+    }
+
+    // 📁 Simpan ke folder permanen app
+    final dir = await getApplicationDocumentsDirectory();
+    final newPath = '${dir.path}/profile_$uid.jpg';
+
+    final savedFile = await tempFile.copy(newPath);
+
+    // ✅ update state
+    photo.value = savedFile.path;
+
+    // ✅ simpan path aman ke Firestore
+    await _firestore.collection("users").doc(uid).set(
+      {"photo": savedFile.path},
+      SetOptions(merge: true),
+    );
   }
+
 
   @override
   void onClose() {

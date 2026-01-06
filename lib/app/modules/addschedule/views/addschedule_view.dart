@@ -131,10 +131,7 @@ class AddscheduleView extends GetView<AddscheduleController> {
                         // SIMPAN
                         ElevatedButton(
                           onPressed: () {
-                            controller.addSchedule(
-                              controller.subjectC.text,
-                              controller.dateC.text,
-                            );
+                            controller.addSchedule();
                             Get.back();
                           },
                           style: ElevatedButton.styleFrom(
@@ -159,13 +156,4 @@ class AddscheduleView extends GetView<AddscheduleController> {
         ),
       );
   }
-
-
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: AddscheduleView(),
-  ));
 }

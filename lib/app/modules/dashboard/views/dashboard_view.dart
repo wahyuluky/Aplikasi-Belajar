@@ -73,12 +73,12 @@ class DashboardView extends StatelessWidget {
                 Icon(Icons.calendar_month, color: Colors.green, size: 20,),
                 const SizedBox(width: 8),
                 const Text(
-                  "Tugas Mendatang",
+                  "Tugas Tertunda",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                 ),
                 const Spacer(),
                 Text(
-                  "${controller.upcomingTasks.length} Tugas Aktif",
+                  "${controller.upcomingTasks.length} Tugas",
                   style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
                 )
               ],
@@ -90,12 +90,12 @@ class DashboardView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(task.title,
+                  Text(task.judul,
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 12)),
                   const SizedBox(height: 3),
                   Text(
-                    "${task.description} | Deadline : ${task.deadline}",
+                    "${task.deskripsi} | Deadline : ${controller.formatTanggal(task.tanggal)}",
                     style: TextStyle(color: Colors.grey.shade600, fontSize: 10),
                   ),
                 ],
@@ -265,14 +265,14 @@ Widget _buildStudyFocusCard() {
                       Icon(Icons.history, color: Colors.green),
                       const SizedBox(width: 8),
                       const Text(
-                        "Tugas Ditunda",
+                        "Tugas Selesai",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${controller.postponedTasks.length} Tugas Tertunda",
+                    "${controller.postponedTasks.length} Tugas",
                     style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
                   ),
                   const SizedBox(height: 8),
@@ -282,10 +282,10 @@ Widget _buildStudyFocusCard() {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(task.title,
+                            Text(task.judul,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600, fontSize: 12)),
-                            Text(task.description,
+                            Text(task.deskripsi,
                                 style: TextStyle(
                                     color: Colors.grey.shade600, fontSize: 10)),
                           ],
@@ -319,7 +319,7 @@ Widget _buildStudyFocusCard() {
                   ),
                   const SizedBox(height: 12),
 
-                  _infoRow("Waktu Belajar", "${controller.studyHoursPerDay.value} Jam/Hari"),
+                  // _infoRow("Waktu Belajar", "${controller.studyHoursPerDay.value.toStringAsFixed(1)} Jam/Hari"),
                   _infoRow("Tugas Selesai", "${controller.tasksCompletedPercent.value}%"),
                 ],
               ),
@@ -344,10 +344,3 @@ Widget _buildStudyFocusCard() {
   }
 }
 
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: DashboardView(),
-  ));
-}

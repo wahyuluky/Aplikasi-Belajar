@@ -142,9 +142,3 @@ class ChooseMusicView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ChooseMusicView(),
-  ));
-}

@@ -22,7 +22,9 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+      backgroundColor: Colors.white,
           bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white,
             currentIndex: controller.selectedIndex.value,
             onTap: controller.changeTab,
             selectedItemColor: Colors.green,
@@ -104,14 +106,26 @@ class HomeView extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Obx(() {
+                          final path = controller.photo.value;
+                          final file = File(path);
+
                           return CircleAvatar(
-                            // radius: 60,
                             backgroundColor: Colors.white,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(70),
-                              child: controller.photo.value.isEmpty
-                                ? Image.asset("assets/akun.png", height: 30, width: 30, fit: BoxFit.cover,)
-                                : Image.file(File(controller.photo.value), height: 30, width: 30, fit: BoxFit.cover),
+                              child: path.isEmpty || !file.existsSync()
+                              ? Image.asset(
+                                "assets/akun.png", 
+                                height: 120, 
+                                width: 120, 
+                                fit: BoxFit.cover,
+                              )
+                              : Image.file(
+                                file, 
+                                height: 120, 
+                                width: 120, 
+                                fit: BoxFit.cover
+                              ),
                             ),
                           );
                         }),
@@ -131,30 +145,7 @@ class HomeView extends StatelessWidget {
                     ),
                 ),
 
-                const SizedBox(height: 15),
-
-                // Search Bar
-                Container(
-                  height: 35,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: const TextField(
-                    style: TextStyle(fontSize: 12),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                        size: 18,
-                      ),
-                      hintText: "Tulis disini",
-                      contentPadding: EdgeInsets.all(12),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -231,10 +222,3 @@ class HomeView extends StatelessWidget {
   }
 }
 
-// ==================================================
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomeView(),
-  ));
-}

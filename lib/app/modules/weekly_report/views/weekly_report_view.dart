@@ -147,13 +147,18 @@ class WeeklyReportView extends StatelessWidget {
             SizedBox(height: 25),
 
             // Additional insights list
-            Column(
-              children: controller.insights
-                  .map(
-                    (text) => _buildInsightItem(text),
-                  )
-                  .toList(),
-            ),
+            controller.insights.isEmpty
+            ? Center(
+                child: Text(
+                  "Belum ada aktivitas minggu ini",
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              )
+            : Column(
+                children: controller.insights
+                    .map((text) => _buildInsightItem(text))
+                    .toList(),
+              ),
           ],
         ));
   }
@@ -176,12 +181,4 @@ class WeeklyReportView extends StatelessWidget {
       ),
     );
   }
-}
-
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: WeeklyReportView(),
-  ));
 }

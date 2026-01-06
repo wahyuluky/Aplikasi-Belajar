@@ -163,9 +163,3 @@ class RegisterView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: RegisterView(),
-  ));
-}

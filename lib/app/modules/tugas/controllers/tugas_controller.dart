@@ -8,27 +8,55 @@ class TugasController extends GetxController {
   final _auth = FirebaseAuth.instance;
   
   var listTugas = <TugasModel>[].obs;
+  var tugasAktif = <TugasModel>[].obs;
+  var tugasTertunda = <TugasModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    _listenTugas();   // Realtime listener
+     _listenTugas();
+    
+    ever(listTugas, (_) {
+      _filterTugas();
+    });
+  }
+
+  void _filterTugas() {
+    tugasAktif.value =
+        listTugas.where((t) => t.isDone == false).toList();
+
+    tugasTertunda.value =
+        listTugas.where((t) => t.isDone == true).toList();
   }
 
   // LISTEN DATA REALTIME
   void _listenTugas() {
-    String uid = _auth.currentUser!.uid;
+    _auth.authStateChanges().listen((user) {
+      if (user == null) {
+        print("❌ User logout / belum login");
+        listTugas.clear();
+        return;
+    }
+
+    print("✅ User aktif: ${user.uid}");
 
     _db
         .collection("users")
-        .doc(uid)
+        .doc(user.uid)
         .collection("tugas")
         .orderBy("tanggal")
         .snapshots()
         .listen((snapshot) {
       listTugas.value = snapshot.docs.map((doc) {
-        return TugasModel.fromMap(doc.id, doc.data());
+        return TugasModel(
+          id: doc.id,
+          judul: doc["judul"],
+          deskripsi: doc["deskripsi"],
+          tanggal: (doc["tanggal"] as Timestamp).toDate(),
+          isDone: doc["isDone"],
+        );
       }).toList();
+    });
     });
   }
 
@@ -41,11 +69,12 @@ class TugasController extends GetxController {
   
   // 🔥 TOGGLE CHECKBOX
   Future<void> toggleCheck(TugasModel t) async {
-    String uid = _auth.currentUser!.uid;
+    final user = _auth.currentUser;
+    if (user == null) return;
 
     await _db
         .collection("users")
-        .doc(uid)
+        .doc(user.uid)
         .collection("tugas")
         .doc(t.id)
         .update({
@@ -56,11 +85,12 @@ class TugasController extends GetxController {
 
   // 🔥 HAPUS TUGAS
   Future<void> hapusTugas(String id) async {
-    String uid = _auth.currentUser!.uid;
+    final user = _auth.currentUser;
+    if (user == null) return;
 
     await _db
         .collection("users")
-        .doc(uid)
+        .doc(user.uid)
         .collection("tugas")
         .doc(id)
         .delete();

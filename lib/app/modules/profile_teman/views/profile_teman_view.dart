@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/profile_teman_controller.dart';
@@ -39,37 +41,33 @@ class ProfileTemanView extends GetView<ProfileTemanController> {
         return Column(
           children: [
             const SizedBox(height: 20),
+             Obx(() {
+                    final path = controller.photo.value;
+                    final file = File(path);
 
-            // FOTO PROFIL
-            CircleAvatar(
-              radius: 80,
-              backgroundImage: NetworkImage(data.avatar),
-            ),
-            const SizedBox(height: 12),
+                    return CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(70),
+                        child: path.isEmpty || !file.existsSync()
+                          ? Image.asset(
+                            "assets/akun.png", 
+                            height: 80, 
+                            width: 80, 
+                            fit: BoxFit.cover,
+                          )
+                          : Image.file(
+                            file, 
+                            height: 80, 
+                            width: 80, 
+                            fit: BoxFit.cover
+                          ),
+                      ),
+                    );
+                  }),
+ 
 
-            // BUTTON FOTO PROFIL
-            TextButton(
-              onPressed: () {
-                // aksi pemilihan foto (diatur sendiri)
-                print("Ubah foto profile");
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade200,
-                ),
-                child: const Text(
-                  "Foto Profile",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color.fromARGB(221, 132, 131, 131),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
 
             const SizedBox(height: 25),
             const Align(

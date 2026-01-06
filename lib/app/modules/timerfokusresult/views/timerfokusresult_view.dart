@@ -38,7 +38,7 @@ class TimerfokusresultView extends GetView<TimerfokusresultController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Belajar Pra Skripsi",
+              "Belajar",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
 
@@ -112,10 +112,10 @@ class TimerfokusresultView extends GetView<TimerfokusresultController> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    "${controller.progress.value}/${controller.totalTarget.value}",
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
+                  // Text(
+                  //   "${controller.progress.value}/${controller.totalTarget.value}",
+                  //   style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  // ),
                 ],
               );
             }),
@@ -150,11 +150,4 @@ class TimerfokusresultView extends GetView<TimerfokusresultController> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: TimerfokusresultView(),
-  ));
 }

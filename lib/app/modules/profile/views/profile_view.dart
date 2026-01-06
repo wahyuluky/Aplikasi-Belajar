@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/profile/controllers/profile_controller.dart';
 import 'package:flutter_application_1/app/modules/profile/views/edit_profile_view.dart';
-import 'package:flutter_application_1/app/routes/app_pages.dart';
 
 class ProfileView extends StatelessWidget {
   final controller = Get.put(ProfileController());
@@ -42,14 +41,27 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 children: [
                   Obx(() {
+                    final path = controller.photo.value;
+                    final file = File(path);
+
                     return CircleAvatar(
                       radius: 60,
                       backgroundColor: Colors.white,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(70),
-                        child: controller.photo.value.isEmpty
-                          ? Image.asset("assets/akun.png", height: 120, width: 120, fit: BoxFit.cover,)
-                          : Image.file(File(controller.photo.value), height: 120, width: 120, fit: BoxFit.cover),
+                        child: path.isEmpty || !file.existsSync()
+                          ? Image.asset(
+                            "assets/akun.png", 
+                            height: 120, 
+                            width: 120, 
+                            fit: BoxFit.cover,
+                          )
+                          : Image.file(
+                            file, 
+                            height: 120, 
+                            width: 120, 
+                            fit: BoxFit.cover
+                          ),
                       ),
                     );
                   }),
@@ -123,7 +135,7 @@ class ProfileView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: ElevatedButton(
                 onPressed: (){
-                  Get.offAllNamed(Routes.LOGIN);
+                  controller.logout();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
@@ -178,11 +190,4 @@ class ProfileView extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ProfileView(),
-  ));
 }

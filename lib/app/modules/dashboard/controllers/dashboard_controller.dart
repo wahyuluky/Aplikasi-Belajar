@@ -1,45 +1,30 @@
+import 'dart:async';
 import 'package:get/get.dart';
-import '../../tugas/controllers/tugas_controller.dart';
-
-/// MODEL LAMA (DIPERTAHANKAN UNTUK VIEW)
-class Task {
-  final String title;
-  final String description;
-  final String deadline;
-
-  Task({
-    required this.title,
-    required this.description,
-    required this.deadline,
-  });
-}
-
-class PostponedTask {
-  final String title;
-  final String description;
-
-  PostponedTask({
-    required this.title,
-    required this.description,
-  });
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/app/modules/tugas/controllers/tugas_model.dart';
 
 class DashboardController extends GetxController {
-  final TugasController tugasC = Get.find<TugasController>();
+  final _db = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
-  /// ===============================
-  /// SESUAI YANG DIPAKAI VIEW
-  /// ===============================
-  var upcomingTasks = <Task>[].obs;
-  var postponedTasks = <PostponedTask>[].obs;
+  StreamSubscription<User?>? _authSub;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _tugasSub;
+  StreamSubscription? _studySub;
+
+  // ===============================
+  // STATE
+  // ===============================
+  var upcomingTasks = <TugasModel>[].obs;
+  var postponedTasks = <TugasModel>[].obs;
 
   var totalMendatang = 0.obs;
   var totalDitunda = 0.obs;
 
-  /// ===============================
-  /// DATA LAIN (TIDAK DIUBAH)
-  /// ===============================
-  var studyFocusTitle = 'Belajar Pra Skripsi'.obs;
+  // ===============================
+  // DATA LAIN
+  // ===============================
+  var studyFocusTitle = 'Belajar'.obs;
   var studyHoursCompleted = 0.obs;
   final int studyHoursTarget = 4;
 
@@ -51,54 +36,134 @@ class DashboardController extends GetxController {
   void onInit() {
     super.onInit();
 
-    /// 🔥 LISTEN REALTIME DARI FIRESTORE
-    ever(tugasC.listTugas, (_) => _olahData());
+    // 🔥 AUTH SAFE UNTUK WEB
+    _authSub = _auth.authStateChanges().listen((user) {
+      if (user != null) {
+        _listenDashboardTugas(user.uid);
+        _listenStudySessions(user.uid); // ⬅️ TAMBAHKAN
+        _setDateRange(); 
+      } else {
+        _clearData();
+      }
+    });
+
   }
 
-  void _olahData() {
-    final aktif = tugasC.listTugas.where((t) => !t.isDone).toList();
+  // ===============================
+  // FIRESTORE LISTENER
+  // ===============================
+  void _listenDashboardTugas(String uid) {
+    _tugasSub?.cancel();
+
+    _tugasSub = _db
+        .collection("users")
+        .doc(uid)
+        .collection("tugas")
+        .orderBy("tanggal")
+        .snapshots()
+        .listen((snapshot) {
+      final all = snapshot.docs
+          .map((d) => TugasModel.fromMap(d.id, d.data()))
+          .toList();
+
+      _olahTugas(all);
+      _hitungProduktivitasTugas(all);
+    });
+  }
+
+  void _olahTugas(List<TugasModel> all) {
+     _hitungProduktivitasTugas(all);
+
+    final aktif = all.where((t) => !t.isDone).toList();
+    final ditunda = all.where((t) => t.isDone).toList();
 
     totalMendatang.value = aktif.length;
-    totalDitunda.value = aktif.length;
+    totalDitunda.value = ditunda.length;
 
-    /// ===============================
-    /// TUGAS MENDATANG (3 TERDEKAT)
-    /// ===============================
-    final mendatang = [...aktif]
-      ..sort((a, b) => a.tanggal.compareTo(b.tanggal));
+    aktif.sort((a, b) => a.tanggal.compareTo(b.tanggal));
+    ditunda.sort((a, b) => b.tanggal.compareTo(a.tanggal));
 
-    upcomingTasks.value = mendatang
-        .take(3)
-        .map((t) => Task(
-              title: t.judul,
-              description: t.deskripsi,
-              deadline: _formatTanggal(t.tanggal),
-            ))
-        .toList();
-
-    /// ===============================
-    /// TUGAS DITUNDA (3 TERLAMA)
-    /// ===============================
-    final ditunda = [...aktif]
-      ..sort((a, b) => b.tanggal.compareTo(a.tanggal));
-
-    postponedTasks.value = ditunda
-        .take(3)
-        .map((t) => PostponedTask(
-              title: t.judul,
-              description: "Ditunda hingga ${_formatTanggal(t.tanggal)}",
-            ))
-        .toList();
+    upcomingTasks.value = aktif.take(3).toList();
+    postponedTasks.value = ditunda.take(3).toList();
   }
 
-  String _formatTanggal(DateTime date) {
+  String formatTanggal(DateTime date) {
     return "${date.day.toString().padLeft(2, '0')}/"
-        "${date.month.toString().padLeft(2, '0')}/"
-        "${date.year}";
+          "${date.month.toString().padLeft(2, '0')}/"
+          "${date.year}";
+  }
+
+  void _listenStudySessions(String uid) {
+    final start = DateTime.now().subtract(const Duration(days: 7));
+
+    _studySub = _db
+        .collection("users")
+        .doc(uid)
+        .collection("study_sessions")
+        .where("date", isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .snapshots()
+        .listen((snapshot) {
+      final totalMenit = snapshot.docs.fold<int>(
+        0,
+        (sum, d) => sum + (d["duration"] as int),
+      );
+
+      studyHoursPerDay.value =
+      ((totalMenit / 60 / 7) * 10).roundToDouble() / 10;
+    });
+  }
+
+  void _setDateRange() {
+    final now = DateTime.now();
+    final start = now.subtract(const Duration(days: 6));
+
+    productivityDateRange.value =
+        "${start.day}/${start.month} - ${now.day}/${now.month}";
+  }
+
+  Future<void> startLearningSession() async {
+    final uid = _auth.currentUser!.uid;
+
+    await _db
+        .collection("users")
+        .doc(uid)
+        .collection("study_sessions")
+        .add({
+      "date": Timestamp.now(),
+      "duration": 60, // contoh 1 jam
+    });
+  }
+
+  void _clearData() {
+    upcomingTasks.clear();
+    postponedTasks.clear();
+    totalMendatang.value = 0;
+    totalDitunda.value = 0;
+  }
+
+  void _hitungProduktivitasTugas(List<TugasModel> all) {
+    if (all.isEmpty) {
+      tasksCompletedPercent.value = 0;
+      return;
+    }
+
+    final selesai = all.where((t) => t.isDone).length;
+    tasksCompletedPercent.value =
+        ((selesai / all.length) * 100).round();
   }
 
 
+  @override
+  void onClose() {
+    _authSub?.cancel();
+    _tugasSub?.cancel();
+    _studySub?.cancel(); // ⬅️ TAMBAHKAN
+    super.onClose();
+  }
 
+  // ===============================
+  // UI ACTION
+  // ===============================
   void startLearning() {
     if (studyHoursCompleted.value < studyHoursTarget) {
       studyHoursCompleted.value++;

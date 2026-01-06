@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,9 +7,13 @@ class ChooseFriendController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   
   RxList<Map<String, dynamic>> friends = <Map<String, dynamic>>[].obs;
+  List<Map<String, dynamic>> allFriends = [];
 
    // jumlah lagu dipilih
   RxInt selectedCount = 0.obs;
+
+  // SEARCH
+  final searchC = TextEditingController();
 
   late String groupId;
 
@@ -23,23 +28,49 @@ class ChooseFriendController extends GetxController {
 
   @override
   void onInit() {
-    selected = List.generate(friends.length, (_) => false).obs;
     super.onInit();
   }
 
   /// LOAD SEMUA USER
   void loadUsers() {
+    final currentUid = FirebaseAuth.instance.currentUser!.uid;
+    
     _firestore.collection('users').snapshots().listen((snapshot) {
-      friends.value = snapshot.docs.map((doc) {
+      final data = snapshot.docs
+        .where((doc) => doc.id != currentUid) // ⬅️ EXCLUDE USER LOGIN
+        .map((doc) {
+        final d = doc.data();
         return {
           'uid': doc.id,
-          'username': doc['username'],
+          'username': d['username'],
+          "photo": d["photo"] ?? "",
         };
       }).toList();
 
-      selected.value =
-          List.generate(friends.length, (_) => false);
+      allFriends = data;           // ✅ SIMPAN DATA ASLI
+      friends.assignAll(data);     // ✅ DATA TAMPIL DI UI
+
+      // friends.assignAll(allFriends);
+      selected.assignAll(List.generate(friends.length, (_) => false));
+      selectedCount.value = 0;
     });
+  }
+
+  /// SEARCH FILTER
+  void searchFriend(String keyword) {
+    if (keyword.isEmpty) {
+      friends.assignAll(allFriends);
+    } else {
+      friends.assignAll(
+        allFriends.where((f) =>
+            f['username']
+                .toString()
+                .toLowerCase()
+                .contains(keyword.toLowerCase())),
+      );
+    }
+    selected.assignAll(List.generate(friends.length, (_) => false));
+    selectedCount.value = 0;
   }
 
   Future<bool> isUserAlreadyMember(String userId, String groupId) async {
@@ -52,6 +83,8 @@ class ChooseFriendController extends GetxController {
 
     return doc.exists;
   }
+
+  
 
   /// TAMBAHKAN USER KE GRUP
   Future<void> addSelectedToGroup() async {
@@ -104,9 +137,12 @@ class ChooseFriendController extends GetxController {
           : "Anggota berhasil ditambahkan",
       backgroundColor: Colors.green,
       colorText: Colors.white,
+      snackPosition: SnackPosition.TOP,
     );
-
-    Get.back();
+    // ⬅️ KEMBALI
+    Future.delayed(const Duration(milliseconds: 800), () {
+      Get.back();
+    });
   }
 
 

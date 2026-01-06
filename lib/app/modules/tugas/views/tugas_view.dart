@@ -149,17 +149,71 @@ class TugasView extends StatelessWidget {
 
   void showDeleteDialog(String id) {
     Get.defaultDialog(
-      title: "Hapus Tugas?",
-      middleText: "Apakah kamu yakin?",
-      textCancel: "Batal",
-      textConfirm: "Hapus",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        controller.hapusTugas(id);
-        Get.back();
-      },
+      title: "",
+      backgroundColor: Colors.white,
+      radius: 20,
+      content: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.red.shade100,
+            child: const Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+              size: 32,
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            "Hapus Tugas?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Tindakan ini tidak dapat dibatalkan.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+          const SizedBox(height: 25),
+
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Batal", style: TextStyle(color: Colors.black),),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () {
+                    controller.hapusTugas(id);
+                    Get.back();
+                    Get.snackbar(
+                      "Sukses",
+                      "Tugas berhasil dihapus",
+                      backgroundColor: Colors.green,
+                      colorText: Colors.white,
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  },
+                  child: const Text("Hapus", style: TextStyle(color: Colors.white),),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
+
 
 
 
@@ -193,12 +247,4 @@ class TugasView extends StatelessWidget {
     );
   }
 
-}
-
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: TugasView(),
-  ));
 }

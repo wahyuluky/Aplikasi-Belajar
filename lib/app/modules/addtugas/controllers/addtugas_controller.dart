@@ -43,8 +43,13 @@ class AddtugasController extends GetxController {
 
 
   Future<void> tambahTugas() async {
-    if (tugasC.text.isEmpty) {
-      Get.snackbar("Error", "Judul tugas wajib diisi");
+    if (tugasC.text.isEmpty || tanggalC.text.isEmpty) {
+      Get.snackbar(
+        "Warning!", 
+        "Judul dan Tanggal wajib diisi",
+        backgroundColor: Colors.orange,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP);
       return;
     }
 
@@ -61,7 +66,13 @@ class AddtugasController extends GetxController {
     });
 
     Get.back();
-    Get.snackbar("Sukses", "Tugas berhasil ditambahkan");
+    Get.snackbar(
+      "Sukses", 
+      "Tugas berhasil ditambahkan",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.TOP
+    );
   }
 }
 

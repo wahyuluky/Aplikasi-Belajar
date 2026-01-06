@@ -91,19 +91,18 @@ class EditscheduleView extends GetView<EditscheduleController> {
                         ),
                       ),
                       onTap: () async {
-  DateTime? pickedDate = await showDatePicker(
-    context: context,
-    firstDate: DateTime(2000),
-    lastDate: DateTime(2050),
-    initialDate: DateTime.now(),
-  );
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2050),
+                          initialDate: DateTime.now(),
+                        );
 
-  if (pickedDate != null) {
-    controller.dateC.text =
-        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-  }
-},
-
+                        if (pickedDate != null) {
+                          controller.dateC.text =
+                              "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                        }
+                      },
                     ),
                   ),
 
@@ -157,11 +156,4 @@ class EditscheduleView extends GetView<EditscheduleController> {
         ),
     );
   }
-}
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: EditscheduleView(),
-  ));
 }

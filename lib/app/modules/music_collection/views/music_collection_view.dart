@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_application_1/app/modules/choose_music/views/choose_music_view.dart';
 import 'package:flutter_application_1/app/modules/music_collection/controllers/music_collection_controller.dart';
+import 'package:flutter_application_1/app/modules/play_music/bindings/play_music_binding.dart';
 import 'package:flutter_application_1/app/modules/play_music/views/play_music_view.dart';
 
 class MusicCollectionView extends StatelessWidget {
@@ -88,7 +88,7 @@ class MusicCollectionView extends StatelessWidget {
           // ADD BUTTON
           GestureDetector(
             onTap: (){
-              Get.to(ChooseMusicView());
+              controller.addMusic();
             },
             child: Container(
               width: 32,
@@ -107,109 +107,167 @@ class MusicCollectionView extends StatelessWidget {
 
   // ---------------- MUSIC LIST ----------------
   Widget _musicList() {
-    return Obx(
-      () {
-        var filtered = controller.musicList.where((item) {
-          var q = controller.search.value.toLowerCase();
-          return item["title"]!.toLowerCase().contains(q) ||
-              item["artist"]!.toLowerCase().contains(q);
-        }).toList();
+    return Obx(() {
+      var filtered = controller.musicList.where((item) {
+        var q = controller.search.value.toLowerCase();
+        var title = item["title"] ?? "";
+        var artist = item["artist"] ?? "";
+        return title.toLowerCase().contains(q) ||
+            artist.toLowerCase().contains(q);
+      }).toList();
+
+      if (filtered.isEmpty) {
+        return const Center(
+          child: Text("Belum ada musik", style: TextStyle(fontSize: 12)),
+        );
+      }
 
       return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          itemCount: filtered.length,
-          itemBuilder: (context, i) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: InkWell(
-                onTap: () {
-                  Get.to(PlayMusicView());
-                },
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // IMAGE
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage(filtered[i]["image"]!),
-                    ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: filtered.length,
+        itemBuilder: (context, i) {
+          final music = filtered[i];
 
-                    const SizedBox(width: 12),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: InkWell(
+              onTap: () {
+                controller.currentIndex.value = i;
+                // controller.playMusic(controller.musicList[i]["path"]!);
 
-                    // TEXT
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            filtered[i]["title"]!,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
+                Get.to(
+                  () => PlayMusicView(),
+                  arguments: i, // ✅ KIRIM INDEX
+                  binding: PlayMusicBinding(),
+                );
+              },
+              child: Row(
+                children: [
+                  // ICON (ganti image)
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.green.shade100,
+                    child: const Icon(Icons.music_note, color: Colors.green),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  // TEXT
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          music["title"] ?? "Unknown Title",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
                           ),
-                          Text(
-                            filtered[i]["artist"]!,
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
+                        ),
+                        Text(
+                          music["artist"] ?? "Unknown Artist",
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
 
-                    // DELETE BUTTON (aman)
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDeleteDialog(i);
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(Icons.delete, color: Colors.red, size: 20),
-                          SizedBox(width: 4),
-                          Text(
-                            "Hapus",
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                            ),
-                          )
-                        ],
-                      ),
+                  // DELETE
+                  GestureDetector(
+                    onTap: () => showDeleteDialog(i),
+                    child: Row(
+                      children: const [
+                        Icon(Icons.delete, color: Colors.red, size: 20),
+                        SizedBox(width: 4),
+                        Text(
+                          "Hapus",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-        );
-      },
-    );
+            ),
+          );
+        },
+      );
+    });
   }
 
   void showDeleteDialog(int index) {
     Get.defaultDialog(
-      title: "Hapus Lagu?",
-      middleText: "Apakah kamu yakin ingin menghapus lagu ini?",
-      textCancel: "Batal",
-      textConfirm: "Hapus",
-      confirmTextColor: Colors.white,
-      onConfirm: () {
-        controller.deleteMusic(index);
-        Get.back();
-      },
+      title: "",
+      backgroundColor: Colors.white,
+      radius: 20,
+      content: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.red.shade100,
+            child: const Icon(
+              Icons.delete_forever,
+              color: Colors.red,
+              size: 32,
+            ),
+          ),
+          const SizedBox(height: 15),
+          const Text(
+            "Hapus Lagu?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Tindakan ini tidak dapat dibatalkan.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+          const SizedBox(height: 25),
+
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Get.back(),
+                  child: const Text("Batal", style: TextStyle(color: Colors.black),),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () {
+                    controller.deleteMusic(index);
+                    Get.back();
+                    Get.snackbar( 
+                      "Sukses",
+                      "Lagu berhasil dihapus",
+                      backgroundColor: Colors.green,
+                      colorText: Colors.white,
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  },
+                  child: const Text("Hapus", style: TextStyle(color: Colors.white),),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
+
 }
 
-
-
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MusicCollectionView(),
-  ));
-}

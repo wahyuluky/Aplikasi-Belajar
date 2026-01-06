@@ -12,10 +12,6 @@ class EditgrupController extends GetxController {
 
   @override
   void onInit() {
-    // var args = Get.arguments;
-    // groupId = args['id'];
-    // namaGrupC.text = args['nama'];
-    // foto.value = args['foto'];
     super.onInit();
   }
 
@@ -31,11 +27,22 @@ class EditgrupController extends GetxController {
         'foto': foto,
         'updatedAt': DateTime.now().toIso8601String(),
       });
-
-      Get.snackbar("Sukses", "Grup berhasil diperbarui");
+      Get.back();
+      Get.snackbar(
+        "Sukses", 
+        "Grup berhasil diperbarui",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP);
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar(
+        "Error", 
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP);
     }
   }
+
 
 }

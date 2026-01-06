@@ -7,11 +7,13 @@ class ChooseFriendView extends StatelessWidget {
   final String groupId;
   final ChooseFriendController c = Get.put(ChooseFriendController());
 
-  ChooseFriendView({super.key, required this.groupId});
+  ChooseFriendView({super.key, required this.groupId}){
+    c.init(groupId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    c.init(groupId);
+    // c.init(groupId);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -64,11 +66,13 @@ class ChooseFriendView extends StatelessWidget {
                       children: [
                         const Icon(Icons.search, color: Colors.grey, size: 18),
                         const SizedBox(width: 3),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
+                            controller: c.searchC,
+                            onChanged: c.searchFriend,
                             style: TextStyle(fontSize: 12),
                             decoration: InputDecoration(
-                              hintText: "Tulis disini",
+                              hintText: "Cari nama temanmu",
                               hintStyle: TextStyle(color: Colors.grey),
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(12),
@@ -149,8 +153,9 @@ Widget _friendList() {
 
               onTap: () => c.toggle(index),
 
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage("https://picsum.photos/200"),
+             leading: const CircleAvatar(
+                radius: 18,
+                backgroundImage: AssetImage("assets/akun.png"),
               ),
 
               title: Text(

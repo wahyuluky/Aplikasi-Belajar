@@ -42,14 +42,27 @@ class EditProfileView extends StatelessWidget {
             Column(
               children: [
                 Obx(() {
+                  final path = controller.photo.value;
+                    final file = File(path);
+                    
                     return CircleAvatar(
                       radius: 60,
                       backgroundColor: Colors.white,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(70),
-                        child: controller.photo.value.isEmpty
-                          ? Image.asset("assets/akun.png", height: 120, width: 120, fit: BoxFit.cover,)
-                          : Image.file(File(controller.photo.value), height: 120, width: 120, fit: BoxFit.cover),
+                        child: path.isEmpty || !file.existsSync()
+                          ? Image.asset(
+                            "assets/akun.png", 
+                            height: 120, 
+                            width: 120, 
+                            fit: BoxFit.cover,
+                          )
+                          : Image.file(
+                            file, 
+                            height: 120, 
+                            width: 120, 
+                            fit: BoxFit.cover
+                          ),
                       ),
                     );
                   }),

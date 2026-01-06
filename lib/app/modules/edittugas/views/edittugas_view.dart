@@ -151,9 +151,3 @@ class EdittugasView extends GetView<EdittugasController> {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: EdittugasView(),
-  ));
-}

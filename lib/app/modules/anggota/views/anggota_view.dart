@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/chat/views/chat_view.dart';
@@ -58,10 +60,31 @@ class AnggotaView extends StatelessWidget {
                           vertical: 12, horizontal: 14),
                       child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundImage: NetworkImage(anggota.fotoUrl),
-                          ),
+                          Obx(() {
+                            final path = controller.photo.value;
+                            final file = File(path);
+
+                            return CircleAvatar(
+                              radius: 18,
+                              backgroundColor: Colors.white,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(70),
+                                child: path.isEmpty || !file.existsSync()
+                                  ? Image.asset(
+                                    "assets/akun.png", 
+                                    height: 80, 
+                                    width: 80, 
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Image.file(
+                                    file, 
+                                    height: 80, 
+                                    width: 80, 
+                                    fit: BoxFit.cover
+                                  ),
+                              ),
+                            );
+                          }),
                           const SizedBox(width: 14),
                           Text(
                             anggota.username,
@@ -69,13 +92,6 @@ class AnggotaView extends StatelessWidget {
                                 fontSize: 12, fontWeight: FontWeight.w500),
                           ),
                           SizedBox(width: 10,),
-                          // ElevatedButton(
-                          //   style: ElevatedButton.styleFrom(
-                          //     backgroundColor: Colors.red,
-                          //   ),
-                          //   onPressed: () => controller.leaveGroup(groupId),
-                          //   child: const Text("Keluar Grup", style: TextStyle(fontSize: 10, color: Colors.white),),
-                          // )
                         ],
                       ),
                     ),

@@ -28,7 +28,7 @@ class SplashView extends StatelessWidget {
               // LOGO
               Image.asset(
                 'assets/logo.png',  // Ubah sesuai nama file kamu
-                height: 140,
+                height: 200,
               ),
 
               const SizedBox(height: 12),
@@ -40,9 +40,3 @@ class SplashView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: SplashView(),
-  ));
-}

@@ -95,7 +95,7 @@ class FocusRestView extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Kamu sudah fokus selama ${controller.focusedMinutes.value} menit",
+            "Kamu sudah fokus setiap ${controller.focusedMinutes.value} menit",
             style: const TextStyle(fontSize: 12),
           ),
         ],
@@ -131,9 +131,3 @@ class FocusRestView extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: FocusRestView(),
-  ));
-}

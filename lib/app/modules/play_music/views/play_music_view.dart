@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/app/modules/play_music/controllers/play_music_controller.dart';
 
 class PlayMusicView extends StatelessWidget {
-  final PlayMusicController c = Get.put(PlayMusicController());
+  final PlayMusicController c = Get.find<PlayMusicController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class PlayMusicView extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             SizedBox(height: 25),
             _albumImage(),
@@ -41,6 +42,7 @@ class PlayMusicView extends StatelessWidget {
             _playerButtons(),
           ],
         ),
+        ),
     );
   }
 
@@ -48,54 +50,85 @@ class PlayMusicView extends StatelessWidget {
   Widget _albumImage() {
     return CircleAvatar(
       radius: 80,
-      backgroundImage: AssetImage("assets/music1.jpg"),
+      backgroundColor: Colors.green.shade100,
+      child: const Icon(Icons.music_note, color: Colors.green),
     );
   }
 
   // ---------------- TEXT TITLE & ARTIST ----------------
   Widget _musicDescription() {
-    return Column(
-      children: [
-        Text("Duka", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-        SizedBox(height: 3),
-        Text("Last Child", style: TextStyle(fontSize: 12, color: Colors.black54)),
-      ],
-    );
+    return Obx(() {
+      final song = c.song;
+      return Column(
+        children: [
+          Text(
+            song["title"] ?? "-",
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            song["artist"] ?? "-",
+            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          ),
+        ],
+      );
+    });
   }
+
+
 
   // ---------------- SLIDER MUSIC ----------------
   Widget _progressBar() {
-    return Obx(() => Column(
-      children: [
-        Slider(
-          value: c.progress.value,
-          min: 0,
-          max: c.duration,
-          activeColor: Colors.green,
-          inactiveColor: Colors.grey[300],
-          onChanged: (v) => c.changeProgress(v),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("3:05", style: TextStyle(color: Colors.black54, fontSize: 12)),
-              Text("4:00", style: TextStyle(color: Colors.black54, fontSize: 12)),
-            ],
-          ),
-        )
-      ],
-    ));
+    return StreamBuilder<Duration>(
+      stream: c.musicC.player.positionStream,
+      builder: (context, snapshot) {
+        final position = snapshot.data ?? Duration.zero;
+        final duration =
+            c.musicC.player.duration ?? Duration.zero;
+
+        return Column(
+          children: [
+            Slider(
+              min: 0,
+              max: duration.inSeconds.toDouble(),
+              value: position.inSeconds
+                  .clamp(0, duration.inSeconds)
+                  .toDouble(),
+              onChanged: (v) {
+                c.musicC.player.seek(
+                  Duration(seconds: v.toInt()),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_format(position)),
+                  Text(_format(duration)),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
+
+String _format(Duration d) =>
+    "${d.inMinutes}:${(d.inSeconds % 60).toString().padLeft(2, '0')}";
+
 
   // ---------------- MINI PLAYER BUTTONS ----------------
   Widget _playerButtons() {
     return Obx(() => Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.skip_previous, color: Colors.grey, size: 24),
-
+        IconButton(
+          icon: const Icon(Icons.skip_previous, size: 24, color: Colors.green,),
+          onPressed: c.previous,
+        ),
         SizedBox(width: 35),
 
         GestureDetector(
@@ -117,15 +150,12 @@ class PlayMusicView extends StatelessWidget {
 
         SizedBox(width: 35),
 
-        Icon(Icons.skip_next, color: Colors.green, size: 24),
+         IconButton(
+        icon: const Icon(Icons.skip_next, size: 24, color: Colors.green),
+        onPressed: c.next,
+      ),
       ],
     ));
   }
 }
 
-void main() {
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: PlayMusicView(),
-  ));
-}

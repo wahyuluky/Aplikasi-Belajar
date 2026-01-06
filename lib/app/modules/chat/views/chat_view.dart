@@ -114,7 +114,19 @@ class ChatView extends StatelessWidget {
                   radius: 16,
                   backgroundImage: NetworkImage(msg.avatar),
                 ),          
-              if (!msg.isMe) const SizedBox(width: 8),
+              if (!msg.isMe)
+              Padding(
+                padding: const EdgeInsets.only(left: 6, bottom: 2),
+                child: Text(
+                  msg.senderName,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey,
+                  ),
+                ),
+              ), 
+              const SizedBox(width: 8),
 
               // Bubble pesan
               Container(

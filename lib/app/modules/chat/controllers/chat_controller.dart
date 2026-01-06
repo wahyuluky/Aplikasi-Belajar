@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_1/app/modules/chat/controllers/chat_message.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_application_1/app/modules/chat/controllers/chat_message.dart';
 import 'dart:convert';
 
 
@@ -36,21 +36,33 @@ class ChatController extends GetxController {
    isTyping.value = text.trim().isNotEmpty;
   }
 
-  // Future fixOldMessages(String groupId) async {
-  //   final snap = await _firestore
-  //       .collection('grup_belajar')
-  //       .doc(groupId)
-  //       .collection('chat')
-  //       .get();
+  Future fixOldMessages(String groupId) async {
+    final snap = await _firestore
+        .collection('grup_belajar')
+        .doc(groupId)
+        .collection('chat')
+        .get();
 
-  //   for (var doc in snap.docs) {
-  //     if (!doc.data().containsKey('type')) {
-  //       await doc.reference.update({
-  //         'type': 'text',
-  //       });
-  //     }
-  //   }
-  // }
+    for (var doc in snap.docs) {
+      final data = doc.data();
+
+      if (data['senderName'] == 'username') {
+        final senderId = data['senderId'];
+
+        final userDoc =
+            await _firestore.collection('users').doc(senderId).get();
+
+        final realName =
+            userDoc.exists ? userDoc['username'] : 'User';
+
+        await doc.reference.update({
+          'senderName': realName,
+        });
+      }
+    }
+  }
+
+
 
 
   // ============================================================
@@ -89,6 +101,7 @@ class ChatController extends GetxController {
           id: d.id,
           message: data.containsKey('text') ? data['text'] : null,
           senderId: data['senderId'],
+          senderName: data['senderName'] ?? 'User',
           isMe: data['senderId'] == currentUserId,
           avatar: data['senderAvatar'],
           createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
@@ -101,11 +114,25 @@ class ChatController extends GetxController {
     });
   }
 
+  Future<String> _getUsername() async {
+    final uid = currentUserId;
+    final doc = await _firestore.collection('users').doc(uid).get();
+
+    if (doc.exists && doc.data()!.containsKey('username')) {
+      return doc['username'];
+    }
+    return 'User';
+  }
+
+
+
   // ============================================================
   // KIRIM PESAN BARU
   // ============================================================
   Future sendMessage(String groupId, String text) async {
     if (text.trim().isEmpty) return;
+
+    final username = await _getUsername();
 
     await _firestore
         .collection('grup_belajar')
@@ -115,6 +142,7 @@ class ChatController extends GetxController {
       'type': 'text',
       'text': text,
       'senderId': currentUserId,
+      'senderName': username,
       'senderAvatar': _auth.currentUser!.photoURL ??
           "https://i.pravatar.cc/150?img=32",
       'createdAt': FieldValue.serverTimestamp(),

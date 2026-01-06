@@ -39,10 +39,6 @@ class EdittugasController extends GetxController {
   }
 
   Future<void> simpan() async {
-    if (tugasC.text.isEmpty || tanggalC.text.isEmpty) {
-      Get.snackbar("Error", "Tugas dan tanggal wajib diisi");
-      return;
-    }
 
     await firestore
         .collection("users")
@@ -58,7 +54,13 @@ class EdittugasController extends GetxController {
     });
 
     Get.back();
-    Get.snackbar("Sukses", "Data berhasil diperbarui");
+    Get.snackbar(
+      "Sukses", 
+      "Data berhasil diperbarui",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.TOP
+    );
   }
 
 
@@ -85,4 +87,3 @@ class EdittugasController extends GetxController {
   }
 
 }
-

@@ -1,17 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/app/modules/anggota/controllers/anggota_model.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/app/modules/anggota/controllers/anggota_model.dart';
 
 class AnggotaController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   var groupName = "".obs;
+  RxString photo = ''.obs;
 
   RxList<AnggotaModel> anggotaList = <AnggotaModel>[].obs;
 
   // foto default
   RxString defaultFotoUrl = "https://i.pravatar.cc/150?img=32".obs;
+
+  Future<void> loadUserPhoto() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+
+    if (doc.exists) {
+      photo.value = doc['photo'] ?? '';
+    }
+  }
 
   /// LOAD INFO GRUP
   Future<void> loadGroupInfo(String groupId) async {
